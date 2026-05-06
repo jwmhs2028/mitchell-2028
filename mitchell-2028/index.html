@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mitchell Class of 2028</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <img src="images/logo.png" class="logo">
+  <h1>Class of 2028</h1>
+</header>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#events">Events</a>
+  <a href="#request">Requests</a>
+</nav>
+
+<section id="home">
+  <h2>Welcome</h2>
+  <p>Welcome to the official Mitchell High School Class of 2028 website.</p>
+</section>
+
+<section id="events">
+  <h2>Upcoming Events</h2>
+
+  <div class="card">
+    <h3>Homecoming</h3>
+    <p>Details coming soon...</p>
+  </div>
+
+  <div class="card">
+    <h3>Prom</h3>
+    <p>Details coming soon...</p>
+  </div>
+
+</section>
+
+<section id="request">
+  <h2>Submit Ideas</h2>
+
+  <form name="requests" method="POST" data-netlify="true">
+    <input type="hidden" name="form-name" value="requests">
+
+    <input type="text" name="name" placeholder="Your Name" required>
+    <textarea name="idea" placeholder="Your Idea (themes, games, etc.)" required></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+</section>
+
+<footer>
+  <p>© 2028 Mitchell High School</p>
+</footer>
+
+</body>
+</html>
