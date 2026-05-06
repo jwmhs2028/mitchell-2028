@@ -1,59 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mitchell Class of 2028</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<header>
-  <img src="images/logo.png" class="logo">
-  <h1>Class of 2028</h1>
-</header>
+  <header class="hero">
+    <nav class="navbar">
+      <div class="nav-left">
+        <img src="images/logo.png" class="logo" alt="Mitchell Logo">
+        <div>
+          <h2>James W. Mitchell</h2>
+          <p>Class of 2028</p>
+        </div>
+      </div>
 
-<nav>
-  <a href="#home">Home</a>
-  <a href="#events">Events</a>
-  <a href="#request">Requests</a>
-</nav>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#events">Events</a>
+        <a href="#requests">Requests</a>
+      </div>
+    </nav>
 
-<section id="home">
-  <h2>Welcome</h2>
-  <p>Welcome to the official Mitchell High School Class of 2028 website.</p>
-</section>
+    <div class="hero-overlay"></div>
 
-<section id="events">
-  <h2>Upcoming Events</h2>
+    <div class="hero-content">
+      <div class="hero-line"></div>
+      <div>
+        <h1>CLASS OF<br>2028</h1>
+        <p>
+          Official student information hub for James W. Mitchell High School.
+          Stay updated on Homecoming, Prom, announcements, and upcoming events.
+        </p>
 
-  <div class="card">
-    <h3>Homecoming</h3>
-    <p>Details coming soon...</p>
-  </div>
+        <div class="hero-buttons">
+          <a href="#events" class="primary-btn">Upcoming Events</a>
+          <a href="#requests" class="secondary-btn">Submit Ideas</a>
+        </div>
+      </div>
+    </div>
 
-  <div class="card">
-    <h3>Prom</h3>
-    <p>Details coming soon...</p>
-  </div>
+    <div class="wave-divider">
+      <svg viewBox="0 0 1440 180" preserveAspectRatio="none">
+        <path fill="#ffffff" d="M0,96L240,128C480,160,960,160,1200,138.7L1440,117.3L1440,320L1200,320C960,320,480,320,240,320L0,320Z"></path>
+      </svg>
+    </div>
+  </header>
 
-</section>
+  <section class="info-section" id="about">
+    <div class="section-header">
+      <span>WELCOME</span>
+      <h2>Mitchell Mustangs</h2>
+    </div>
 
-<section id="request">
-  <h2>Submit Ideas</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          Welcome to the official Class of 2028 website. This platform was created
+          to keep students informed and involved throughout the school year.
+        </p>
 
-  <form name="requests" method="POST" data-netlify="true">
-    <input type="hidden" name="form-name" value="requests">
+        <p>
+          Check event information, submit ideas for student council, and stay
+          connected with everything happening at Mitchell.
+        </p>
+      </div>
 
-    <input type="text" name="name" placeholder="Your Name" required>
-    <textarea name="idea" placeholder="Your Idea (themes, games, etc.)" required></textarea>
+      <div class="about-image-card">
+        <img src="images/mustang.png" alt="Mustang Logo">
+      </div>
+    </div>
+  </section>
 
-    <button type="submit">Submit</button>
-  </form>
-</section>
-
-<footer>
-  <p>© 2028 Mitchell High School</p>
-</footer>
-
-</body>
+  <section class="events-section" id="events">
+    <div class="section-header center">
+      <span>UPCOMING EVENTS</span>
+      <h2>What’s Coming Up</h2>
+    </div>
 </html>
