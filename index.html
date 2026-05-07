@@ -267,28 +267,33 @@
       name="requests"
       method="POST"
       data-netlify="true"
-      action="/success.html"
-      class="request-form">
+      netlify
+      class="request-form"
+      onsubmit="showMessage(event)">
+      
+      <input type="hidden" name="form-name" value="requests">
+      
+      <input
+      type="text"
+      name="name"
+      placeholder="Your Name"
+      required>
+      
+      <textarea
+      name="idea"
+      rows="5"
+      placeholder="Your idea..."
+      required></textarea>
+      
+      <button type="submit">
+      Submit Request
+      </button>
+      
+      <p id="success-message">
+      Thanks! Your request was submitted.
+      </p>
 
-        <input type="hidden" name="form-name" value="requests">
-
-        <input
-        type="text"
-        name="name"
-        placeholder="Your Name"
-        required>
-
-        <textarea
-        name="idea"
-        rows="5"
-        placeholder="Your idea..."
-        required></textarea>
-
-        <button type="submit">
-          Submit Request
-        </button>
-
-      </form>
+</form>
 
     </div>
 
