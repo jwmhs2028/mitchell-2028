@@ -69,51 +69,46 @@ async function loadUpdates(){
 
         rows.forEach((row) => {
 
-            if(!row.trim()) return;
+    if(!row.trim()) return;
 
-            const columns = row.split(",");
+    const columns = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
-            const title =
-            columns[0]
-            ?.replace(/"/g, "")
-            .trim();
+    if(!columns) return;
 
-            const description =
-            columns[1]
-            ?.replace(/"/g, "")
-            .trim();
+    const clean = columns.map(col =>
+        col.replace(/^"|"$/g, "").trim()
+    );
 
-            const image =
-            columns[2]
-            ?.replace(/"/g, "")
-            .trim();
+    const title = clean[0] || "";
+    const description = clean[1] || "";
+    const image = clean[2] || "";
 
-            if(title){
+    if(title){
 
-                const card = `
+        const card = `
 
-                <div class="event-card fade-up">
+        <div class="event-card fade-up">
 
-                    ${image ? `
-                    <img
-                    src="${image}"
-                    class="update-image"
-                    alt="${title}">
-                    ` : ""}
+            ${image ? `
+            <img
+            src="${image}"
+            class="update-image"
+            alt="${title}">
+            ` : ""}
 
-                    <h3>${title}</h3>
+            <h3>${title}</h3>
 
-                    <p>${description}</p>
+            <p>${description}</p>
 
-                </div>
+        </div>
 
-                `;
+        `;
 
-                container.innerHTML += card;
+        container.innerHTML += card;
 
-            }
+    }
 
-        });
+});
 
         document.querySelectorAll(".fade-up")
         .forEach((el) => observer.observe(el));
