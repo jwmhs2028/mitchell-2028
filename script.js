@@ -71,3 +71,48 @@ alert("Submission failed.")
 );
 
 }
+
+/* GOOGLE SHEETS EVENTS */
+
+async function loadEvents(){
+
+    const response = await fetch(
+        "YOUR_CSV_URL"
+    );
+
+    const data = await response.text();
+
+    const rows = data.split("\n").slice(1);
+
+    const container =
+    document.getElementById("events-container");
+
+    container.innerHTML = "";
+
+    rows.forEach(row => {
+
+        const columns = row.split(",");
+
+        const title = columns[0];
+        const description = columns[1];
+
+        if(title){
+
+            container.innerHTML += `
+            
+            <div class="event-card">
+
+                <h3>${title}</h3>
+
+                <p>${description}</p>
+
+            </div>
+
+            `;
+        }
+
+    });
+
+}
+
+loadEvents();
