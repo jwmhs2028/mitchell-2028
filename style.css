@@ -1050,3 +1050,43 @@ iframe{
     }
 
 }
+
+
+.live-events{
+    padding:100px 8%;
+    background:#0b0b0b;
+}
+
+#events-container{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:25px;
+    margin-top:40px;
+}
+
+.event-card{
+    background:#141414;
+    border:1px solid rgba(255,255,255,.08);
+
+    padding:30px;
+
+    border-radius:24px;
+
+    transition:.3s;
+}
+
+.event-card:hover{
+    transform:translateY(-6px);
+}
+
+.event-card h3{
+    color:#c5b27a;
+    margin-bottom:14px;
+}
+
+.event-card p{
+    color:rgba(255,255,255,.75);
+    line-height:1.7;
+}
