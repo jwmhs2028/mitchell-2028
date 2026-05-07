@@ -63,7 +63,7 @@ async function loadUpdates(){
         await response.text();
 
         const rows =
-        csv.split("\n").slice(1);
+        csv.trim().split("\n").slice(1);
 
         container.innerHTML = "";
 
@@ -79,11 +79,13 @@ async function loadUpdates(){
             .trim();
 
             const description =
-            columns
-            .slice(1)
-            .join(",")
+            columns[1]
+            ?.replace(/"/g, "")
+            .trim();
 
-            .replace(/"/g, "")
+            const image =
+            columns[2]
+            ?.replace(/"/g, "")
             .trim();
 
             if(title){
@@ -91,6 +93,13 @@ async function loadUpdates(){
                 const card = `
 
                 <div class="event-card fade-up">
+
+                    ${image ? `
+                    <img
+                    src="${image}"
+                    class="update-image"
+                    alt="${title}">
+                    ` : ""}
 
                     <h3>${title}</h3>
 
