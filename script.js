@@ -50,23 +50,26 @@ tabs.forEach((tab) => {
 
 async function loadUpdates(){
 
+    const container =
+    document.getElementById("events-container");
+
     try{
 
         const response = await fetch(
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR5RuaHWBn_YylV0jvB7U6SevGSk9ayuiT1VO0M3uZ3rv4RCqcZrm333buUutaXExySMm5yHBT2KRAy/pub?output=csv"
         );
 
-        const data = await response.text();
+        const csv =
+        await response.text();
 
         const rows =
-        data.trim().split("\n").slice(1);
-
-        const container =
-        document.getElementById("events-container");
+        csv.split("\n").slice(1);
 
         container.innerHTML = "";
 
         rows.forEach((row) => {
+
+            if(!row.trim()) return;
 
             const columns = row.split(",");
 
@@ -76,13 +79,16 @@ async function loadUpdates(){
             .trim();
 
             const description =
-            columns[1]
-            ?.replace(/"/g, "")
+            columns
+            .slice(1)
+            .join(",")
+
+            .replace(/"/g, "")
             .trim();
 
-            if(title && description){
+            if(title){
 
-                container.innerHTML += `
+                const card = `
 
                 <div class="event-card fade-up">
 
@@ -94,11 +100,11 @@ async function loadUpdates(){
 
                 `;
 
+                container.innerHTML += card;
+
             }
 
         });
-
-        /* Re-observe newly added cards */
 
         document.querySelectorAll(".fade-up")
         .forEach((el) => observer.observe(el));
@@ -107,10 +113,21 @@ async function loadUpdates(){
 
     catch(error){
 
-        console.error(
-        "Failed to load updates:",
-        error
-        );
+        console.error(error);
+
+        container.innerHTML = `
+
+        <div class="event-card">
+
+            <h3>Unable To Load Updates</h3>
+
+            <p>
+            Please try again later.
+            </p>
+
+        </div>
+
+        `;
 
     }
 
