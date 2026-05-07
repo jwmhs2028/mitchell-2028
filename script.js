@@ -72,9 +72,11 @@ alert("Submission failed.")
 
 }
 
-/* GOOGLE SHEETS EVENTS */
+/* =========================
+   GOOGLE SHEETS UPDATES
+========================= */
 
-async function loadEvents(){
+async function loadUpdates() {
 
     const response = await fetch(
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vR5RuaHWBn_YylV0jvB7U6SevGSk9ayuiT1VO0M3uZ3rv4RCqcZrm333buUutaXExySMm5yHBT2KRAy/pub?output=csv"
@@ -82,25 +84,28 @@ async function loadEvents(){
 
     const data = await response.text();
 
-    const rows = data.split("\n").slice(1);
+    const rows = data.trim().split("\n").slice(1);
 
     const container =
     document.getElementById("events-container");
 
     container.innerHTML = "";
 
-    rows.forEach(row => {
+    rows.forEach((row) => {
 
         const columns = row.split(",");
 
-        const title = columns[0];
-        const description = columns[1];
+        const title =
+        columns[0]?.replace(/"/g, "").trim();
 
-        if(title){
+        const description =
+        columns[1]?.replace(/"/g, "").trim();
+
+        if(title && description){
 
             container.innerHTML += `
-            
-            <div class="event-card">
+
+            <div class="event-card fade-up">
 
                 <h3>${title}</h3>
 
@@ -115,4 +120,5 @@ async function loadEvents(){
 
 }
 
+loadUpdates();
 loadEvents();
