@@ -77,7 +77,7 @@ alert("Submission failed.")
 async function loadEvents(){
 
     const response = await fetch(
-        "YOUR_CSV_URL"
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR5RuaHWBn_YylV0jvB7U6SevGSk9ayuiT1VO0M3uZ3rv4RCqcZrm333buUutaXExySMm5yHBT2KRAy/pub?output=csv"
     );
 
     const data = await response.text();
