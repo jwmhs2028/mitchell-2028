@@ -15,6 +15,64 @@ body{
   overflow-x:hidden;
 }
 
+/* GLOBAL FIXES */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html, body{
+    width:100%;
+    overflow-x:hidden;
+}
+
+body{
+    position:relative;
+}
+
+/* Prevent sections from overflowing */
+
+section,
+div,
+header,
+main{
+    max-width:100%;
+}
+
+/* Fix curved divider offset */
+
+.wave,
+.curve,
+.hero-curve,
+.custom-shape-divider-bottom-1,
+.custom-shape-divider-bottom-2{
+    width:100%;
+    left:0;
+    overflow:hidden;
+}
+
+/* Prevent image overflow */
+
+img{
+    max-width:100%;
+    display:block;
+}
+
+/* Fix hero section alignment */
+
+.hero{
+    width:100%;
+    overflow:hidden;
+    position:relative;
+}
+
+/* Fix navbar alignment */
+
+.navbar{
+    margin:0 auto;
+}
 /* HERO */
 
 .hero{
