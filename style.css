@@ -727,7 +727,7 @@ footer{
     }
 
     .form-container iframe{
-        height:1300px;
+    min-height:1400px;
     }
 
     #events-container{
