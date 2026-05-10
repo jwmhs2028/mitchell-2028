@@ -583,6 +583,12 @@ button{
 }
 
 .request-box{
+    width:100%;
+
+    max-width:1400px;
+
+    margin:auto;
+
     background:
     linear-gradient(
     135deg,
@@ -595,8 +601,9 @@ button{
     border-radius:34px;
 
     padding:60px;
-}
 
+    overflow:hidden;
+}
 .form-container{
     margin-top:40px;
 
