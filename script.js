@@ -21,6 +21,7 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll(".fade-up")
 .forEach((el) => observer.observe(el));
 
+
 /* =========================
    ACTIVE NAV TABS
 ========================= */
@@ -42,41 +43,6 @@ tabs.forEach((tab) => {
 
 });
 
-/* =========================
-   HIDDEN PANELS
-========================= */
-
-const funPanel =
-document.getElementById("fun-section");
-
-const requestPanel =
-document.getElementById("requests-section");
-
-function openFun(){
-
-    funPanel.style.display = "block";
-
-    requestPanel.style.display = "none";
-
-    window.scrollTo({
-        top: funPanel.offsetTop - 40,
-        behavior: "smooth"
-    });
-
-}
-
-function openRequests(){
-
-    requestPanel.style.display = "block";
-
-    funPanel.style.display = "none";
-
-    window.scrollTo({
-        top: requestPanel.offsetTop - 40,
-        behavior: "smooth"
-    });
-
-}
 
 /* =========================
    GOOGLE SHEETS UPDATES
@@ -145,6 +111,9 @@ async function loadUpdates(){
 
         });
 
+        document.querySelectorAll(".fade-up")
+        .forEach((el) => observer.observe(el));
+
     }
 
     catch(error){
@@ -157,7 +126,9 @@ async function loadUpdates(){
 
             <h3>Unable To Load Updates</h3>
 
-            <p>Please try again later.</p>
+            <p>
+            Please try again later.
+            </p>
 
         </div>
 
@@ -169,154 +140,40 @@ async function loadUpdates(){
 
 loadUpdates();
 
+
 /* =========================
-   GPA CALCULATOR
+   AUTO ACTIVE TAB ON SCROLL
 ========================= */
 
-function calculateGPA(){
+const sections = document.querySelectorAll("section, header");
 
-    const grades = [
+window.addEventListener("scroll", () => {
 
-        Number(document.getElementById("grade1").value),
-        Number(document.getElementById("grade2").value),
-        Number(document.getElementById("grade3").value),
-        Number(document.getElementById("grade4").value)
+    let current = "";
 
-    ];
+    sections.forEach((section) => {
 
-    let total = 0;
+        const sectionTop = section.offsetTop - 150;
+        const sectionHeight = section.offsetHeight;
 
-    grades.forEach((grade) => {
+        if(pageYOffset >= sectionTop &&
+           pageYOffset < sectionTop + sectionHeight){
 
-        if(grade >= 90){
-
-            total += 4;
-
+            current = section.getAttribute("id");
         }
 
-        else if(grade >= 80){
+    });
 
-            total += 3;
+    tabs.forEach((tab) => {
 
-        }
+        tab.classList.remove("active");
 
-        else if(grade >= 70){
+        if(tab.getAttribute("href") === `#${current}`){
 
-            total += 2;
-
-        }
-
-        else if(grade >= 60){
-
-            total += 1;
+            tab.classList.add("active");
 
         }
 
     });
 
-    const gpa =
-    (total / grades.length).toFixed(2);
-
-    document.getElementById("gpa-result")
-    .innerText = `Estimated GPA: ${gpa}`;
-
-}
-
-/* =========================
-   COIN FLIP
-========================= */
-
-function flipCoin(){
-
-    const result =
-    Math.random() < 0.5
-    ? "Heads"
-    : "Tails";
-
-    document.getElementById("coin-result")
-    .innerText = result;
-
-}
-
-/* =========================
-   LUNCH PICKER
-========================= */
-
-function pickLunch(){
-
-    const lunches = [
-
-        "Chick-fil-A",
-        "Chipotle",
-        "Canes",
-        "Pizza",
-        "Publix Sub",
-        "Taco Bell",
-        "Five Guys"
-
-    ];
-
-    const random =
-    lunches[Math.floor(
-        Math.random() * lunches.length
-    )];
-
-    document.getElementById("lunch-result")
-    .innerText = random;
-
-}
-
-/* =========================
-   DAY SLIDER
-========================= */
-
-function updateDayValue(){
-
-    const slider =
-    document.getElementById("day-slider");
-
-    document.getElementById("day-value")
-    .innerText = `${slider.value}/10`;
-
-}
-
-/* =========================
-   QUOTES
-========================= */
-
-function generateQuote(){
-
-    const quotes = [
-
-        "Lock in.",
-        "You got this.",
-        "Stay focused.",
-        "Keep pushing.",
-        "Future you will thank you."
-
-    ];
-
-    const random =
-    quotes[Math.floor(
-        Math.random() * quotes.length
-    )];
-
-    document.getElementById("quote-result")
-    .innerText = random;
-
-}
-
-/* =========================
-   CLICKER GAME
-========================= */
-
-let clicks = 0;
-
-function incrementClicks(){
-
-    clicks++;
-
-    document.getElementById("click-count")
-    .innerText = `${clicks} Clicks`;
-
-}
+});
