@@ -1,77 +1,4 @@
 /* =========================
-   PAGE NAVIGATION
-========================= */
-
-const tabs =
-document.querySelectorAll(".tab");
-
-const sections =
-document.querySelectorAll(".page-section");
-
-function switchTab(sectionId){
-
-    sections.forEach((section) => {
-
-        section.classList.remove("active-section");
-
-    });
-
-    const activeSection =
-    document.getElementById(sectionId);
-
-    if(activeSection){
-
-        activeSection.classList.add("active-section");
-
-        window.scrollTo({
-            top:0,
-            behavior:"smooth"
-        });
-
-    }
-
-    tabs.forEach((tab) => {
-
-        tab.classList.remove("active");
-
-        if(tab.dataset.tab === sectionId){
-
-            tab.classList.add("active");
-
-        }
-
-    });
-
-}
-
-tabs.forEach((tab) => {
-
-    tab.addEventListener("click", () => {
-
-        const sectionId =
-        tab.dataset.tab;
-
-        switchTab(sectionId);
-
-    });
-
-});
-
-document.querySelectorAll("[data-tab]")
-.forEach((button) => {
-
-    button.addEventListener("click", () => {
-
-        const sectionId =
-        button.dataset.tab;
-
-        switchTab(sectionId);
-
-    });
-
-});
-
-/* =========================
    SCROLL ANIMATIONS
 ========================= */
 
@@ -88,11 +15,68 @@ const observer = new IntersectionObserver((entries) => {
     });
 
 }, {
-    threshold:0.1
+    threshold: 0.1
 });
 
 document.querySelectorAll(".fade-up")
 .forEach((el) => observer.observe(el));
+
+/* =========================
+   ACTIVE NAV TABS
+========================= */
+
+const tabs =
+document.querySelectorAll(".tab");
+
+tabs.forEach((tab) => {
+
+    tab.addEventListener("click", () => {
+
+        tabs.forEach((t) =>
+            t.classList.remove("active")
+        );
+
+        tab.classList.add("active");
+
+    });
+
+});
+
+/* =========================
+   HIDDEN PANELS
+========================= */
+
+const funPanel =
+document.getElementById("fun-section");
+
+const requestPanel =
+document.getElementById("requests-section");
+
+function openFun(){
+
+    funPanel.style.display = "block";
+
+    requestPanel.style.display = "none";
+
+    window.scrollTo({
+        top: funPanel.offsetTop - 40,
+        behavior: "smooth"
+    });
+
+}
+
+function openRequests(){
+
+    requestPanel.style.display = "block";
+
+    funPanel.style.display = "none";
+
+    window.scrollTo({
+        top: requestPanel.offsetTop - 40,
+        behavior: "smooth"
+    });
+
+}
 
 /* =========================
    GOOGLE SHEETS UPDATES
@@ -126,19 +110,13 @@ async function loadUpdates(){
 
             if(!columns) return;
 
-            const clean =
-            columns.map(col =>
+            const clean = columns.map(col =>
                 col.replace(/^"|"$/g, "").trim()
             );
 
-            const title =
-            clean[0] || "";
-
-            const description =
-            clean[1] || "";
-
-            const image =
-            clean[2] || "";
+            const title = clean[0] || "";
+            const description = clean[1] || "";
+            const image = clean[2] || "";
 
             if(title){
 
@@ -167,9 +145,6 @@ async function loadUpdates(){
 
         });
 
-        document.querySelectorAll(".fade-up")
-        .forEach((el) => observer.observe(el));
-
     }
 
     catch(error){
@@ -182,9 +157,7 @@ async function loadUpdates(){
 
             <h3>Unable To Load Updates</h3>
 
-            <p>
-            Please try again later.
-            </p>
+            <p>Please try again later.</p>
 
         </div>
 
@@ -239,12 +212,6 @@ function calculateGPA(){
 
         }
 
-        else{
-
-            total += 0;
-
-        }
-
     });
 
     const gpa =
@@ -281,13 +248,10 @@ function pickLunch(){
 
         "Chick-fil-A",
         "Chipotle",
-        "McDonald's",
         "Canes",
-        "Taco Bell",
         "Pizza",
-        "Wendy's",
-        "Panera",
         "Publix Sub",
+        "Taco Bell",
         "Five Guys"
 
     ];
@@ -303,7 +267,7 @@ function pickLunch(){
 }
 
 /* =========================
-   DAY RATING
+   DAY SLIDER
 ========================= */
 
 function updateDayValue(){
@@ -326,11 +290,9 @@ function generateQuote(){
 
         "Lock in.",
         "You got this.",
-        "One assignment at a time.",
-        "Future you will thank you.",
-        "Stay motivated.",
-        "Keep pushing forward.",
-        "The weekend is almost here."
+        "Stay focused.",
+        "Keep pushing.",
+        "Future you will thank you."
 
     ];
 
@@ -340,88 +302,6 @@ function generateQuote(){
     )];
 
     document.getElementById("quote-result")
-    .innerText = random;
-
-}
-
-/* =========================
-   SPIRIT DAY
-========================= */
-
-function generateSpiritDay(){
-
-    const days = [
-
-        "PJ Day",
-        "Jersey Day",
-        "Beach Day",
-        "Celebrity Day",
-        "Decades Day",
-        "Twin Day",
-        "Country vs Country Club",
-        "USA Day"
-
-    ];
-
-    const random =
-    days[Math.floor(
-        Math.random() * days.length
-    )];
-
-    document.getElementById("spirit-result")
-    .innerText = random;
-
-}
-
-/* =========================
-   WOULD YOU RATHER
-========================= */
-
-function generateWouldYouRather(){
-
-    const questions = [
-
-        "Would you rather skip exams or skip homework?",
-        "Would you rather have free lunch forever or no homework forever?",
-        "Would you rather have a 4-day school week or longer weekends?",
-        "Would you rather have infinite phone battery or infinite money?",
-        "Would you rather only take math or only take English?"
-
-    ];
-
-    const random =
-    questions[Math.floor(
-        Math.random() * questions.length
-    )];
-
-    document.getElementById("wyr-result")
-    .innerText = random;
-
-}
-
-/* =========================
-   HOMEWORK EXCUSE
-========================= */
-
-function generateExcuse(){
-
-    const excuses = [
-
-        "Canvas wouldn't load.",
-        "My dog ate my charger.",
-        "The WiFi stopped working.",
-        "I accidentally submitted the wrong file.",
-        "My computer updated for 3 hours.",
-        "I thought it was due tomorrow."
-
-    ];
-
-    const random =
-    excuses[Math.floor(
-        Math.random() * excuses.length
-    )];
-
-    document.getElementById("excuse-result")
     .innerText = random;
 
 }
@@ -440,66 +320,3 @@ function incrementClicks(){
     .innerText = `${clicks} Clicks`;
 
 }
-
-/* =========================
-   REACTION TIME GAME
-========================= */
-
-const reactionBtn =
-document.getElementById("reaction-btn");
-
-const reactionResult =
-document.getElementById("reaction-result");
-
-let startTime = 0;
-let waiting = true;
-
-function startReactionGame(){
-
-    waiting = true;
-
-    reactionBtn.innerText = "Wait...";
-    reactionBtn.style.background = "#777";
-
-    const delay =
-    Math.random() * 4000 + 2000;
-
-    setTimeout(() => {
-
-        waiting = false;
-
-        reactionBtn.innerText = "CLICK!";
-        reactionBtn.style.background = "#4caf50";
-
-        startTime = Date.now();
-
-    }, delay);
-
-}
-
-reactionBtn.addEventListener("click", () => {
-
-    if(waiting){
-
-        reactionResult.innerText =
-        "Too early!";
-
-        startReactionGame();
-
-    }
-
-    else{
-
-        const reactionTime =
-        Date.now() - startTime;
-
-        reactionResult.innerText =
-        `${reactionTime} ms`;
-
-        startReactionGame();
-
-    }
-
-});
-
-startReactionGame();
