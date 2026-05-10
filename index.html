@@ -22,12 +22,10 @@
 <body>
 
 <!-- =========================
-     HOME PAGE
+     HERO
 ========================= -->
 
-<section class="page-section active-section" id="home-section">
-
-<header class="hero">
+<header class="hero" id="home">
 
   <nav class="navbar">
 
@@ -44,31 +42,27 @@
 
     <div class="nav-tabs">
 
-      <button class="tab active" data-tab="home-section">
+      <a href="#home" class="tab active">
         Home
-      </button>
+      </a>
 
-      <button class="tab" data-tab="about-section">
+      <a href="#about" class="tab">
         About
-      </button>
+      </a>
 
-      <button class="tab" data-tab="updates-section">
+      <a href="#events" class="tab">
         Updates
-      </button>
+      </a>
 
-      <button class="tab" data-tab="fun-section">
-        Fun
-      </button>
-
-      <button class="tab" data-tab="requests-section">
+      <a href="#requests" class="tab">
         Requests
-      </button>
+      </a>
 
     </div>
 
-    <button class="nav-btn" data-tab="updates-section">
+    <a href="#events" class="nav-btn">
       Stay Updated
-    </button>
+    </a>
 
   </nav>
 
@@ -92,18 +86,18 @@
         <p>
           Your official hub for announcements,
           Homecoming, Prom, spirit events,
-          student tools, and activities.
+          student activities, and more.
         </p>
 
         <div class="hero-buttons">
 
-          <button class="primary-btn" data-tab="updates-section">
+          <a href="#events" class="primary-btn">
             Latest Updates
-          </button>
+          </a>
 
-          <button class="secondary-btn" data-tab="requests-section">
+          <a href="#requests" class="secondary-btn">
             Submit Ideas
-          </button>
+          </a>
 
         </div>
 
@@ -133,15 +127,11 @@
 
 </header>
 
-</section>
-
 <!-- =========================
-     ABOUT PAGE
+     ABOUT
 ========================= -->
 
-<section class="page-section" id="about-section">
-
-<section class="section">
+<section class="section" id="about">
 
   <div class="section-title">
 
@@ -163,7 +153,7 @@
       </p>
 
       <p>
-        Submit ideas for spirit days,
+        Submit your own ideas for themes,
         games, pep rallies, and school events
         directly to student council.
       </p>
@@ -180,9 +170,11 @@
 
 </section>
 
-<!-- COUNCIL -->
+<!-- =========================
+     COUNCIL
+========================= -->
 
-<section class="council-section">
+<section class="council-section" id="council">
 
   <div class="section-header">
 
@@ -238,15 +230,11 @@
 
 </section>
 
-</section>
-
 <!-- =========================
-     UPDATES PAGE
+     LIVE UPDATES
 ========================= -->
 
-<section class="page-section" id="updates-section">
-
-<section class="section events">
+<section class="section events" id="events">
 
   <div class="section-title center">
 
@@ -260,198 +248,11 @@
 
 </section>
 
-</section>
-
 <!-- =========================
-     FUN PAGE
+     REQUESTS
 ========================= -->
 
-<section class="page-section" id="fun-section">
-
-<section class="fun-section">
-
-  <div class="section-title center">
-
-    <span>STUDENT TOOLS</span>
-
-    <h2>Fun Zone</h2>
-
-  </div>
-
-  <div class="fun-grid">
-
-    <!-- GPA -->
-
-    <div class="fun-card">
-
-      <h3>GPA Calculator</h3>
-
-      <p>Estimate your GPA instantly.</p>
-
-      <input type="number" id="grade1" placeholder="Class 1 Grade">
-      <input type="number" id="grade2" placeholder="Class 2 Grade">
-      <input type="number" id="grade3" placeholder="Class 3 Grade">
-      <input type="number" id="grade4" placeholder="Class 4 Grade">
-
-      <button onclick="calculateGPA()">
-        Calculate GPA
-      </button>
-
-      <h4 id="gpa-result"></h4>
-
-    </div>
-
-    <!-- COIN -->
-
-    <div class="fun-card">
-
-      <h3>Coin Flip</h3>
-
-      <p>Heads or tails?</p>
-
-      <button onclick="flipCoin()">
-        Flip Coin
-      </button>
-
-      <h4 id="coin-result"></h4>
-
-    </div>
-
-    <!-- LUNCH -->
-
-    <div class="fun-card">
-
-      <h3>Lunch Picker</h3>
-
-      <p>Can't decide what to eat?</p>
-
-      <button onclick="pickLunch()">
-        Pick For Me
-      </button>
-
-      <h4 id="lunch-result"></h4>
-
-    </div>
-
-    <!-- DAY -->
-
-    <div class="fun-card">
-
-      <h3>Rate Your Day</h3>
-
-      <input
-      type="range"
-      min="1"
-      max="10"
-      value="5"
-      id="day-slider"
-      oninput="updateDayValue()">
-
-      <h4 id="day-value">5/10</h4>
-
-    </div>
-
-    <!-- QUOTES -->
-
-    <div class="fun-card">
-
-      <h3>Motivational Quote</h3>
-
-      <button onclick="generateQuote()">
-        Inspire Me
-      </button>
-
-      <p id="quote-result"></p>
-
-    </div>
-
-    <!-- SPIRIT -->
-
-    <div class="fun-card">
-
-      <h3>Spirit Day Generator</h3>
-
-      <button onclick="generateSpiritDay()">
-        Generate
-      </button>
-
-      <p id="spirit-result"></p>
-
-    </div>
-
-    <!-- WYR -->
-
-    <div class="fun-card">
-
-      <h3>Would You Rather?</h3>
-
-      <button onclick="generateWouldYouRather()">
-        Generate
-      </button>
-
-      <p id="wyr-result"></p>
-
-    </div>
-
-    <!-- EXCUSE -->
-
-    <div class="fun-card">
-
-      <h3>Homework Excuse</h3>
-
-      <button onclick="generateExcuse()">
-        Generate
-      </button>
-
-      <p id="excuse-result"></p>
-
-    </div>
-
-    <!-- CLICKER -->
-
-    <div class="fun-card">
-
-      <h3>Mustang Clicker</h3>
-
-      <p>How many clicks can you get?</p>
-
-      <button onclick="incrementClicks()">
-        CLICK ME
-      </button>
-
-      <h4 id="click-count">0 Clicks</h4>
-
-    </div>
-
-    <!-- REACTION -->
-
-    <div class="fun-card">
-
-      <h3>Reaction Time</h3>
-
-      <p>Wait for green, then click.</p>
-
-      <button id="reaction-btn">
-        Wait...
-      </button>
-
-      <h4 id="reaction-result"></h4>
-
-    </div>
-
-  </div>
-
-</section>
-
-</section>
-
-<!-- =========================
-     REQUESTS PAGE
-========================= -->
-
-<section class="page-section" id="requests-section">
-
-<section class="request-section">
+<section class="request-section" id="requests">
 
   <div class="request-box">
 
@@ -486,8 +287,6 @@
     </div>
 
   </div>
-
-</section>
 
 </section>
 
