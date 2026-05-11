@@ -172,7 +172,8 @@ async function loadCourses(){
 
             if(!row.trim()) return;
 
-            const columns = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+            const columns =
+            row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
             if(!columns) return;
 
@@ -183,11 +184,15 @@ async function loadCourses(){
             const type = clean[0] || "Other";
             const title = clean[1] || "Untitled";
             const description = clean[2] || "";
+            const rating = clean[3] || "Not rated";
+            const extraInfo = clean[4] || "";
 
             allCourses.push({
                 type,
                 title,
-                description
+                description,
+                rating,
+                extraInfo
             });
 
         });
@@ -277,7 +282,9 @@ function renderCourses(){
         const matchesSearch =
         course.title.toLowerCase().includes(searchTerm)
         || course.description.toLowerCase().includes(searchTerm)
-        || course.type.toLowerCase().includes(searchTerm);
+        || course.type.toLowerCase().includes(searchTerm)
+        || course.rating.toLowerCase().includes(searchTerm)
+        || course.extraInfo.toLowerCase().includes(searchTerm);
 
         return matchesType && matchesSearch;
 
@@ -316,6 +323,20 @@ function renderCourses(){
             <h3>${course.title}</h3>
 
             <p>${course.description}</p>
+
+            <div class="course-meta">
+
+                <span class="course-pill">
+                    ⭐ ${course.rating}
+                </span>
+
+                ${course.extraInfo ? `
+                <span class="course-pill">
+                    ${course.extraInfo}
+                </span>
+                ` : ""}
+
+            </div>
 
         </div>
 
