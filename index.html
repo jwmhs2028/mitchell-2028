@@ -54,6 +54,10 @@
         Updates
       </a>
 
+      <a href="#calculator" class="tab">
+        Tools
+      </a>
+
       <a href="#requests" class="tab">
         Requests
       </a>
@@ -214,24 +218,24 @@
     </div>
 
     <div class="council-card">
-  <h3>Representative</h3>
-  <p>Apollo Abbas</p>
-</div>
+      <h3>Representative</h3>
+      <p>Apollo Abbas</p>
+    </div>
 
-<div class="council-card">
-  <h3>Representative</h3>
-  <p>Lucas Zheng</p>
-</div>
+    <div class="council-card">
+      <h3>Representative</h3>
+      <p>Lucas Zheng</p>
+    </div>
 
-<div class="council-card">
-  <h3>Representative</h3>
-  <p>Xavier Buck</p>
-</div>
+    <div class="council-card">
+      <h3>Representative</h3>
+      <p>Xavier Buck</p>
+    </div>
 
-<div class="council-card">
-  <h3>Representative</h3>
-  <p>Pablo Jimenez</p>
-</div>
+    <div class="council-card">
+      <h3>Representative</h3>
+      <p>Pablo Jimenez</p>
+    </div>
 
   </div>
 
@@ -259,7 +263,7 @@
      GRADE CALCULATOR
 ========================= -->
 
-<section class="section grade-section" id="calculator">
+<section class="tools-section" id="calculator">
 
   <div class="section-title center">
 
@@ -269,45 +273,99 @@
 
   </div>
 
-  <div class="grade-layout">
+  <div class="tools-grid">
 
-    <!-- CATEGORY SIDE -->
+    <!-- LEFT SIDE -->
 
-    <div class="grade-card">
+    <div class="tool-card">
 
       <h3>Class Categories</h3>
 
-      <div id="categories"></div>
+      <div id="categories">
 
-      <button id="add-category" class="primary-btn">
+        <div class="grade-category">
+
+          <input
+          type="text"
+          placeholder="Category Name"
+          class="category-name">
+
+          <input
+          type="number"
+          placeholder="Weight %"
+          class="category-weight">
+
+          <input
+          type="number"
+          placeholder="Pts Earned"
+          class="points-earned">
+
+          <span>/</span>
+
+          <input
+          type="number"
+          placeholder="Total Pts"
+          class="points-total">
+
+        </div>
+
+        <div class="grade-category">
+
+          <input
+          type="text"
+          placeholder="Category Name"
+          class="category-name">
+
+          <input
+          type="number"
+          placeholder="Weight %"
+          class="category-weight">
+
+          <input
+          type="number"
+          placeholder="Pts Earned"
+          class="points-earned">
+
+          <span>/</span>
+
+          <input
+          type="number"
+          placeholder="Total Pts"
+          class="points-total">
+
+        </div>
+
+      </div>
+
+      <button id="add-category" class="add-btn">
         Add Category
       </button>
 
-      <div class="final-grade-box">
+      <div class="grade-result">
 
-        <h2>
-          Current Grade:
-          <span id="final-grade">0%</span>
-        </h2>
+        Current Grade:
+        <span id="final-grade">0%</span>
 
       </div>
 
     </div>
 
-    <!-- NEXT ASSIGNMENT SIDE -->
+    <!-- RIGHT SIDE -->
 
-    <div class="grade-card">
+    <div class="tool-card">
 
       <h3>Next Assignment Predictor</h3>
 
-      <p class="grade-desc">
+      <p class="predictor-info">
         Predict how your next assignment
         will affect your class grade.
       </p>
 
-      <div class="input-group">
+      <div class="predictor-group">
 
-        <label>Assignment Grade (%)</label>
+        <label>
+          Assignment Grade
+        </label>
 
         <input
         type="number"
@@ -316,24 +374,28 @@
 
       </div>
 
-      <div class="input-group">
+      <div class="predictor-group">
 
-        <label>Assignment Category</label>
+        <label>
+          Assignment Category
+        </label>
 
         <select id="next-category"></select>
 
       </div>
 
-      <button class="primary-btn" id="predict-btn">
+      <button
+      class="calculate-btn"
+      id="predict-btn">
+
         Predict Grade
+
       </button>
 
-      <div class="prediction-box">
+      <div class="grade-result">
 
-        <h2>
-          Predicted Grade:
-          <span id="predicted-grade">0%</span>
-        </h2>
+        Predicted Grade:
+        <span id="predicted-grade">0%</span>
 
       </div>
 
@@ -342,7 +404,7 @@
   </div>
 
 </section>
-  
+
 <!-- =========================
      REQUESTS
 ========================= -->
