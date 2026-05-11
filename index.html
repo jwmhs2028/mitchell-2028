@@ -55,7 +55,7 @@
       </a>
 
       <a href="#calculator" class="tab">
-        Tools
+        Calculator
       </a>
 
       <a href="#requests" class="tab">
@@ -263,7 +263,7 @@
      GRADE CALCULATOR
 ========================= -->
 
-<section class="tools-section" id="calculator">
+<section class="section grade-section" id="calculator">
 
   <div class="section-title center">
 
@@ -273,78 +273,58 @@
 
   </div>
 
-  <div class="tools-grid">
+  <div class="grade-layout">
 
     <!-- LEFT SIDE -->
 
-    <div class="tool-card">
+    <div class="grade-card glass-card">
 
-      <h3>Class Categories</h3>
+      <div class="card-glow"></div>
 
-      <div id="categories">
+      <h3 class="grade-heading">
+        📖 Class Categories
+      </h3>
 
-        <div class="grade-category">
+      <!-- LABELS -->
 
-          <input
-          type="text"
-          placeholder="Category Name"
-          class="category-name">
+      <div class="grade-labels">
 
-          <input
-          type="number"
-          placeholder="Weight %"
-          class="category-weight">
-
-          <input
-          type="number"
-          placeholder="Pts Earned"
-          class="points-earned">
-
-          <span>/</span>
-
-          <input
-          type="number"
-          placeholder="Total Pts"
-          class="points-total">
-
-        </div>
-
-        <div class="grade-category">
-
-          <input
-          type="text"
-          placeholder="Category Name"
-          class="category-name">
-
-          <input
-          type="number"
-          placeholder="Weight %"
-          class="category-weight">
-
-          <input
-          type="number"
-          placeholder="Pts Earned"
-          class="points-earned">
-
-          <span>/</span>
-
-          <input
-          type="number"
-          placeholder="Total Pts"
-          class="points-total">
-
-        </div>
+        <span>Category Name</span>
+        <span>Weight (%)</span>
+        <span>Points Earned</span>
+        <span></span>
+        <span>Total Points</span>
+        <span></span>
 
       </div>
 
-      <button id="add-category" class="add-btn">
-        Add Category
+      <!-- CATEGORY INPUTS -->
+
+      <div id="categories"></div>
+
+      <!-- ADD BUTTON -->
+
+      <button id="add-category" class="grade-btn">
+        ➕ Add Category
       </button>
 
-      <div class="grade-result">
+      <!-- FINAL GRADE -->
 
-        Current Grade:
-        <span id="final-grade">0%</span>
+      <div class="final-grade-box">
+
+        <div class="grade-icon">
+          🏆
+        </div>
+
+        <div>
+
+          <p>Current Grade</p>
+
+          <h2 id="final-grade">
+            0%
+          </h2>
+
+        </div>
 
       </div>
 
@@ -352,29 +332,48 @@
 
     <!-- RIGHT SIDE -->
 
-    <div class="tool-card">
+    <div class="grade-card glass-card">
 
-      <h3>Next Assignment Predictor</h3>
+      <div class="card-glow"></div>
 
-      <p class="predictor-info">
-        Predict how your next assignment
-        will affect your class grade.
+      <h3 class="grade-heading">
+        📈 Next Assignment Predictor
+      </h3>
+
+      <p class="grade-desc">
+        Add the points for your next assignment
+        to see how it affects your final grade.
       </p>
 
-      <div class="predictor-group">
+      <!-- FRACTION INPUT -->
+
+      <div class="input-group">
 
         <label>
-          Assignment Grade
+          Assignment Points
         </label>
 
-        <input
-        type="number"
-        id="next-grade"
-        placeholder="95">
+        <div class="fraction-group">
+
+          <input
+          type="number"
+          id="next-earned"
+          placeholder="Points Earned">
+
+          <span>/</span>
+
+          <input
+          type="number"
+          id="next-total"
+          placeholder="Total Points">
+
+        </div>
 
       </div>
 
-      <div class="predictor-group">
+      <!-- CATEGORY -->
+
+      <div class="input-group">
 
         <label>
           Assignment Category
@@ -384,18 +383,29 @@
 
       </div>
 
-      <button
-      class="calculate-btn"
-      id="predict-btn">
+      <!-- BUTTON -->
 
-        Predict Grade
-
+      <button class="grade-btn predict-btn" id="predict-btn">
+        🧮 Predict New Grade
       </button>
 
-      <div class="grade-result">
+      <!-- PREDICTION -->
 
-        Predicted Grade:
-        <span id="predicted-grade">0%</span>
+      <div class="prediction-box">
+
+        <div class="grade-icon">
+          🎯
+        </div>
+
+        <div>
+
+          <p>Predicted Grade</p>
+
+          <h2 id="predicted-grade">
+            0%
+          </h2>
+
+        </div>
 
       </div>
 
