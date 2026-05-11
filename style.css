@@ -1017,6 +1017,211 @@ footer{
 }
 
 /* =========================
+   COURSE DIRECTORY
+========================= */
+
+.directory-section{
+    background:#030303;
+}
+
+.directory-search-wrap{
+    display:flex;
+    justify-content:center;
+
+    margin-top:50px;
+    margin-bottom:30px;
+}
+
+#course-search{
+    width:100%;
+    max-width:700px;
+
+    background:
+    rgba(10,10,10,.92);
+
+    border:
+    1px solid rgba(197,178,122,.18);
+
+    border-radius:22px;
+
+    padding:20px 24px;
+
+    color:white;
+
+    font-size:1rem;
+
+    outline:none;
+
+    transition:.3s ease;
+}
+
+#course-search:focus{
+    border-color:#c5b27a;
+
+    box-shadow:
+    0 0 25px rgba(197,178,122,.18);
+}
+
+.directory-filters{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+
+    gap:14px;
+
+    margin-bottom:45px;
+}
+
+.filter-btn{
+    background:
+    rgba(255,255,255,.04);
+
+    border:
+    1px solid rgba(197,178,122,.15);
+
+    color:white;
+
+    padding:14px 22px;
+
+    border-radius:999px;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    transition:.3s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active{
+    background:#c5b27a;
+
+    color:black;
+
+    box-shadow:
+    0 0 25px rgba(197,178,122,.25);
+}
+
+.directory-grid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(300px,1fr));
+
+    gap:28px;
+}
+
+.directory-card{
+    position:relative;
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.05),
+    rgba(255,255,255,.02));
+
+    border:
+    1px solid rgba(197,178,122,.12);
+
+    border-radius:30px;
+
+    padding:34px;
+
+    overflow:hidden;
+
+    transition:.35s ease;
+
+    backdrop-filter:blur(14px);
+
+    box-shadow:
+    0 10px 35px rgba(0,0,0,.25);
+}
+
+.directory-card::before{
+    content:"";
+
+    position:absolute;
+
+    top:-100px;
+    right:-100px;
+
+    width:220px;
+    height:220px;
+
+    background:
+    radial-gradient(
+    rgba(197,178,122,.14),
+    transparent 70%);
+
+    transition:.4s ease;
+}
+
+.directory-card:hover{
+    transform:
+    translateY(-8px)
+    scale(1.02);
+
+    border-color:#c5b27a;
+
+    box-shadow:
+    0 0 35px rgba(197,178,122,.16);
+}
+
+.directory-type{
+    display:inline-block;
+
+    margin-bottom:18px;
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    background:
+    rgba(197,178,122,.12);
+
+    color:#c5b27a;
+
+    font-size:.8rem;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+}
+
+.directory-card h3{
+    font-size:1.4rem;
+
+    margin-bottom:16px;
+
+    color:white;
+}
+
+.directory-card p{
+    color:#cfcfcf;
+
+    line-height:1.9;
+}
+
+@media(max-width:768px){
+
+    #course-search{
+        padding:18px 20px;
+    }
+
+    .filter-btn{
+        padding:12px 18px;
+
+        font-size:.9rem;
+    }
+
+    .directory-card{
+        padding:26px;
+    }
+
+}
+
+/* =========================
    MOBILE
 ========================= */
 
