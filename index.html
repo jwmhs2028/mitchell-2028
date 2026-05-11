@@ -256,6 +256,94 @@
 </section>
 
 <!-- =========================
+     GRADE CALCULATOR
+========================= -->
+
+<section class="section grade-section" id="calculator">
+
+  <div class="section-title center">
+
+    <span>TOOLS</span>
+
+    <h2>Grade Calculator</h2>
+
+  </div>
+
+  <div class="grade-layout">
+
+    <!-- CATEGORY SIDE -->
+
+    <div class="grade-card">
+
+      <h3>Class Categories</h3>
+
+      <div id="categories"></div>
+
+      <button id="add-category" class="primary-btn">
+        Add Category
+      </button>
+
+      <div class="final-grade-box">
+
+        <h2>
+          Current Grade:
+          <span id="final-grade">0%</span>
+        </h2>
+
+      </div>
+
+    </div>
+
+    <!-- NEXT ASSIGNMENT SIDE -->
+
+    <div class="grade-card">
+
+      <h3>Next Assignment Predictor</h3>
+
+      <p class="grade-desc">
+        Predict how your next assignment
+        will affect your class grade.
+      </p>
+
+      <div class="input-group">
+
+        <label>Assignment Grade (%)</label>
+
+        <input
+        type="number"
+        id="next-grade"
+        placeholder="95">
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Assignment Category</label>
+
+        <select id="next-category"></select>
+
+      </div>
+
+      <button class="primary-btn" id="predict-btn">
+        Predict Grade
+      </button>
+
+      <div class="prediction-box">
+
+        <h2>
+          Predicted Grade:
+          <span id="predicted-grade">0%</span>
+        </h2>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+  
+<!-- =========================
      REQUESTS
 ========================= -->
 
