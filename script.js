@@ -137,6 +137,204 @@ async function loadUpdates(){
 loadUpdates();
 
 /* =========================
+   COURSES DIRECTORY
+========================= */
+
+const coursesContainer =
+document.getElementById("courses-container");
+
+const courseFilters =
+document.getElementById("course-filters");
+
+const courseSearch =
+document.getElementById("course-search");
+
+let allCourses = [];
+let activeType = "All";
+
+async function loadCourses(){
+
+    try{
+
+        const response = await fetch(
+        "PASTE_YOUR_GOOGLE_SHEET_CSV_LINK_HERE"
+        );
+
+        const csv =
+        await response.text();
+
+        const rows =
+        csv.trim().split("\n").slice(1);
+
+        allCourses = [];
+
+        rows.forEach((row) => {
+
+            if(!row.trim()) return;
+
+            const columns = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+
+            if(!columns) return;
+
+            const clean = columns.map(col =>
+                col.replace(/^"|"$/g, "").trim()
+            );
+
+            const type = clean[0] || "Other";
+            const title = clean[1] || "Untitled";
+            const description = clean[2] || "";
+
+            allCourses.push({
+                type,
+                title,
+                description
+            });
+
+        });
+
+        generateCourseFilters();
+        renderCourses();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        coursesContainer.innerHTML = `
+
+        <div class="directory-card">
+
+            <h3>Unable To Load Courses</h3>
+
+            <p>
+            Please try again later.
+            </p>
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+function generateCourseFilters(){
+
+    const uniqueTypes = [
+        "All",
+        ...new Set(allCourses.map(course => course.type))
+    ];
+
+    courseFilters.innerHTML = "";
+
+    uniqueTypes.forEach((type) => {
+
+        const button =
+        document.createElement("button");
+
+        button.className =
+        `filter-btn ${type === "All" ? "active" : ""}`;
+
+        button.textContent = type;
+
+        button.addEventListener("click", () => {
+
+            activeType = type;
+
+            document
+            .querySelectorAll(".filter-btn")
+            .forEach((btn) => {
+                btn.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            renderCourses();
+
+        });
+
+        courseFilters.appendChild(button);
+
+    });
+
+}
+
+function renderCourses(){
+
+    const searchTerm =
+    courseSearch.value.toLowerCase();
+
+    coursesContainer.innerHTML = "";
+
+    const filteredCourses =
+    allCourses.filter((course) => {
+
+        const matchesType =
+        activeType === "All"
+        || course.type === activeType;
+
+        const matchesSearch =
+        course.title.toLowerCase().includes(searchTerm)
+        || course.description.toLowerCase().includes(searchTerm)
+        || course.type.toLowerCase().includes(searchTerm);
+
+        return matchesType && matchesSearch;
+
+    });
+
+    if(filteredCourses.length === 0){
+
+        coursesContainer.innerHTML = `
+
+        <div class="directory-card">
+
+            <h3>No Courses Found</h3>
+
+            <p>
+            Try adjusting your search.
+            </p>
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    filteredCourses.forEach((course) => {
+
+        const card = `
+
+        <div class="directory-card fade-up">
+
+            <span class="directory-type">
+                ${course.type}
+            </span>
+
+            <h3>${course.title}</h3>
+
+            <p>${course.description}</p>
+
+        </div>
+
+        `;
+
+        coursesContainer.innerHTML += card;
+
+    });
+
+    document.querySelectorAll(".fade-up")
+    .forEach((el) => observer.observe(el));
+
+}
+
+courseSearch.addEventListener("input", renderCourses);
+
+loadCourses();
+
+/* =========================
    GRADE CALCULATOR
 ========================= */
 
