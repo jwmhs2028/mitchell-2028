@@ -21,28 +21,25 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll(".fade-up")
 .forEach((el) => observer.observe(el));
 
-
 /* =========================
    ACTIVE NAV TABS
 ========================= */
 
-const tabs =
-document.querySelectorAll(".tab");
+const tabs = document.querySelectorAll(".tab");
 
 tabs.forEach((tab) => {
 
     tab.addEventListener("click", () => {
 
-        tabs.forEach((t) =>
-            t.classList.remove("active")
-        );
+        tabs.forEach((t) => {
+            t.classList.remove("active");
+        });
 
         tab.classList.add("active");
 
     });
 
 });
-
 
 /* =========================
    GOOGLE SHEETS UPDATES
@@ -71,8 +68,7 @@ async function loadUpdates(){
 
             if(!row.trim()) return;
 
-            const columns =
-            row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+            const columns = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
             if(!columns) return;
 
@@ -140,44 +136,6 @@ async function loadUpdates(){
 
 loadUpdates();
 
-
-/* =========================
-   AUTO ACTIVE TAB ON SCROLL
-========================= */
-
-const sections = document.querySelectorAll("section, header");
-
-window.addEventListener("scroll", () => {
-
-    let current = "";
-
-    sections.forEach((section) => {
-
-        const sectionTop = section.offsetTop - 150;
-        const sectionHeight = section.offsetHeight;
-
-        if(pageYOffset >= sectionTop &&
-           pageYOffset < sectionTop + sectionHeight){
-
-            current = section.getAttribute("id");
-        }
-
-    });
-
-    tabs.forEach((tab) => {
-
-        tab.classList.remove("active");
-
-        if(tab.getAttribute("href") === `#${current}`){
-
-            tab.classList.add("active");
-
-        }
-
-    });
-
-});
-
 /* =========================
    GRADE CALCULATOR
 ========================= */
@@ -197,10 +155,9 @@ document.getElementById("next-category");
 const predictedGrade =
 document.getElementById("predicted-grade");
 
-function createCategory(){
+function createCategoryRow(name = "", weight = "", earned = "", total = ""){
 
-    const row =
-    document.createElement("div");
+    const row = document.createElement("div");
 
     row.className = "grade-row";
 
@@ -208,27 +165,31 @@ function createCategory(){
 
         <input
         type="text"
+        class="cat-name"
         placeholder="Category Name"
-        class="cat-name">
+        value="${name}">
 
         <input
         type="number"
+        class="cat-weight"
         placeholder="Weight %"
-        class="cat-weight">
+        value="${weight}">
 
         <div class="fraction-group">
 
             <input
             type="number"
+            class="cat-earned"
             placeholder="Points Earned"
-            class="cat-earned">
+            value="${earned}">
 
             <span>/</span>
 
             <input
             type="number"
+            class="cat-total"
             placeholder="Total Points"
-            class="cat-total">
+            value="${total}">
 
         </div>
 
@@ -236,20 +197,29 @@ function createCategory(){
 
     categoriesContainer.appendChild(row);
 
-    updateDropdown();
+    attachListeners();
+    updateCategoryDropdown();
+    calculateGrade();
 
-    row.querySelectorAll("input")
-    .forEach(input => {
+}
 
-        input.addEventListener(
-            "input",
-            calculateGrade
-        );
+function attachListeners(){
 
-        input.addEventListener(
-            "input",
-            updateDropdown
-        );
+    const inputs =
+    document.querySelectorAll(
+        ".cat-name, .cat-weight, .cat-earned, .cat-total"
+    );
+
+    inputs.forEach((input) => {
+
+        input.removeEventListener("input", calculateGrade);
+
+        input.addEventListener("input", () => {
+
+            calculateGrade();
+            updateCategoryDropdown();
+
+        });
 
     });
 
@@ -260,51 +230,55 @@ function calculateGrade(){
     const rows =
     document.querySelectorAll(".grade-row");
 
-    let total = 0;
+    let weightedTotal = 0;
     let totalWeight = 0;
 
     rows.forEach((row) => {
 
         const weight =
         parseFloat(
-        row.querySelector(".cat-weight").value
+            row.querySelector(".cat-weight").value
         ) || 0;
 
         const earned =
         parseFloat(
-        row.querySelector(".cat-earned").value
+            row.querySelector(".cat-earned").value
         ) || 0;
 
-        const totalPoints =
+        const total =
         parseFloat(
-        row.querySelector(".cat-total").value
+            row.querySelector(".cat-total").value
         ) || 0;
 
-        let grade = 0;
+        if(total > 0 && weight > 0){
 
-        if(totalPoints > 0){
+            const percent =
+            (earned / total) * 100;
 
-            grade =
-            (earned / totalPoints) * 100;
+            weightedTotal +=
+            percent * (weight / 100);
+
+            totalWeight += weight;
 
         }
 
-        total += grade * weight;
-
-        totalWeight += weight;
-
     });
 
-    const result =
-    totalWeight > 0
-    ? (total / totalWeight).toFixed(2)
-    : 0;
+    let grade = 0;
+
+    if(totalWeight > 0){
+
+        grade =
+        (weightedTotal / totalWeight) * 100;
+
+    }
 
     finalGrade.textContent =
-    `${result}%`;
+    `${grade.toFixed(2)}%`;
+
 }
 
-function updateDropdown(){
+function updateCategoryDropdown(){
 
     nextCategory.innerHTML = "";
 
@@ -327,75 +301,98 @@ function updateDropdown(){
 
 }
 
-document.getElementById("predict-btn")
+/* =========================
+   PREDICT NEXT ASSIGNMENT
+========================= */
+
+document
+.getElementById("predict-btn")
 .addEventListener("click", () => {
 
     const rows =
     document.querySelectorAll(".grade-row");
 
-    const assignmentGrade =
-    parseFloat(
-    document.getElementById("next-grade").value
-    ) || 0;
+    let weightedTotal = 0;
+    let totalWeight = 0;
 
-    const selected =
+    const selectedIndex =
     parseInt(nextCategory.value);
 
-    let total = 0;
-    let totalWeight = 0;
+    const nextEarned =
+    parseFloat(
+        document.getElementById("next-earned").value
+    ) || 0;
+
+    const nextTotal =
+    parseFloat(
+        document.getElementById("next-total").value
+    ) || 0;
 
     rows.forEach((row, index) => {
 
         const weight =
         parseFloat(
-        row.querySelector(".cat-weight").value
+            row.querySelector(".cat-weight").value
         ) || 0;
 
-        const earned =
+        let earned =
         parseFloat(
-        row.querySelector(".cat-earned").value
+            row.querySelector(".cat-earned").value
         ) || 0;
 
-        const totalPoints =
+        let total =
         parseFloat(
-        row.querySelector(".cat-total").value
+            row.querySelector(".cat-total").value
         ) || 0;
 
-        let grade = 0;
+        if(index === selectedIndex){
 
-        if(totalPoints > 0){
-
-            grade =
-            (earned / totalPoints) * 100;
+            earned += nextEarned;
+            total += nextTotal;
 
         }
 
-        if(index === selected){
+        if(total > 0 && weight > 0){
 
-            grade =
-            (grade + assignmentGrade) / 2;
+            const percent =
+            (earned / total) * 100;
+
+            weightedTotal +=
+            percent * (weight / 100);
+
+            totalWeight += weight;
 
         }
-
-        total += grade * weight;
-
-        totalWeight += weight;
 
     });
 
-    const predicted =
-    totalWeight > 0
-    ? (total / totalWeight).toFixed(2)
-    : 0;
+    let predicted = 0;
+
+    if(totalWeight > 0){
+
+        predicted =
+        (weightedTotal / totalWeight) * 100;
+
+    }
 
     predictedGrade.textContent =
-    `${predicted}%`;
+    `${predicted.toFixed(2)}%`;
 
 });
-addCategoryBtn.addEventListener(
-    "click",
-    createCategory
-);
 
-createCategory();
-createCategory();
+/* =========================
+   ADD CATEGORY BUTTON
+========================= */
+
+addCategoryBtn.addEventListener("click", () => {
+
+    createCategoryRow();
+
+});
+
+/* =========================
+   DEFAULT ROWS
+========================= */
+
+createCategoryRow();
+createCategoryRow();
