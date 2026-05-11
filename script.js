@@ -21,28 +21,25 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll(".fade-up")
 .forEach((el) => observer.observe(el));
 
-
 /* =========================
    ACTIVE NAV TABS
 ========================= */
 
-const tabs =
-document.querySelectorAll(".tab");
+const tabs = document.querySelectorAll(".tab");
 
 tabs.forEach((tab) => {
 
     tab.addEventListener("click", () => {
 
-        tabs.forEach((t) =>
-            t.classList.remove("active")
-        );
+        tabs.forEach((t) => {
+            t.classList.remove("active");
+        });
 
         tab.classList.add("active");
 
     });
 
 });
-
 
 /* =========================
    GOOGLE SHEETS UPDATES
@@ -71,24 +68,17 @@ async function loadUpdates(){
 
             if(!row.trim()) return;
 
-            const columns =
-            row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+            const columns = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
 
             if(!columns) return;
 
-            const clean =
-            columns.map(col =>
+            const clean = columns.map(col =>
                 col.replace(/^"|"$/g, "").trim()
             );
 
-            const title =
-            clean[0] || "";
-
-            const description =
-            clean[1] || "";
-
-            const image =
-            clean[2] || "";
+            const title = clean[0] || "";
+            const description = clean[1] || "";
+            const image = clean[2] || "";
 
             if(title){
 
@@ -146,7 +136,6 @@ async function loadUpdates(){
 
 loadUpdates();
 
-
 /* =========================
    GRADE CALCULATOR
 ========================= */
@@ -154,20 +143,21 @@ loadUpdates();
 const categoriesContainer =
 document.getElementById("categories");
 
-const nextCategorySelect =
-document.getElementById("next-category");
+const addCategoryBtn =
+document.getElementById("add-category");
 
-const finalGradeText =
+const finalGrade =
 document.getElementById("final-grade");
 
-const predictedGradeText =
+const nextCategory =
+document.getElementById("next-category");
+
+const predictedGrade =
 document.getElementById("predicted-grade");
 
+function createCategoryRow(name = "", weight = "", earned = "", total = ""){
 
-function createCategory(){
-
-    const row =
-    document.createElement("div");
+    const row = document.createElement("div");
 
     row.className = "grade-row";
 
@@ -175,96 +165,98 @@ function createCategory(){
 
         <input
         type="text"
-        class="category-name"
-        placeholder="Category Name">
+        class="cat-name"
+        placeholder="Category Name"
+        value="${name}">
+
+        <input
+        type="number"
+        class="cat-weight"
+        placeholder="Weight %"
+        value="${weight}">
 
         <div class="fraction-group">
 
             <input
             type="number"
-            class="earned-points"
-            placeholder="Earned">
+            class="cat-earned"
+            placeholder="Points Earned"
+            value="${earned}">
 
             <span>/</span>
 
             <input
             type="number"
-            class="total-points"
-            placeholder="Total">
+            class="cat-total"
+            placeholder="Total Points"
+            value="${total}">
 
         </div>
-
-        <input
-        type="number"
-        class="category-weight"
-        placeholder="Weight %">
 
     `;
 
     categoriesContainer.appendChild(row);
 
+    attachListeners();
     updateCategoryDropdown();
+    calculateGrade();
 
-    row.querySelectorAll("input")
-    .forEach((input) => {
+}
 
-        input.addEventListener(
-            "input",
-            calculateGrade
-        );
+function attachListeners(){
 
-        input.addEventListener(
-            "input",
-            updateCategoryDropdown
-        );
+    const inputs =
+    document.querySelectorAll(
+        ".cat-name, .cat-weight, .cat-earned, .cat-total"
+    );
+
+    inputs.forEach((input) => {
+
+        input.removeEventListener("input", calculateGrade);
+
+        input.addEventListener("input", () => {
+
+            calculateGrade();
+            updateCategoryDropdown();
+
+        });
 
     });
 
 }
-
-document.getElementById("add-category")
-.addEventListener("click", () => {
-
-    createCategory();
-
-});
-
 
 function calculateGrade(){
 
     const rows =
     document.querySelectorAll(".grade-row");
 
-    let total =
-    0;
-
-    let totalWeight =
-    0;
+    let weightedTotal = 0;
+    let totalWeight = 0;
 
     rows.forEach((row) => {
 
-        const earned =
-        parseFloat(
-            row.querySelector(".earned-points").value
-        ) || 0;
-
-        const totalPoints =
-        parseFloat(
-            row.querySelector(".total-points").value
-        ) || 0;
-
         const weight =
         parseFloat(
-            row.querySelector(".category-weight").value
+            row.querySelector(".cat-weight").value
         ) || 0;
 
-        if(totalPoints > 0){
+        const earned =
+        parseFloat(
+            row.querySelector(".cat-earned").value
+        ) || 0;
 
-            const average =
-            (earned / totalPoints) * 100;
+        const total =
+        parseFloat(
+            row.querySelector(".cat-total").value
+        ) || 0;
 
-            total +=
-            average * (weight / 100);
+        if(total > 0 && weight > 0){
+
+            const percent =
+            (earned / total) * 100;
+
+            weightedTotal +=
+            percent * (weight / 100);
 
             totalWeight += weight;
 
@@ -272,59 +264,59 @@ function calculateGrade(){
 
     });
 
+    let grade = 0;
+
     if(totalWeight > 0){
 
-        finalGradeText.textContent =
-        total.toFixed(2) + "%";
+        grade =
+        (weightedTotal / totalWeight) * 100;
 
     }
 
-    else{
-
-        finalGradeText.textContent =
-        "0%";
-
-    }
+    finalGrade.textContent =
+    `${grade.toFixed(2)}%`;
 
 }
 
 function updateCategoryDropdown(){
 
-    const names =
-    document.querySelectorAll(".category-name");
+    nextCategory.innerHTML = "";
 
-    nextCategorySelect.innerHTML = "";
+    const names =
+    document.querySelectorAll(".cat-name");
 
     names.forEach((input, index) => {
 
         const option =
         document.createElement("option");
 
-        option.value =
-        index;
+        option.value = index;
 
         option.textContent =
         input.value || `Category ${index + 1}`;
 
-        nextCategorySelect.appendChild(option);
+        nextCategory.appendChild(option);
 
     });
 
 }
 
-
 /* =========================
-   PREDICTED GRADE
+   PREDICT NEXT ASSIGNMENT
 ========================= */
 
-document.getElementById("predict-btn")
+document
+.getElementById("predict-btn")
 .addEventListener("click", () => {
 
     const rows =
     document.querySelectorAll(".grade-row");
 
-    const selected =
-    parseInt(nextCategorySelect.value);
+    let weightedTotal = 0;
+    let totalWeight = 0;
+
+    const selectedIndex =
+    parseInt(nextCategory.value);
 
     const nextEarned =
     parseFloat(
@@ -336,43 +328,37 @@ document.getElementById("predict-btn")
         document.getElementById("next-total").value
     ) || 0;
 
-    let total =
-    0;
-
-    let totalWeight =
-    0;
-
     rows.forEach((row, index) => {
-
-        let earned =
-        parseFloat(
-            row.querySelector(".earned-points").value
-        ) || 0;
-
-        let totalPoints =
-        parseFloat(
-            row.querySelector(".total-points").value
-        ) || 0;
 
         const weight =
         parseFloat(
-            row.querySelector(".category-weight").value
+            row.querySelector(".cat-weight").value
         ) || 0;
 
-        if(index === selected){
+        let earned =
+        parseFloat(
+            row.querySelector(".cat-earned").value
+        ) || 0;
+
+        let total =
+        parseFloat(
+            row.querySelector(".cat-total").value
+        ) || 0;
+
+        if(index === selectedIndex){
 
             earned += nextEarned;
-            totalPoints += nextTotal;
+            total += nextTotal;
 
         }
 
-        if(totalPoints > 0){
+        if(total > 0 && weight > 0){
 
-            const avg =
-            (earned / totalPoints) * 100;
+            const percent =
+            (earned / total) * 100;
 
-            total +=
-            avg * (weight / 100);
+            weightedTotal +=
+            percent * (weight / 100);
 
             totalWeight += weight;
 
@@ -380,87 +366,33 @@ document.getElementById("predict-btn")
 
     });
 
+    let predicted = 0;
+
     if(totalWeight > 0){
 
-        predictedGradeText.textContent =
-        total.toFixed(2) + "%";
+        predicted =
+        (weightedTotal / totalWeight) * 100;
 
     }
 
-    else{
-
-        predictedGradeText.textContent =
-        "0%";
-
-    }
+    predictedGrade.textContent =
+    `${predicted.toFixed(2)}%`;
 
 });
 
-
 /* =========================
-   DEFAULT CATEGORY
+   ADD CATEGORY BUTTON
 ========================= */
 
-createCategory();
+addCategoryBtn.addEventListener("click", () => {
 
-
-/* =========================
-   STUDENT GUIDE DROPDOWNS
-========================= */
-
-const guideHeaders =
-document.querySelectorAll(".guide-header");
-
-guideHeaders.forEach((header) => {
-
-    header.addEventListener("click", () => {
-
-        const card =
-        header.parentElement;
-
-        card.classList.toggle("open");
-
-    });
+    createCategoryRow();
 
 });
 
-
 /* =========================
-   COURSE SEARCH
+   DEFAULT ROWS
 ========================= */
 
-const courseSearch =
-document.getElementById("course-search");
-
-if(courseSearch){
-
-    courseSearch.addEventListener("input", () => {
-
-        const value =
-        courseSearch.value.toLowerCase();
-
-        const cards =
-        document.querySelectorAll(".guide-card");
-
-        cards.forEach((card) => {
-
-            const text =
-            card.textContent.toLowerCase();
-
-            if(text.includes(value)){
-
-                card.style.display = "block";
-
-            }
-
-            else{
-
-                card.style.display = "none";
-
-            }
-
-        });
-
-    });
-
-}
+createCategoryRow();
+createCategoryRow();
