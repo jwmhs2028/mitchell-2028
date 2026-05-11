@@ -14,7 +14,8 @@ html{
 
 body{
     font-family:'Inter',sans-serif;
-    background:#ffffff;
+    background:
+    radial-gradient(circle at top,#1b1b1b,#0a0a0a 55%);
     color:white;
     overflow-x:hidden;
 }
@@ -40,6 +41,17 @@ a{
 
 button{
     font-family:'Inter',sans-serif;
+    cursor:pointer;
+}
+
+/* =========================
+   GLOW EFFECTS
+========================= */
+
+.glow{
+    box-shadow:
+    0 0 15px rgba(197,178,122,.15),
+    0 0 35px rgba(197,178,122,.08);
 }
 
 /* =========================
@@ -52,8 +64,8 @@ button{
 
     background:
     linear-gradient(
-    rgba(0,0,0,.72),
-    rgba(0,0,0,.78)),
+    rgba(0,0,0,.78),
+    rgba(0,0,0,.82)),
     url('https://upload.wikimedia.org/wikipedia/commons/c/cf/JWMitchell_High_School.jpg');
 
     background-size:cover;
@@ -67,7 +79,7 @@ button{
 ========================= */
 
 .navbar{
-    position:absolute;
+    position:fixed;
 
     top:24px;
     left:50%;
@@ -83,16 +95,19 @@ button{
 
     padding:18px 30px;
 
-    background:rgba(0,0,0,.72);
+    background:rgba(12,12,12,.78);
 
-    backdrop-filter:blur(14px);
+    backdrop-filter:blur(18px);
 
     border:
     1px solid rgba(255,255,255,.08);
 
     border-radius:24px;
 
-    z-index:1000;
+    z-index:9999;
+
+    box-shadow:
+    0 0 25px rgba(197,178,122,.12);
 }
 
 .brand{
@@ -130,12 +145,18 @@ button{
     border-radius:999px;
 
     transition:.3s ease;
+
+    border:
+    1px solid transparent;
 }
 
 .tab:hover,
 .tab.active{
     background:#c5b27a;
     color:black;
+
+    box-shadow:
+    0 0 20px rgba(197,178,122,.35);
 }
 
 .nav-btn{
@@ -149,10 +170,13 @@ button{
     font-weight:700;
 
     transition:.3s ease;
+
+    box-shadow:
+    0 0 20px rgba(197,178,122,.25);
 }
 
 .nav-btn:hover{
-    transform:translateY(-4px);
+    transform:translateY(-4px) scale(1.03);
 }
 
 /* =========================
@@ -183,6 +207,9 @@ button{
     background:#c5b27a;
 
     border-radius:999px;
+
+    box-shadow:
+    0 0 20px rgba(197,178,122,.45);
 }
 
 .mini-title{
@@ -203,6 +230,9 @@ button{
     margin-top:10px;
 
     font-weight:800;
+
+    text-shadow:
+    0 0 35px rgba(197,178,122,.18);
 }
 
 .hero-left h1 span{
@@ -237,11 +267,16 @@ button{
     font-weight:700;
 
     transition:.3s ease;
+
+    border:none;
 }
 
 .primary-btn{
     background:#c5b27a;
     color:black;
+
+    box-shadow:
+    0 0 22px rgba(197,178,122,.3);
 }
 
 .secondary-btn{
@@ -249,11 +284,13 @@ button{
     1px solid rgba(255,255,255,.15);
 
     color:white;
+
+    background:rgba(255,255,255,.03);
 }
 
 .primary-btn:hover,
 .secondary-btn:hover{
-    transform:translateY(-5px);
+    transform:translateY(-5px) scale(1.03);
 }
 
 .hero-right{
@@ -264,6 +301,9 @@ button{
 .mustang{
     width:100%;
     max-width:620px;
+
+    filter:
+    drop-shadow(0 0 30px rgba(197,178,122,.18));
 
     animation:float 4s ease-in-out infinite;
 }
@@ -305,7 +345,7 @@ button{
 
 .section{
     padding:110px 8%;
-    color:black;
+    color:white;
 }
 
 .section-title span{
@@ -342,7 +382,7 @@ button{
 }
 
 .about-text p{
-    color:#555;
+    color:#cfcfcf;
 
     line-height:2;
 
@@ -352,14 +392,21 @@ button{
 }
 
 .about-card{
-    background:#f7f7f7;
+    background:
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.06),
+    rgba(255,255,255,.02));
 
     padding:50px;
 
     border-radius:30px;
 
+    border:
+    1px solid rgba(255,255,255,.08);
+
     box-shadow:
-    0 10px 30px rgba(0,0,0,.08);
+    0 0 35px rgba(197,178,122,.08);
 }
 
 /* =========================
@@ -421,26 +468,6 @@ button{
     gap:25px;
 }
 
-.council-card:nth-child(1){
-    animation-delay:.1s;
-}
-
-.council-card:nth-child(2){
-    animation-delay:.2s;
-}
-
-.council-card:nth-child(3){
-    animation-delay:.3s;
-}
-
-.council-card:nth-child(4){
-    animation-delay:.4s;
-}
-
-.council-card:nth-child(5){
-    animation-delay:.5s;
-}
-
 .council-card{
     position:relative;
 
@@ -464,10 +491,9 @@ button{
     backdrop-filter:blur(12px);
 
     box-shadow:
-    0 10px 35px rgba(0,0,0,.28);
+    0 0 25px rgba(197,178,122,.08);
 }
 
-/* Glow Effect */
 .council-card::before{
     content:"";
 
@@ -484,11 +510,8 @@ button{
     rgba(197,178,122,.22),
     transparent 70%
     );
-
-    transition:.4s ease;
 }
 
-/* Bottom Accent */
 .council-card::after{
     content:"";
 
@@ -515,11 +538,7 @@ button{
     border-color:#c5b27a;
 
     box-shadow:
-    0 22px 55px rgba(0,0,0,.45);
-}
-
-.council-card:hover::before{
-    transform:scale(1.2);
+    0 0 35px rgba(197,178,122,.2);
 }
 
 .council-card h3{
@@ -533,8 +552,7 @@ button{
     z-index:2;
 }
 
-.council-card p,
-.council-card li{
+.council-card p{
     color:rgba(255,255,255,.9);
 
     line-height:1.9;
@@ -545,11 +563,6 @@ button{
     z-index:2;
 }
 
-.council-card ul{
-    padding-left:18px;
-}
-
-/* PRESIDENT SPECIAL CARD */
 .president{
     background:
     linear-gradient(
@@ -558,15 +571,7 @@ button{
     #8f7b46);
 
     box-shadow:
-    0 18px 45px rgba(197,178,122,.28);
-}
-
-.president::before{
-    background:
-    radial-gradient(
-    rgba(255,255,255,.35),
-    transparent 70%
-    );
+    0 0 35px rgba(197,178,122,.28);
 }
 
 .president h3,
@@ -574,14 +579,12 @@ button{
     color:black;
 }
 
-/* Representatives Card */
-
 /* =========================
-   LIVE UPDATES
+   EVENTS
 ========================= */
 
 .events{
-    background:#fafafa;
+    background:#0d0d0d;
 }
 
 #events-container{
@@ -598,10 +601,14 @@ button{
 .event-card{
     position:relative;
 
-    background:white;
+    background:
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.05),
+    rgba(255,255,255,.02));
 
     border:
-    1px solid rgba(0,0,0,.06);
+    1px solid rgba(255,255,255,.06);
 
     border-radius:30px;
 
@@ -612,7 +619,7 @@ button{
     transition:.35s ease;
 
     box-shadow:
-    0 10px 30px rgba(0,0,0,.06);
+    0 0 25px rgba(197,178,122,.08);
 }
 
 .event-card:hover{
@@ -621,44 +628,21 @@ button{
     border-color:#c5b27a;
 
     box-shadow:
-    0 18px 45px rgba(0,0,0,.12);
-}
-
-.event-card::before{
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-    linear-gradient(
-    135deg,
-    rgba(197,178,122,.10),
-    transparent 45%
-    );
-
-    pointer-events:none;
+    0 0 40px rgba(197,178,122,.16);
 }
 
 .event-card h3{
-    color:#111;
+    color:white;
 
     font-size:1.35rem;
 
     margin-bottom:14px;
-
-    position:relative;
-    z-index:2;
 }
 
 .event-card p{
-    color:#555;
+    color:#d0d0d0;
 
     line-height:1.9;
-
-    position:relative;
-    z-index:2;
 }
 
 .update-image{
@@ -673,6 +657,159 @@ button{
     margin-bottom:22px;
 
     background:#111;
+}
+
+/* =========================
+   GRADE CALCULATOR
+========================= */
+
+.grade-section{
+    background:#090909;
+}
+
+.grade-layout{
+    display:grid;
+
+    grid-template-columns:1.2fr .8fr;
+
+    gap:30px;
+
+    margin-top:60px;
+}
+
+.grade-card{
+    background:
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.05),
+    rgba(255,255,255,.02));
+
+    padding:40px;
+
+    border-radius:30px;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 0 35px rgba(197,178,122,.08);
+}
+
+.grade-card h3{
+    color:white;
+
+    font-size:2rem;
+
+    margin-bottom:24px;
+}
+
+.grade-row{
+    display:grid;
+
+    grid-template-columns:
+    1.4fr .9fr 1.3fr;
+
+    gap:14px;
+
+    margin-bottom:16px;
+}
+
+.grade-row input{
+    width:100%;
+
+    min-width:0;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    background:#111;
+
+    color:white;
+
+    font-size:1rem;
+}
+
+.fraction-group{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.fraction-group span{
+    color:#c5b27a;
+    font-size:1.2rem;
+    font-weight:700;
+}
+
+.final-grade-box,
+.prediction-box{
+    margin-top:35px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #c5b27a,
+    #8f7b46);
+
+    padding:28px;
+
+    border-radius:24px;
+
+    color:black;
+
+    text-align:center;
+
+    box-shadow:
+    0 0 30px rgba(197,178,122,.3);
+}
+
+.final-grade-box h2,
+.prediction-box h2{
+    font-size:2rem;
+}
+
+.grade-desc{
+    color:#cfcfcf;
+
+    line-height:1.8;
+
+    margin-bottom:24px;
+}
+
+.input-group{
+    margin-bottom:22px;
+}
+
+.input-group label{
+    display:block;
+
+    margin-bottom:10px;
+
+    color:white;
+
+    font-weight:600;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    background:#111;
+
+    color:white;
+
+    font-size:1rem;
 }
 
 /* =========================
@@ -705,10 +842,13 @@ button{
     padding:60px;
 
     overflow:hidden;
+
+    box-shadow:
+    0 0 40px rgba(197,178,122,.1);
 }
+
 .form-container{
     margin-top:40px;
-
     width:100%;
 }
 
@@ -763,7 +903,8 @@ footer{
 @media(max-width:1000px){
 
     .hero-content,
-    .about-grid{
+    .about-grid,
+    .grade-layout{
         grid-template-columns:1fr;
         text-align:center;
     }
@@ -829,7 +970,7 @@ footer{
     }
 
     .form-container iframe{
-    min-height:1400px;
+        min-height:1400px;
     }
 
     #events-container{
@@ -844,158 +985,8 @@ footer{
         height:200px;
     }
 
-}
-
-/* =========================
-   GRADE CALCULATOR
-========================= */
-
-.grade-section{
-    background:#fafafa;
-}
-
-.grade-layout{
-    display:grid;
-
-    grid-template-columns:1.2fr .8fr;
-
-    gap:30px;
-
-    margin-top:60px;
-}
-
-.grade-card{
-    background:white;
-
-    padding:40px;
-
-    border-radius:30px;
-
-    box-shadow:
-    0 12px 35px rgba(0,0,0,.08);
-
-    border:
-    1px solid rgba(0,0,0,.06);
-}
-
-.grade-card h3{
-    color:#111;
-
-    font-size:1.7rem;
-
-    margin-bottom:24px;
-}
-
-.grade-row{
-    display:grid;
-
-    grid-template-columns:
-    1.5fr 1fr 1fr;
-
-    gap:15px;
-
-    margin-bottom:16px;
-}
-
-.grade-row input{
-    padding:16px;
-
-    border-radius:16px;
-
-    border:
-    1px solid rgba(0,0,0,.08);
-
-    font-size:1rem;
-}
-
-.final-grade-box,
-.prediction-box{
-    margin-top:35px;
-
-    background:
-    linear-gradient(
-    135deg,
-    #c5b27a,
-    #8f7b46);
-
-    padding:28px;
-
-    border-radius:24px;
-
-    color:black;
-
-    text-align:center;
-}
-
-.final-grade-box h2,
-.prediction-box h2{
-    font-size:2rem;
-}
-
-.grade-desc{
-    color:#666;
-
-    line-height:1.8;
-
-    margin-bottom:24px;
-}
-
-.input-group{
-    margin-bottom:22px;
-}
-
-.input-group label{
-    display:block;
-
-    margin-bottom:10px;
-
-    color:#222;
-
-    font-weight:600;
-}
-
-.input-group input,
-.input-group select{
-    width:100%;
-
-    padding:16px;
-
-    border-radius:16px;
-
-    border:
-    1px solid rgba(0,0,0,.08);
-
-    font-size:1rem;
-}
-
-@media(max-width:900px){
-
-    .grade-layout{
-        grid-template-columns:1fr;
-    }
-
     .grade-row{
         grid-template-columns:1fr;
     }
 
-}
-
-.fraction-group{
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-}
-
-.fraction-group span{
-    color:#555;
-
-    font-size:1.2rem;
-
-    font-weight:700;
-}
-
-.fraction-group input{
-    width:100%;
 }
