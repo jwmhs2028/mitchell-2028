@@ -216,10 +216,21 @@ function createCategory(){
         placeholder="Weight %"
         class="cat-weight">
 
-        <input
-        type="number"
-        placeholder="Current Grade %"
-        class="cat-grade">
+        <div class="fraction-group">
+
+            <input
+            type="number"
+            placeholder="Points Earned"
+            class="cat-earned">
+
+            <span>/</span>
+
+            <input
+            type="number"
+            placeholder="Total Points"
+            class="cat-total">
+
+        </div>
 
     `;
 
@@ -259,10 +270,24 @@ function calculateGrade(){
         row.querySelector(".cat-weight").value
         ) || 0;
 
-        const grade =
+        const earned =
         parseFloat(
-        row.querySelector(".cat-grade").value
+        row.querySelector(".cat-earned").value
         ) || 0;
+
+        const totalPoints =
+        parseFloat(
+        row.querySelector(".cat-total").value
+        ) || 0;
+
+        let grade = 0;
+
+        if(totalPoints > 0){
+
+            grade =
+            (earned / totalPoints) * 100;
+
+        }
 
         total += grade * weight;
 
@@ -326,14 +351,29 @@ document.getElementById("predict-btn")
         row.querySelector(".cat-weight").value
         ) || 0;
 
-        let grade =
+        const earned =
         parseFloat(
-        row.querySelector(".cat-grade").value
+        row.querySelector(".cat-earned").value
         ) || 0;
+
+        const totalPoints =
+        parseFloat(
+        row.querySelector(".cat-total").value
+        ) || 0;
+
+        let grade = 0;
+
+        if(totalPoints > 0){
+
+            grade =
+            (earned / totalPoints) * 100;
+
+        }
 
         if(index === selected){
 
-            grade = (grade + assignmentGrade) / 2;
+            grade =
+            (grade + assignmentGrade) / 2;
 
         }
 
@@ -352,7 +392,6 @@ document.getElementById("predict-btn")
     `${predicted}%`;
 
 });
-
 addCategoryBtn.addEventListener(
     "click",
     createCategory
