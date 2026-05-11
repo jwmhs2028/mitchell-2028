@@ -1024,31 +1024,51 @@ footer{
     background:#030303;
 }
 
+.course-hub{
+    max-width:1100px;
+    height:620px;
+    margin:55px auto 0;
+    padding:28px;
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.045),
+    rgba(255,255,255,.015));
+
+    border:
+    1px solid rgba(197,178,122,.16);
+
+    border-radius:34px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 0 40px rgba(197,178,122,.08);
+}
+
 .directory-search-wrap{
     display:flex;
     justify-content:center;
 
-    margin-top:50px;
-    margin-bottom:30px;
+    margin-bottom:22px;
 }
 
 #course-search{
     width:100%;
-    max-width:700px;
 
-    background:
-    rgba(10,10,10,.92);
+    background:rgba(10,10,10,.92);
 
     border:
     1px solid rgba(197,178,122,.18);
 
-    border-radius:22px;
+    border-radius:18px;
 
-    padding:20px 24px;
+    padding:16px 20px;
 
     color:white;
 
-    font-size:1rem;
+    font-size:.95rem;
 
     outline:none;
 
@@ -1059,34 +1079,43 @@ footer{
     border-color:#c5b27a;
 
     box-shadow:
-    0 0 25px rgba(197,178,122,.18);
+    0 0 20px rgba(197,178,122,.18);
 }
 
 .directory-filters{
     display:flex;
-    justify-content:center;
     align-items:center;
-    flex-wrap:wrap;
+    gap:10px;
 
-    gap:14px;
+    overflow-x:auto;
 
-    margin-bottom:45px;
+    padding-bottom:16px;
+    margin-bottom:18px;
+
+    scrollbar-width:none;
+}
+
+.directory-filters::-webkit-scrollbar{
+    display:none;
 }
 
 .filter-btn{
-    background:
-    rgba(255,255,255,.04);
+    flex:0 0 auto;
+
+    background:rgba(255,255,255,.04);
 
     border:
     1px solid rgba(197,178,122,.15);
 
     color:white;
 
-    padding:14px 22px;
+    padding:11px 18px;
 
     border-radius:999px;
 
     cursor:pointer;
+
+    font-size:.85rem;
 
     font-weight:700;
 
@@ -1100,20 +1129,37 @@ footer{
     color:black;
 
     box-shadow:
-    0 0 25px rgba(197,178,122,.25);
+    0 0 20px rgba(197,178,122,.25);
 }
 
-.directory-grid{
+.compact-directory{
+    height:445px;
+
+    overflow-y:auto;
+
     display:grid;
 
     grid-template-columns:
-    repeat(auto-fit,minmax(300px,1fr));
+    repeat(auto-fit,minmax(240px,1fr));
 
-    gap:28px;
+    gap:18px;
+
+    padding-right:8px;
+}
+
+.compact-directory::-webkit-scrollbar{
+    width:8px;
+}
+
+.compact-directory::-webkit-scrollbar-thumb{
+    background:#c5b27a;
+    border-radius:999px;
 }
 
 .directory-card{
     position:relative;
+
+    min-height:250px;
 
     background:
     linear-gradient(
@@ -1124,75 +1170,51 @@ footer{
     border:
     1px solid rgba(197,178,122,.12);
 
-    border-radius:30px;
+    border-radius:24px;
 
-    padding:34px;
+    padding:24px;
 
     overflow:hidden;
 
     transition:.35s ease;
 
-    backdrop-filter:blur(14px);
-
     box-shadow:
-    0 10px 35px rgba(0,0,0,.25);
-}
-
-.directory-card::before{
-    content:"";
-
-    position:absolute;
-
-    top:-100px;
-    right:-100px;
-
-    width:220px;
-    height:220px;
-
-    background:
-    radial-gradient(
-    rgba(197,178,122,.14),
-    transparent 70%);
-
-    transition:.4s ease;
+    0 10px 30px rgba(0,0,0,.25);
 }
 
 .directory-card:hover{
-    transform:
-    translateY(-8px)
-    scale(1.02);
+    transform:translateY(-6px);
 
     border-color:#c5b27a;
 
     box-shadow:
-    0 0 35px rgba(197,178,122,.16);
+    0 0 28px rgba(197,178,122,.16);
 }
 
 .directory-type{
     display:inline-block;
 
-    margin-bottom:18px;
+    margin-bottom:14px;
 
-    padding:8px 16px;
+    padding:7px 13px;
 
     border-radius:999px;
 
-    background:
-    rgba(197,178,122,.12);
+    background:rgba(197,178,122,.12);
 
     color:#c5b27a;
 
-    font-size:.8rem;
+    font-size:.72rem;
 
-    font-weight:700;
+    font-weight:800;
 
     letter-spacing:1px;
 }
 
 .directory-card h3{
-    font-size:1.4rem;
+    font-size:1.15rem;
 
-    margin-bottom:16px;
+    margin-bottom:12px;
 
     color:white;
 }
@@ -1200,23 +1222,48 @@ footer{
 .directory-card p{
     color:#cfcfcf;
 
-    line-height:1.9;
+    line-height:1.65;
+
+    font-size:.9rem;
+}
+
+.course-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+
+    margin-top:16px;
+}
+
+.course-pill{
+    display:inline-block;
+
+    padding:7px 10px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.06);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    color:#f1d98f;
+
+    font-size:.75rem;
+
+    font-weight:700;
 }
 
 @media(max-width:768px){
 
-    #course-search{
-        padding:18px 20px;
+    .course-hub{
+        height:650px;
+        padding:20px;
     }
 
-    .filter-btn{
-        padding:12px 18px;
-
-        font-size:.9rem;
-    }
-
-    .directory-card{
-        padding:26px;
+    .compact-directory{
+        grid-template-columns:1fr;
+        height:470px;
     }
 
 }
