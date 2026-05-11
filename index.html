@@ -58,10 +58,6 @@
         Calculator
       </a>
 
-      <a href="#guide" class="tab">
-        Student Guide
-      </a>
-
       <a href="#requests" class="tab">
         Requests
       </a>
@@ -125,7 +121,7 @@
 
     <svg viewBox="0 0 1440 180" preserveAspectRatio="none">
 
-      <path fill="#050505"
+      <path fill="#ffffff"
       d="M0,96L80,106.7C160,117,320,139,480,149.3C640,160,800,160,960,149.3C1120,139,1280,117,1360,106.7L1440,96L1440,320L0,320Z">
       </path>
 
@@ -279,329 +275,139 @@
 
   <div class="grade-layout">
 
-    <!-- CATEGORY SIDE -->
+    <!-- LEFT SIDE -->
 
-    <div class="grade-card">
+    <div class="grade-card glass-card">
 
-      <h3>Class Categories</h3>
+      <div class="card-glow"></div>
+
+      <h3 class="grade-heading">
+        📖 Class Categories
+      </h3>
+
+      <!-- LABELS -->
+
+      <div class="grade-labels">
+
+        <span>Category Name</span>
+        <span>Weight (%)</span>
+        <span>Points Earned</span>
+        <span></span>
+        <span>Total Points</span>
+        <span></span>
+
+      </div>
+
+      <!-- CATEGORY INPUTS -->
 
       <div id="categories"></div>
 
-      <button id="add-category" class="primary-btn">
-        Add Category
+      <!-- ADD BUTTON -->
+
+      <button id="add-category" class="grade-btn">
+        ➕ Add Category
       </button>
+
+      <!-- FINAL GRADE -->
 
       <div class="final-grade-box">
 
-        <h2>
-          Current Grade:
-          <span id="final-grade">0%</span>
-        </h2>
+        <div class="grade-icon">
+          🏆
+        </div>
+
+        <div>
+
+          <p>Current Grade</p>
+
+          <h2 id="final-grade">
+            0%
+          </h2>
+
+        </div>
 
       </div>
 
     </div>
 
-    <!-- NEXT ASSIGNMENT SIDE -->
+    <!-- RIGHT SIDE -->
 
-    <div class="grade-card">
+    <div class="grade-card glass-card">
 
-      <h3>Next Assignment Predictor</h3>
+      <div class="card-glow"></div>
+
+      <h3 class="grade-heading">
+        📈 Next Assignment Predictor
+      </h3>
 
       <p class="grade-desc">
-        Predict how your next assignment
-        will affect your class grade.
+        Add the points for your next assignment
+        to see how it affects your final grade.
       </p>
+
+      <!-- FRACTION INPUT -->
 
       <div class="input-group">
 
-        <label>Assignment Category</label>
+        <label>
+          Assignment Points
+        </label>
+
+        <div class="fraction-group">
+
+          <input
+          type="number"
+          id="next-earned"
+          placeholder="Points Earned">
+
+          <span>/</span>
+
+          <input
+          type="number"
+          id="next-total"
+          placeholder="Total Points">
+
+        </div>
+
+      </div>
+
+      <!-- CATEGORY -->
+
+      <div class="input-group">
+
+        <label>
+          Assignment Category
+        </label>
 
         <select id="next-category"></select>
 
       </div>
 
-      <div class="fraction-row">
+      <!-- BUTTON -->
 
-        <div class="fraction-input">
-
-          <label>Points Earned</label>
-
-          <input
-          type="number"
-          id="next-earned"
-          placeholder="45">
-
-        </div>
-
-        <span class="fraction-divider">/</span>
-
-        <div class="fraction-input">
-
-          <label>Total Points</label>
-
-          <input
-          type="number"
-          id="next-total"
-          placeholder="50">
-
-        </div>
-
-      </div>
-
-      <button class="primary-btn" id="predict-btn">
-        Predict Grade
+      <button class="grade-btn predict-btn" id="predict-btn">
+        🧮 Predict New Grade
       </button>
+
+      <!-- PREDICTION -->
 
       <div class="prediction-box">
 
-        <h2>
-          Predicted Grade:
-          <span id="predicted-grade">0%</span>
-        </h2>
+        <div class="grade-icon">
+          🎯
+        </div>
 
-      </div>
+        <div>
 
-    </div>
+          <p>Predicted Grade</p>
 
-  </div>
-
-</section>
-
-<!-- =========================
-     STUDENT GUIDE
-========================= -->
-
-<section class="student-guide-section" id="guide">
-
-  <div class="guide-header fade-up">
-
-    <span class="guide-tag">
-      STUDENT HUB
-    </span>
-
-    <h2>Student Guide</h2>
-
-    <p>
-      Explore courses, clubs, organizations,
-      and important information at J. W. Mitchell.
-    </p>
-
-  </div>
-
-  <!-- TOP TABS -->
-
-  <div class="guide-tabs fade-up">
-
-    <button class="guide-tab active" data-guide="courses">
-      Courses
-    </button>
-
-    <button class="guide-tab" data-guide="clubs">
-      Clubs & Organizations
-    </button>
-
-    <button class="guide-tab" data-guide="resources">
-      Important Info
-    </button>
-
-  </div>
-
-  <!-- COURSES PANEL -->
-
-  <div class="guide-panel active" id="courses-panel">
-
-    <div class="guide-layout">
-
-      <!-- LEFT SIDEBAR -->
-
-      <div class="guide-sidebar fade-up">
-
-        <h3>Course Categories</h3>
-
-        <button class="category-btn active">
-          All Courses
-        </button>
-
-        <button class="category-btn">
-          Advanced Placement
-        </button>
-
-        <button class="category-btn">
-          Honors
-        </button>
-
-        <button class="category-btn">
-          Dual Enrollment
-        </button>
-
-        <button class="category-btn">
-          Fine Arts
-        </button>
-
-        <button class="category-btn">
-          CTE / Career Tech
-        </button>
-
-        <button class="category-btn">
-          Science
-        </button>
-
-        <button class="category-btn">
-          Mathematics
-        </button>
-
-        <button class="category-btn">
-          English
-        </button>
-
-      </div>
-
-      <!-- MAIN CONTENT -->
-
-      <div class="guide-content">
-
-        <div class="course-card fade-up">
-
-          <div class="course-top">
-
-            <div>
-
-              <h3>AP Human Geography</h3>
-
-              <div class="course-tags">
-
-                <span>AP</span>
-                <span>Social Studies</span>
-                <span>Grades 9-12</span>
-
-              </div>
-
-            </div>
-
-            <div class="course-rating">
-              ★ 4.6
-            </div>
-
-          </div>
-
-          <p>
-            Introductory college-level course
-            covering population, culture,
-            urbanization, economics,
-            and political geography.
-          </p>
-
-          <button class="dropdown-btn">
-            View More Information
-          </button>
-
-          <div class="dropdown-content">
-
-            <div class="info-grid">
-
-              <div class="info-box">
-
-                <h4>Topics Covered</h4>
-
-                <ul>
-                  <li>Population & Migration</li>
-                  <li>Culture & Religion</li>
-                  <li>Political Geography</li>
-                  <li>Urbanization</li>
-                </ul>
-
-              </div>
-
-              <div class="info-box">
-
-                <h4>Course Details</h4>
-
-                <ul>
-                  <li>Credits: 1.0</li>
-                  <li>Weighted GPA</li>
-                  <li>AP Exam Available</li>
-                  <li>Department: Social Studies</li>
-                </ul>
-
-              </div>
-
-            </div>
-
-          </div>
+          <h2 id="predicted-grade">
+            0%
+          </h2>
 
         </div>
 
       </div>
-
-    </div>
-
-  </div>
-
-  <!-- CLUBS PANEL -->
-
-  <div class="guide-panel" id="clubs-panel">
-
-    <div class="clubs-grid">
-
-      <div class="club-card fade-up">
-
-        <h3>Key Club</h3>
-
-        <p>
-          Volunteer organization focused on
-          leadership and community service.
-        </p>
-
-      </div>
-
-      <div class="club-card fade-up">
-
-        <h3>Robotics Club</h3>
-
-        <p>
-          Build, code, and compete with
-          robotics teams throughout the year.
-        </p>
-
-      </div>
-
-      <div class="club-card fade-up">
-
-        <h3>Student Council</h3>
-
-        <p>
-          Plan school events,
-          dances, spirit weeks,
-          and student activities.
-        </p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- RESOURCES PANEL -->
-
-  <div class="guide-panel" id="resources-panel">
-
-    <div class="resources-grid">
-
-      <a href="#" class="resource-card fade-up">
-        <h3>Canvas</h3>
-        <p>Access assignments and grades.</p>
-      </a>
-
-      <a href="#" class="resource-card fade-up">
-        <h3>MyPascoConnect</h3>
-        <p>Student portal and apps.</p>
-      </a>
-
-      <a href="#" class="resource-card fade-up">
-        <h3>Bell Schedule</h3>
-        <p>View school day schedules.</p>
-      </a>
 
     </div>
 
