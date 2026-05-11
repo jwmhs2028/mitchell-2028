@@ -1028,55 +1028,74 @@ footer{
     .navbar{
         position:fixed;
 
-        top:12px;
+        top:10px;
         left:50%;
 
         transform:translateX(-50%);
 
-        width:calc(100% - 20px);
+        width:calc(100% - 16px);
 
-        padding:12px 16px;
+        padding:10px 14px;
 
-        border-radius:22px;
+        border-radius:18px;
+
+        display:flex;
 
         flex-direction:row;
 
-        justify-content:space-between;
-
         align-items:center;
 
-        gap:12px;
+        justify-content:space-between;
+
+        gap:10px;
 
         z-index:9999;
+
+        overflow:hidden;
     }
 
     .brand{
-        gap:10px;
+        gap:8px;
+
+        min-width:auto;
     }
 
     .logo{
-        width:52px;
+        width:38px;
     }
 
     .brand-text h2{
-        font-size:.95rem;
+        font-size:.72rem;
+
+        line-height:1.1;
+
+        white-space:nowrap;
     }
 
     .brand-text p{
-        font-size:.72rem;
+        font-size:.55rem;
+
         letter-spacing:1px;
+
+        white-space:nowrap;
     }
 
     .nav-tabs{
         display:flex;
 
-        gap:8px;
+        flex-direction:row;
+
+        align-items:center;
+
+        gap:6px;
+
+        flex-wrap:nowrap;
 
         overflow-x:auto;
 
         scrollbar-width:none;
 
-        max-width:55%;
+        max-width:58%;
     }
 
     .nav-tabs::-webkit-scrollbar{
@@ -1084,11 +1103,13 @@ footer{
     }
 
     .tab{
-        padding:10px 14px;
+        padding:8px 10px;
 
-        font-size:.85rem;
+        font-size:.72rem;
 
         white-space:nowrap;
+
+        border-radius:12px;
     }
 
     .nav-btn{
@@ -1100,20 +1121,31 @@ footer{
     }
 
     .hero-content{
-        padding:140px 20px 120px;
+        padding:120px 20px 100px;
     }
 
     .hero-left h1{
-        font-size:3.2rem;
+        font-size:2.8rem;
+    }
+
+    .hero-buttons{
+        flex-direction:column;
+    }
+
+    .primary-btn,
+    .secondary-btn{
+        width:100%;
+
+        text-align:center;
     }
 
     .section-title h2,
     .section-header h2{
-        font-size:2.2rem;
+        font-size:2rem;
     }
 
     .request-box{
-        padding:24px;
+        padding:22px;
     }
 
     .form-container{
@@ -1125,7 +1157,7 @@ footer{
     }
 
     .event-card{
-        padding:24px;
+        padding:22px;
     }
 
     .update-image{
