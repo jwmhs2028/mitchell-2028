@@ -845,3 +845,137 @@ footer{
     }
 
 }
+
+/* =========================
+   GRADE CALCULATOR
+========================= */
+
+.grade-section{
+    background:#fafafa;
+}
+
+.grade-layout{
+    display:grid;
+
+    grid-template-columns:1.2fr .8fr;
+
+    gap:30px;
+
+    margin-top:60px;
+}
+
+.grade-card{
+    background:white;
+
+    padding:40px;
+
+    border-radius:30px;
+
+    box-shadow:
+    0 12px 35px rgba(0,0,0,.08);
+
+    border:
+    1px solid rgba(0,0,0,.06);
+}
+
+.grade-card h3{
+    color:#111;
+
+    font-size:1.7rem;
+
+    margin-bottom:24px;
+}
+
+.grade-row{
+    display:grid;
+
+    grid-template-columns:
+    1.5fr 1fr 1fr;
+
+    gap:15px;
+
+    margin-bottom:16px;
+}
+
+.grade-row input{
+    padding:16px;
+
+    border-radius:16px;
+
+    border:
+    1px solid rgba(0,0,0,.08);
+
+    font-size:1rem;
+}
+
+.final-grade-box,
+.prediction-box{
+    margin-top:35px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #c5b27a,
+    #8f7b46);
+
+    padding:28px;
+
+    border-radius:24px;
+
+    color:black;
+
+    text-align:center;
+}
+
+.final-grade-box h2,
+.prediction-box h2{
+    font-size:2rem;
+}
+
+.grade-desc{
+    color:#666;
+
+    line-height:1.8;
+
+    margin-bottom:24px;
+}
+
+.input-group{
+    margin-bottom:22px;
+}
+
+.input-group label{
+    display:block;
+
+    margin-bottom:10px;
+
+    color:#222;
+
+    font-weight:600;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    border:
+    1px solid rgba(0,0,0,.08);
+
+    font-size:1rem;
+}
+
+@media(max-width:900px){
+
+    .grade-layout{
+        grid-template-columns:1fr;
+    }
+
+    .grade-row{
+        grid-template-columns:1fr;
+    }
+
+}
