@@ -1026,19 +1026,81 @@ footer{
 @media(max-width:768px){
 
     .navbar{
+        position:fixed;
+
+        top:12px;
+        left:50%;
+
+        transform:translateX(-50%);
+
         width:calc(100% - 20px);
 
-        padding:16px;
+        padding:12px 16px;
 
-        border-radius:20px;
+        border-radius:22px;
+
+        flex-direction:row;
+
+        justify-content:space-between;
+
+        align-items:center;
+
+        gap:12px;
+
+        z-index:9999;
+    }
+
+    .brand{
+        gap:10px;
+    }
+
+    .logo{
+        width:52px;
+    }
+
+    .brand-text h2{
+        font-size:.95rem;
+    }
+
+    .brand-text p{
+        font-size:.72rem;
+        letter-spacing:1px;
     }
 
     .nav-tabs{
-        justify-content:center;
+        display:flex;
+
+        gap:8px;
+
+        overflow-x:auto;
+
+        scrollbar-width:none;
+
+        max-width:55%;
+    }
+
+    .nav-tabs::-webkit-scrollbar{
+        display:none;
+    }
+
+    .tab{
+        padding:10px 14px;
+
+        font-size:.85rem;
+
+        white-space:nowrap;
+    }
+
+    .nav-btn{
+        display:none;
+    }
+
+    .hero{
+        min-height:auto;
     }
 
     .hero-content{
-        padding:180px 20px 120px;
+        padding:140px 20px 120px;
     }
 
     .hero-left h1{
@@ -1047,44 +1109,34 @@ footer{
 
     .section-title h2,
     .section-header h2{
-        font-size:2.5rem;
+        font-size:2.2rem;
     }
 
-    .grade-card,
     .request-box{
-        padding:28px;
-    }
-
-    .grade-row,
-    .grade-labels{
-        grid-template-columns:1fr;
-    }
-
-    .fraction-group{
-        flex-direction:column;
-    }
-
-    .fraction-divider{
-        display:none;
-    }
-
-    .final-grade-box,
-    .prediction-box{
-        flex-direction:column;
-
-        text-align:center;
-    }
-
-    .final-grade-box h2,
-    .prediction-box h2{
-        font-size:2.5rem;
+        padding:24px;
     }
 
     .form-container{
-    height:950px;
+        height:950px;
     }
 
     #events-container{
+        grid-template-columns:1fr;
+    }
+
+    .event-card{
+        padding:24px;
+    }
+
+    .update-image{
+        height:200px;
+    }
+
+    .grade-layout{
+        grid-template-columns:1fr;
+    }
+
+    .grade-row{
         grid-template-columns:1fr;
     }
 
