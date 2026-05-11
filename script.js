@@ -157,7 +157,7 @@ async function loadCourses(){
     try{
 
         const response = await fetch(
-        "PASTE_YOUR_GOOGLE_SHEET_CSV_LINK_HERE"
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vTraauIam0LG5jmQ6wRg9crrAGhDZEAwPU2E6kaiCN02afrLOuJop4SJK7JgptYRdcdeBQ_AgOuOl40/pub?output=csv"
         );
 
         const csv =
