@@ -177,3 +177,186 @@ window.addEventListener("scroll", () => {
     });
 
 });
+
+/* =========================
+   GRADE CALCULATOR
+========================= */
+
+const categoriesContainer =
+document.getElementById("categories");
+
+const addCategoryBtn =
+document.getElementById("add-category");
+
+const finalGrade =
+document.getElementById("final-grade");
+
+const nextCategory =
+document.getElementById("next-category");
+
+const predictedGrade =
+document.getElementById("predicted-grade");
+
+function createCategory(){
+
+    const row =
+    document.createElement("div");
+
+    row.className = "grade-row";
+
+    row.innerHTML = `
+
+        <input
+        type="text"
+        placeholder="Category Name"
+        class="cat-name">
+
+        <input
+        type="number"
+        placeholder="Weight %"
+        class="cat-weight">
+
+        <input
+        type="number"
+        placeholder="Current Grade %"
+        class="cat-grade">
+
+    `;
+
+    categoriesContainer.appendChild(row);
+
+    updateDropdown();
+
+    row.querySelectorAll("input")
+    .forEach(input => {
+
+        input.addEventListener(
+            "input",
+            calculateGrade
+        );
+
+        input.addEventListener(
+            "input",
+            updateDropdown
+        );
+
+    });
+
+}
+
+function calculateGrade(){
+
+    const rows =
+    document.querySelectorAll(".grade-row");
+
+    let total = 0;
+    let totalWeight = 0;
+
+    rows.forEach((row) => {
+
+        const weight =
+        parseFloat(
+        row.querySelector(".cat-weight").value
+        ) || 0;
+
+        const grade =
+        parseFloat(
+        row.querySelector(".cat-grade").value
+        ) || 0;
+
+        total += grade * weight;
+
+        totalWeight += weight;
+
+    });
+
+    const result =
+    totalWeight > 0
+    ? (total / totalWeight).toFixed(2)
+    : 0;
+
+    finalGrade.textContent =
+    `${result}%`;
+}
+
+function updateDropdown(){
+
+    nextCategory.innerHTML = "";
+
+    const names =
+    document.querySelectorAll(".cat-name");
+
+    names.forEach((input, index) => {
+
+        const option =
+        document.createElement("option");
+
+        option.value = index;
+
+        option.textContent =
+        input.value || `Category ${index + 1}`;
+
+        nextCategory.appendChild(option);
+
+    });
+
+}
+
+document.getElementById("predict-btn")
+.addEventListener("click", () => {
+
+    const rows =
+    document.querySelectorAll(".grade-row");
+
+    const assignmentGrade =
+    parseFloat(
+    document.getElementById("next-grade").value
+    ) || 0;
+
+    const selected =
+    parseInt(nextCategory.value);
+
+    let total = 0;
+    let totalWeight = 0;
+
+    rows.forEach((row, index) => {
+
+        const weight =
+        parseFloat(
+        row.querySelector(".cat-weight").value
+        ) || 0;
+
+        let grade =
+        parseFloat(
+        row.querySelector(".cat-grade").value
+        ) || 0;
+
+        if(index === selected){
+
+            grade = (grade + assignmentGrade) / 2;
+
+        }
+
+        total += grade * weight;
+
+        totalWeight += weight;
+
+    });
+
+    const predicted =
+    totalWeight > 0
+    ? (total / totalWeight).toFixed(2)
+    : 0;
+
+    predictedGrade.textContent =
+    `${predicted}%`;
+
+});
+
+addCategoryBtn.addEventListener(
+    "click",
+    createCategory
+);
+
+createCategory();
+createCategory();
