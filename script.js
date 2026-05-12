@@ -50,6 +50,10 @@ async function loadUpdates(){
     const container =
     document.getElementById("events-container");
 
+    if(!container){
+        return;
+    }
+
     try{
 
         const response = await fetch(
@@ -60,25 +64,17 @@ async function loadUpdates(){
         await response.text();
 
         const rows =
-        csv.trim().split("\n").slice(1);
+        parseCSV(csv).slice(1);
 
         container.innerHTML = "";
 
         rows.forEach((row) => {
 
-            if(!row.trim()) return;
+            if(row.length === 0) return;
 
-            const columns = row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
-
-            if(!columns) return;
-
-            const clean = columns.map(col =>
-                col.replace(/^"|"$/g, "").trim()
-            );
-
-            const title = clean[0] || "";
-            const description = clean[1] || "";
-            const image = clean[2] || "";
+            const title = row[0] || "";
+            const description = row[1] || "";
+            const image = row[2] || "";
 
             if(title){
 
@@ -134,41 +130,9 @@ async function loadUpdates(){
 
 }
 
-loadUpdates();
-
 /* =========================
-   STUDENT GUIDE COURSES
+   CSV PARSER
 ========================= */
-
-const courseList =
-document.getElementById("course-list");
-
-const courseDetailPanel =
-document.getElementById("course-detail-panel");
-
-const typeFilter =
-document.getElementById("course-type-filter");
-
-const departmentFilter =
-document.getElementById("course-department-filter");
-
-const gradeFilter =
-document.getElementById("course-grade-filter");
-
-const courseSearchInput =
-document.getElementById("course-search-input");
-
-const guideTabs =
-document.querySelectorAll(".guide-tab");
-
-const guidePanels =
-document.querySelectorAll(".guide-panel");
-
-let allCourses = [];
-let selectedCourseIndex = 0;
-
-const courseSheetUrl =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vTraauIam0LG5jmQ6wRg9crrAGhDZEAwPU2E6kaiCN02afrLOuJop4SJK7JgptYRdcdeBQ_AgOuOl40/pub?output=csv";
 
 function parseCSV(csv){
 
@@ -226,7 +190,45 @@ function parseCSV(csv){
 
 }
 
+/* =========================
+   STUDENT GUIDE COURSES
+========================= */
+
+const courseList =
+document.getElementById("course-list");
+
+const courseDetailPanel =
+document.getElementById("course-detail-panel");
+
+const typeFilter =
+document.getElementById("course-type-filter");
+
+const departmentFilter =
+document.getElementById("course-department-filter");
+
+const gradeFilter =
+document.getElementById("course-grade-filter");
+
+const courseSearchInput =
+document.getElementById("course-search-input");
+
+const guideTabs =
+document.querySelectorAll(".guide-tab");
+
+const guidePanels =
+document.querySelectorAll(".guide-panel");
+
+let allCourses = [];
+let selectedCourseIndex = 0;
+
+const courseSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vTraauIam0LG5jmQ6wRg9crrAGhDZEAwPU2E6kaiCN02afrLOuJop4SJK7JgptYRdcdeBQ_AgOuOl40/pub?output=csv";
+
 async function loadStudentGuideCourses(){
+
+    if(!courseList || !courseDetailPanel){
+        return;
+    }
 
     try{
 
@@ -252,9 +254,9 @@ async function loadStudentGuideCourses(){
                 reviews:row[4] || "Student reviews",
                 extraInfo:row[5] || "",
                 department:row[6] || getDepartmentFromCourse(row[1] || "", row[0] || ""),
-                gradeLevel:row[7] || "9-12",
+                gradeLevel:row[7] || "Not listed",
                 prerequisites:row[8] || "None listed",
-                credits:row[9] || "1.0",
+                credits:row[9] || "Not listed",
                 topics:row[10] || ""
             };
 
@@ -371,6 +373,10 @@ function populateGuideFilters(){
 
 function populateSelect(select, options){
 
+    if(!select){
+        return;
+    }
+
     select.innerHTML = "";
 
     options.forEach((optionText) => {
@@ -398,7 +404,9 @@ function populateSelect(select, options){
 function getFilteredCourses(){
 
     const searchTerm =
-    courseSearchInput.value.toLowerCase().trim();
+    courseSearchInput
+    ? courseSearchInput.value.toLowerCase().trim()
+    : "";
 
     return allCourses.filter((course) => {
 
@@ -501,7 +509,7 @@ function renderCourseList(){
             </div>
 
             <div class="course-rating-small">
-                ${formatRating(course.rating)} ★
+                ${formatRating(course.rating)}${isNumericRating(course.rating) ? " ★" : ""}
                 <span>${course.reviews}</span>
             </div>
 
@@ -551,7 +559,7 @@ function renderCourseDetails(course){
             </div>
 
             <div class="detail-rating">
-                ${formatRating(course.rating)} ★
+                ${formatRating(course.rating)}${isNumericRating(course.rating) ? " ★" : ""}
                 <span>${course.reviews}</span>
             </div>
 
@@ -615,160 +623,6 @@ function renderCourseDetails(course){
 
 }
 
-function formatRating(rating){
-
-    return String(rating)
-    .replace("/5", "")
-    .trim();
-
-}
-
-function generateRatingBars(rating){
-
-    const numeric =
-    parseFloat(formatRating(rating)) || 4.3;
-
-    const five =
-    Math.min(85, Math.max(45, Math.round(numeric * 14)));
-
-    const four =
-    Math.max(8, Math.round((5 - numeric) * 18));
-
-    const three = 8;
-    const two = 3;
-    const one = 1;
-
-    const rows = [
-        ["5", five],
-        ["4", four],
-        ["3", three],
-        ["2", two],
-        ["1", one]
-    ];
-
-    return rows.map(row => `
-
-        <div class="rating-row">
-
-            <span>${row[0]} ★</span>
-
-            <div class="rating-bar">
-                <div class="rating-fill" style="width:${row[1]}%"></div>
-            </div>
-
-            <span>${row[1]}%</span>
-
-        </div>
-
-    `).join("");
-
-}
-
-function generateTopics(course){
-
-    if(course.department === "English"){
-        return ["Reading", "Writing", "Analysis", "Communication"];
-    }
-
-    if(course.department === "Math"){
-        return ["Problem Solving", "Equations", "Functions", "Applications"];
-    }
-
-    if(course.department === "Science"){
-        return ["Lab Skills", "Scientific Thinking", "Analysis", "Research"];
-    }
-
-    if(course.department === "Social Studies"){
-        return ["History", "Government", "Culture", "Critical Thinking"];
-    }
-
-    if(course.department === "Fine Arts"){
-        return ["Creativity", "Performance", "Design", "Technique"];
-    }
-
-    if(course.department === "Technology"){
-        return ["Digital Skills", "Software", "Problem Solving", "Projects"];
-    }
-
-    return ["Course Skills", "Projects", "Participation", "Career Readiness"];
-
-}
-
-function getCourseIcon(department){
-
-    if(department === "English") return "✎";
-    if(department === "Math") return "∑";
-    if(department === "Science") return "⚗";
-    if(department === "Social Studies") return "🌐";
-    if(department === "World Languages") return "🗣";
-    if(department === "Fine Arts") return "🎨";
-    if(department === "Technology") return "</>";
-    if(department === "Business") return "$";
-    if(department === "Medical") return "+";
-    if(department === "Physical Education") return "🏃";
-    if(department === "NJROTC") return "⚓";
-
-    return "📘";
-
-}
-
-[typeFilter, departmentFilter, gradeFilter].forEach((filter) => {
-
-    filter.addEventListener("change", () => {
-
-        const filteredCourses =
-        getFilteredCourses();
-
-        if(filteredCourses.length > 0){
-            selectedCourseIndex = filteredCourses[0].originalIndex;
-            renderCourseDetails(filteredCourses[0]);
-        }
-
-        renderCourseList();
-
-    });
-
-});
-
-courseSearchInput.addEventListener("input", () => {
-
-    const filteredCourses =
-    getFilteredCourses();
-
-    if(filteredCourses.length > 0){
-        selectedCourseIndex = filteredCourses[0].originalIndex;
-        renderCourseDetails(filteredCourses[0]);
-    }
-
-    renderCourseList();
-
-});
-
-guideTabs.forEach((tab) => {
-
-    tab.addEventListener("click", () => {
-
-        const selectedTab =
-        tab.dataset.guideTab;
-
-        guideTabs.forEach((button) => {
-            button.classList.remove("active");
-        });
-
-        guidePanels.forEach((panel) => {
-            panel.classList.remove("active");
-        });
-
-        tab.classList.add("active");
-
-        document
-        .getElementById(`${selectedTab}-guide-panel`)
-        .classList.add("active");
-
-    });
-
-});
-
 /* =========================
    STUDENT GUIDE CLUBS
 ========================= */
@@ -823,13 +677,13 @@ async function loadStudentGuideClubs(){
                 type:row[0] || "Other",
                 title:row[1] || "Untitled Club",
                 description:row[2] || "No description available yet.",
-                rating:row[3] || "Interest",
-                reviews:row[4] || "Student interest",
+                rating:row[3] || "Official",
+                reviews:row[4] || "Student Group",
                 extraInfo:row[5] || "",
                 category:row[6] || "General",
-                gradeLevel:row[7] || "9-12",
-                meetingTime:row[8] || "TBD",
-                sponsor:row[9] || "TBD",
+                gradeLevel:row[7] || "Not listed",
+                meetingTime:row[8] || "Not listed",
+                sponsor:row[9] || "Not listed",
                 topics:row[10] || ""
             };
 
@@ -1143,9 +997,130 @@ function renderClubDetails(club){
 
 }
 
+/* =========================
+   SHARED STUDENT GUIDE HELPERS
+========================= */
+
+function formatRating(rating){
+
+    return String(rating)
+    .replace("/5", "")
+    .trim();
+
+}
+
 function isNumericRating(rating){
 
     return !Number.isNaN(parseFloat(formatRating(rating)));
+
+}
+
+function generateRatingBars(rating){
+
+    const numeric =
+    parseFloat(formatRating(rating));
+
+    if(Number.isNaN(numeric)){
+
+        return `
+
+        <div class="rating-row">
+
+            <span>Info</span>
+
+            <div class="rating-bar">
+                <div class="rating-fill" style="width:100%"></div>
+            </div>
+
+            <span>✓</span>
+
+        </div>
+
+        `;
+
+    }
+
+    const five =
+    Math.min(85, Math.max(45, Math.round(numeric * 14)));
+
+    const four =
+    Math.max(8, Math.round((5 - numeric) * 18));
+
+    const three = 8;
+    const two = 3;
+    const one = 1;
+
+    const rows = [
+        ["5", five],
+        ["4", four],
+        ["3", three],
+        ["2", two],
+        ["1", one]
+    ];
+
+    return rows.map(row => `
+
+        <div class="rating-row">
+
+            <span>${row[0]} ★</span>
+
+            <div class="rating-bar">
+                <div class="rating-fill" style="width:${row[1]}%"></div>
+            </div>
+
+            <span>${row[1]}%</span>
+
+        </div>
+
+    `).join("");
+
+}
+
+function generateTopics(course){
+
+    if(course.department === "English"){
+        return ["Reading", "Writing", "Analysis", "Communication"];
+    }
+
+    if(course.department === "Math"){
+        return ["Problem Solving", "Equations", "Functions", "Applications"];
+    }
+
+    if(course.department === "Science"){
+        return ["Lab Skills", "Scientific Thinking", "Analysis", "Research"];
+    }
+
+    if(course.department === "Social Studies"){
+        return ["History", "Government", "Culture", "Critical Thinking"];
+    }
+
+    if(course.department === "Fine Arts"){
+        return ["Creativity", "Performance", "Design", "Technique"];
+    }
+
+    if(course.department === "Technology"){
+        return ["Digital Skills", "Software", "Problem Solving", "Projects"];
+    }
+
+    return ["Course Skills", "Projects", "Participation", "Career Readiness"];
+
+}
+
+function getCourseIcon(department){
+
+    if(department === "English") return "✎";
+    if(department === "Math") return "∑";
+    if(department === "Science") return "⚗";
+    if(department === "Social Studies") return "🌐";
+    if(department === "World Languages") return "🗣";
+    if(department === "Fine Arts") return "🎨";
+    if(department === "Technology") return "</>";
+    if(department === "Business") return "$";
+    if(department === "Medical") return "+";
+    if(department === "Physical Education") return "🏃";
+    if(department === "NJROTC") return "⚓";
+
+    return "📘";
 
 }
 
@@ -1171,6 +1146,50 @@ function getClubIcon(category){
     if(category === "Arts") return "✎";
 
     return "👥";
+
+}
+
+/* =========================
+   STUDENT GUIDE EVENT LISTENERS
+========================= */
+
+[typeFilter, departmentFilter, gradeFilter].forEach((filter) => {
+
+    if(!filter){
+        return;
+    }
+
+    filter.addEventListener("change", () => {
+
+        const filteredCourses =
+        getFilteredCourses();
+
+        if(filteredCourses.length > 0){
+            selectedCourseIndex = filteredCourses[0].originalIndex;
+            renderCourseDetails(filteredCourses[0]);
+        }
+
+        renderCourseList();
+
+    });
+
+});
+
+if(courseSearchInput){
+
+    courseSearchInput.addEventListener("input", () => {
+
+        const filteredCourses =
+        getFilteredCourses();
+
+        if(filteredCourses.length > 0){
+            selectedCourseIndex = filteredCourses[0].originalIndex;
+            renderCourseDetails(filteredCourses[0]);
+        }
+
+        renderCourseList();
+
+    });
 
 }
 
@@ -1214,8 +1233,33 @@ if(clubSearchInput){
 
 }
 
-loadStudentGuideCourses();
-loadStudentGuideClubs();
+guideTabs.forEach((tab) => {
+
+    tab.addEventListener("click", () => {
+
+        const selectedTab =
+        tab.dataset.guideTab;
+
+        guideTabs.forEach((button) => {
+            button.classList.remove("active");
+        });
+
+        guidePanels.forEach((panel) => {
+            panel.classList.remove("active");
+        });
+
+        tab.classList.add("active");
+
+        const panel =
+        document.getElementById(`${selectedTab}-guide-panel`);
+
+        if(panel){
+            panel.classList.add("active");
+        }
+
+    });
+
+});
 
 /* =========================
    GRADE CALCULATOR
@@ -1237,6 +1281,10 @@ const predictedGrade =
 document.getElementById("predicted-grade");
 
 function createCategoryRow(name = "", weight = "", earned = "", total = ""){
+
+    if(!categoriesContainer){
+        return;
+    }
 
     const row = document.createElement("div");
 
@@ -1354,12 +1402,18 @@ function calculateGrade(){
 
     }
 
-    finalGrade.textContent =
-    `${grade.toFixed(2)}%`;
+    if(finalGrade){
+        finalGrade.textContent =
+        `${grade.toFixed(2)}%`;
+    }
 
 }
 
 function updateCategoryDropdown(){
+
+    if(!nextCategory){
+        return;
+    }
 
     nextCategory.innerHTML = "";
 
@@ -1386,94 +1440,110 @@ function updateCategoryDropdown(){
    PREDICT NEXT ASSIGNMENT
 ========================= */
 
-document
-.getElementById("predict-btn")
-.addEventListener("click", () => {
+const predictBtn =
+document.getElementById("predict-btn");
 
-    const rows =
-    document.querySelectorAll(".grade-row");
+if(predictBtn){
 
-    let weightedTotal = 0;
-    let totalWeight = 0;
+    predictBtn.addEventListener("click", () => {
 
-    const selectedIndex =
-    parseInt(nextCategory.value);
+        const rows =
+        document.querySelectorAll(".grade-row");
 
-    const nextEarned =
-    parseFloat(
-        document.getElementById("next-earned").value
-    ) || 0;
+        let weightedTotal = 0;
+        let totalWeight = 0;
 
-    const nextTotal =
-    parseFloat(
-        document.getElementById("next-total").value
-    ) || 0;
+        const selectedIndex =
+        parseInt(nextCategory.value);
 
-    rows.forEach((row, index) => {
-
-        const weight =
+        const nextEarned =
         parseFloat(
-            row.querySelector(".cat-weight").value
+            document.getElementById("next-earned").value
         ) || 0;
 
-        let earned =
+        const nextTotal =
         parseFloat(
-            row.querySelector(".cat-earned").value
+            document.getElementById("next-total").value
         ) || 0;
 
-        let total =
-        parseFloat(
-            row.querySelector(".cat-total").value
-        ) || 0;
+        rows.forEach((row, index) => {
 
-        if(index === selectedIndex){
+            const weight =
+            parseFloat(
+                row.querySelector(".cat-weight").value
+            ) || 0;
 
-            earned += nextEarned;
-            total += nextTotal;
+            let earned =
+            parseFloat(
+                row.querySelector(".cat-earned").value
+            ) || 0;
+
+            let total =
+            parseFloat(
+                row.querySelector(".cat-total").value
+            ) || 0;
+
+            if(index === selectedIndex){
+
+                earned += nextEarned;
+                total += nextTotal;
+
+            }
+
+            if(total > 0 && weight > 0){
+
+                const percent =
+                (earned / total) * 100;
+
+                weightedTotal +=
+                percent * (weight / 100);
+
+                totalWeight += weight;
+
+            }
+
+        });
+
+        let predicted = 0;
+
+        if(totalWeight > 0){
+
+            predicted =
+            (weightedTotal / totalWeight) * 100;
 
         }
 
-        if(total > 0 && weight > 0){
-
-            const percent =
-            (earned / total) * 100;
-
-            weightedTotal +=
-            percent * (weight / 100);
-
-            totalWeight += weight;
-
+        if(predictedGrade){
+            predictedGrade.textContent =
+            `${predicted.toFixed(2)}%`;
         }
 
     });
 
-    let predicted = 0;
-
-    if(totalWeight > 0){
-
-        predicted =
-        (weightedTotal / totalWeight) * 100;
-
-    }
-
-    predictedGrade.textContent =
-    `${predicted.toFixed(2)}%`;
-
-});
+}
 
 /* =========================
    ADD CATEGORY BUTTON
 ========================= */
 
-addCategoryBtn.addEventListener("click", () => {
+if(addCategoryBtn){
 
-    createCategoryRow();
+    addCategoryBtn.addEventListener("click", () => {
 
-});
+        createCategoryRow();
+
+    });
+
+}
 
 /* =========================
-   DEFAULT ROWS
+   INITIALIZE SITE
 ========================= */
+
+loadUpdates();
+
+loadStudentGuideCourses();
+loadStudentGuideClubs();
 
 createCategoryRow();
 createCategoryRow();
