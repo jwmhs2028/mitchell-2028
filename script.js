@@ -137,68 +137,136 @@ async function loadUpdates(){
 loadUpdates();
 
 /* =========================
-   COURSES DIRECTORY
+   STUDENT GUIDE COURSES
 ========================= */
 
-const coursesContainer =
-document.getElementById("courses-container");
+const courseList =
+document.getElementById("course-list");
 
-const courseFilters =
-document.getElementById("course-filters");
+const courseDetailPanel =
+document.getElementById("course-detail-panel");
 
-const courseSearch =
-document.getElementById("course-search");
+const typeFilter =
+document.getElementById("course-type-filter");
+
+const departmentFilter =
+document.getElementById("course-department-filter");
+
+const gradeFilter =
+document.getElementById("course-grade-filter");
+
+const viewMoreCoursesBtn =
+document.getElementById("view-more-courses");
+
+const guideTabs =
+document.querySelectorAll(".guide-tab");
+
+const guidePanels =
+document.querySelectorAll(".guide-panel");
 
 let allCourses = [];
-let activeType = "All";
+let visibleCourseCount = 8;
+let selectedCourseIndex = 0;
 
-async function loadCourses(){
+const courseSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vTraauIam0LG5jmQ6wRg9crrAGhDZEAwPU2E6kaiCN02afrLOuJop4SJK7JgptYRdcdeBQ_AgOuOl40/pub?output=csv";
+
+function parseCSV(csv){
+
+    const rows = [];
+    let currentRow = [];
+    let currentValue = "";
+    let insideQuotes = false;
+
+    for(let i = 0; i < csv.length; i++){
+
+        const char = csv[i];
+        const nextChar = csv[i + 1];
+
+        if(char === '"' && insideQuotes && nextChar === '"'){
+            currentValue += '"';
+            i++;
+        }
+
+        else if(char === '"'){
+            insideQuotes = !insideQuotes;
+        }
+
+        else if(char === "," && !insideQuotes){
+            currentRow.push(currentValue.trim());
+            currentValue = "";
+        }
+
+        else if((char === "\n" || char === "\r") && !insideQuotes){
+
+            if(currentValue || currentRow.length){
+                currentRow.push(currentValue.trim());
+                rows.push(currentRow);
+                currentRow = [];
+                currentValue = "";
+            }
+
+            if(char === "\r" && nextChar === "\n"){
+                i++;
+            }
+
+        }
+
+        else{
+            currentValue += char;
+        }
+
+    }
+
+    if(currentValue || currentRow.length){
+        currentRow.push(currentValue.trim());
+        rows.push(currentRow);
+    }
+
+    return rows;
+
+}
+
+async function loadStudentGuideCourses(){
 
     try{
 
-        const response = await fetch(
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vTraauIam0LG5jmQ6wRg9crrAGhDZEAwPU2E6kaiCN02afrLOuJop4SJK7JgptYRdcdeBQ_AgOuOl40/pub?output=csv"
-        );
+        const response =
+        await fetch(courseSheetUrl);
 
         const csv =
         await response.text();
 
         const rows =
-        csv.trim().split("\n").slice(1);
+        parseCSV(csv).slice(1);
 
-        allCourses = [];
+        allCourses = rows
+        .filter(row => row.length >= 2 && row[1])
+        .map((row, index) => {
 
-        rows.forEach((row) => {
-
-            if(!row.trim()) return;
-
-            const columns =
-            row.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
-
-            if(!columns) return;
-
-            const clean = columns.map(col =>
-                col.replace(/^"|"$/g, "").trim()
-            );
-
-            const type = clean[0] || "Other";
-            const title = clean[1] || "Untitled";
-            const description = clean[2] || "";
-            const rating = clean[3] || "Not rated";
-            const extraInfo = clean[4] || "";
-
-            allCourses.push({
-                type,
-                title,
-                description,
-                rating,
-                extraInfo
-            });
+            return {
+                originalIndex:index,
+                type:row[0] || "Other",
+                title:row[1] || "Untitled Course",
+                description:row[2] || "No description available yet.",
+                rating:row[3] || "4.3/5",
+                reviews:row[4] || "Student reviews",
+                extraInfo:row[5] || "",
+                department:row[6] || getDepartmentFromCourse(row[1] || "", row[0] || ""),
+                gradeLevel:row[7] || "9-12",
+                prerequisites:row[8] || "None listed",
+                credits:row[9] || "1.0",
+                topics:row[10] || ""
+            };
 
         });
 
-        generateCourseFilters();
-        renderCourses();
+        populateGuideFilters();
+        renderCourseList();
+
+        if(allCourses.length > 0){
+            renderCourseDetails(allCourses[0]);
+        }
 
     }
 
@@ -206,16 +274,22 @@ async function loadCourses(){
 
         console.error(error);
 
-        coursesContainer.innerHTML = `
+        courseList.innerHTML = `
 
-        <div class="directory-card">
+        <div class="course-list-card">
+            <div class="course-list-main">
+                <h3>Unable To Load Courses</h3>
+                <p>Please try again later.</p>
+            </div>
+        </div>
 
-            <h3>Unable To Load Courses</h3>
+        `;
 
-            <p>
-            Please try again later.
-            </p>
+        courseDetailPanel.innerHTML = `
 
+        <div class="coming-soon-card">
+            <h3>Courses Unavailable</h3>
+            <p>The course guide could not be loaded.</p>
         </div>
 
         `;
@@ -224,136 +298,463 @@ async function loadCourses(){
 
 }
 
-function generateCourseFilters(){
+function getDepartmentFromCourse(courseName, type){
 
-    const uniqueTypes = [
+    const name =
+    courseName.toLowerCase();
+
+    if(name.includes("english") || name.includes("writing") || name.includes("journalism") || name.includes("literature")){
+        return "English";
+    }
+
+    if(name.includes("algebra") || name.includes("geometry") || name.includes("calculus") || name.includes("statistics") || name.includes("math") || name.includes("trigonometry")){
+        return "Math";
+    }
+
+    if(name.includes("science") || name.includes("biology") || name.includes("chemistry") || name.includes("marine") || name.includes("anatomy") || name.includes("forensic") || name.includes("earth")){
+        return "Science";
+    }
+
+    if(name.includes("history") || name.includes("government") || name.includes("economics") || name.includes("psychology") || name.includes("geography") || name.includes("law")){
+        return "Social Studies";
+    }
+
+    if(name.includes("spanish")){
+        return "World Languages";
+    }
+
+    if(name.includes("art") || name.includes("band") || name.includes("chorus") || name.includes("orchestra") || name.includes("music") || name.includes("photo") || name.includes("design") || name.includes("video")){
+        return "Fine Arts";
+    }
+
+    if(name.includes("computer") || name.includes("digital") || name.includes("technology")){
+        return "Technology";
+    }
+
+    if(name.includes("business") || name.includes("accounting") || name.includes("finance")){
+        return "Business";
+    }
+
+    if(name.includes("healthcare") || name.includes("patient") || name.includes("medical")){
+        return "Medical";
+    }
+
+    if(name.includes("hope") || name.includes("sports") || name.includes("training") || name.includes("basketball") || name.includes("tennis") || name.includes("volleyball")){
+        return "Physical Education";
+    }
+
+    if(type === "NJROTC"){
+        return "NJROTC";
+    }
+
+    return "Other";
+
+}
+
+function populateGuideFilters(){
+
+    populateSelect(typeFilter, [
         "All",
         ...new Set(allCourses.map(course => course.type))
-    ];
+    ]);
 
-    courseFilters.innerHTML = "";
+    populateSelect(departmentFilter, [
+        "All",
+        ...new Set(allCourses.map(course => course.department))
+    ]);
 
-    uniqueTypes.forEach((type) => {
+    populateSelect(gradeFilter, [
+        "All",
+        ...new Set(allCourses.map(course => course.gradeLevel))
+    ]);
 
-        const button =
-        document.createElement("button");
+}
 
-        button.className =
-        `filter-btn ${type === "All" ? "active" : ""}`;
+function populateSelect(select, options){
 
-        button.textContent = type;
+    select.innerHTML = "";
 
-        button.addEventListener("click", () => {
+    options.forEach((optionText) => {
 
-            activeType = type;
+        const option =
+        document.createElement("option");
 
-            document
-            .querySelectorAll(".filter-btn")
-            .forEach((btn) => {
-                btn.classList.remove("active");
-            });
+        option.value = optionText;
+        option.textContent =
+        optionText === "All"
+        ? select.id.includes("type")
+            ? "All Types"
+            : select.id.includes("department")
+                ? "All Departments"
+                : "All Grades"
+        : optionText;
 
-            button.classList.add("active");
-
-            renderCourses();
-
-        });
-
-        courseFilters.appendChild(button);
+        select.appendChild(option);
 
     });
 
 }
 
-function renderCourses(){
+function getFilteredCourses(){
 
-    const searchTerm =
-    courseSearch.value.toLowerCase();
-
-    coursesContainer.innerHTML = "";
-
-    const filteredCourses =
-    allCourses.filter((course) => {
+    return allCourses.filter((course) => {
 
         const matchesType =
-        activeType === "All"
-        || course.type === activeType;
+        typeFilter.value === "All"
+        || course.type === typeFilter.value;
 
-        const matchesSearch =
-        course.title.toLowerCase().includes(searchTerm)
-        || course.description.toLowerCase().includes(searchTerm)
-        || course.type.toLowerCase().includes(searchTerm)
-        || course.rating.toLowerCase().includes(searchTerm)
-        || course.extraInfo.toLowerCase().includes(searchTerm);
+        const matchesDepartment =
+        departmentFilter.value === "All"
+        || course.department === departmentFilter.value;
 
-        return matchesType && matchesSearch;
+        const matchesGrade =
+        gradeFilter.value === "All"
+        || course.gradeLevel === gradeFilter.value;
+
+        return matchesType && matchesDepartment && matchesGrade;
 
     });
 
-    if(filteredCourses.length === 0){
+}
 
-        coursesContainer.innerHTML = `
+function renderCourseList(){
 
-        <div class="directory-card">
+    const filteredCourses =
+    getFilteredCourses();
 
-            <h3>No Courses Found</h3>
+    courseList.innerHTML = "";
 
-            <p>
-            Try adjusting your search.
-            </p>
+    const visibleCourses =
+    filteredCourses.slice(0, visibleCourseCount);
 
+    if(visibleCourses.length === 0){
+
+        courseList.innerHTML = `
+
+        <div class="course-list-card">
+            <div class="course-list-main">
+                <h3>No Courses Found</h3>
+                <p>Try changing the filters.</p>
+            </div>
         </div>
 
         `;
+
+        courseDetailPanel.innerHTML = `
+
+        <div class="coming-soon-card">
+            <h3>No Course Selected</h3>
+            <p>Select a course to view more information.</p>
+        </div>
+
+        `;
+
+        viewMoreCoursesBtn.style.display = "none";
 
         return;
 
     }
 
-    filteredCourses.forEach((course) => {
+    visibleCourses.forEach((course) => {
 
-        const card = `
+        const card =
+        document.createElement("div");
 
-        <div class="directory-card fade-up">
+        card.className =
+        `course-list-card ${course.originalIndex === selectedCourseIndex ? "active" : ""}`;
 
-            <span class="directory-type">
-                ${course.type}
-            </span>
+        card.innerHTML = `
 
-            <h3>${course.title}</h3>
+            <div class="course-icon">
+                ${getCourseIcon(course.department)}
+            </div>
 
-            <p>${course.description}</p>
+            <div class="course-list-main">
 
-            <div class="course-meta">
+                <h3>${course.title}</h3>
 
-                <span class="course-pill">
-                    ⭐ ${course.rating}
-                </span>
+                <div class="course-tags">
+                    <span class="course-tag">${course.type}</span>
+                    <span class="course-tag">${course.department}</span>
+                </div>
 
-                ${course.extraInfo ? `
-                <span class="course-pill">
-                    ${course.extraInfo}
-                </span>
-                ` : ""}
+            </div>
+
+            <div class="course-grade">
+                Grades: ${course.gradeLevel}
+            </div>
+
+            <div class="course-rating-small">
+                ${formatRating(course.rating)} ★
+                <span>${course.reviews}</span>
+            </div>
+
+        `;
+
+        card.addEventListener("click", () => {
+
+            selectedCourseIndex = course.originalIndex;
+
+            renderCourseList();
+            renderCourseDetails(course);
+
+        });
+
+        courseList.appendChild(card);
+
+    });
+
+    viewMoreCoursesBtn.style.display =
+    filteredCourses.length > visibleCourseCount
+    ? "block"
+    : "none";
+
+}
+
+function renderCourseDetails(course){
+
+    const topics =
+    course.topics
+    ? course.topics.split(",").map(topic => topic.trim()).filter(Boolean)
+    : generateTopics(course);
+
+    courseDetailPanel.innerHTML = `
+
+        <div class="detail-top">
+
+            <div class="detail-title-wrap">
+
+                <div class="course-icon">
+                    ${getCourseIcon(course.department)}
+                </div>
+
+                <div>
+                    <h3>${course.title}</h3>
+
+                    <div class="course-tags">
+                        <span class="course-tag">${course.type}</span>
+                        <span class="course-tag">${course.department}</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="detail-rating">
+                ${formatRating(course.rating)} ★
+                <span>${course.reviews}</span>
+            </div>
+
+        </div>
+
+        <p class="detail-description">
+            ${course.description}
+        </p>
+
+        <div class="detail-info-grid">
+
+            <div class="detail-info-item">
+                <span>📅</span>
+                <strong>Grade Level</strong>
+                <p>${course.gradeLevel}</p>
+            </div>
+
+            <div class="detail-info-item">
+                <span>📌</span>
+                <strong>Prerequisites</strong>
+                <p>${course.prerequisites}</p>
+            </div>
+
+            <div class="detail-info-item">
+                <span>📚</span>
+                <strong>Credits</strong>
+                <p>${course.credits}</p>
+            </div>
+
+            <div class="detail-info-item">
+                <span>🏛️</span>
+                <strong>Department</strong>
+                <p>${course.department}</p>
+            </div>
+
+        </div>
+
+        <div class="detail-topics">
+
+            <h4>Topics Covered</h4>
+
+            <div class="topic-list">
+
+                ${topics.map(topic => `
+                    <div class="topic-item">${topic}</div>
+                `).join("")}
 
             </div>
 
         </div>
 
-        `;
+        <div class="rating-breakdown">
 
-        coursesContainer.innerHTML += card;
+            <h4>Student Interest</h4>
 
-    });
+            ${generateRatingBars(course.rating)}
 
-    document.querySelectorAll(".fade-up")
-    .forEach((el) => observer.observe(el));
+        </div>
+
+    `;
 
 }
 
-courseSearch.addEventListener("input", renderCourses);
+function formatRating(rating){
 
-loadCourses();
+    return String(rating)
+    .replace("/5", "")
+    .trim();
+
+}
+
+function generateRatingBars(rating){
+
+    const numeric =
+    parseFloat(formatRating(rating)) || 4.3;
+
+    const five =
+    Math.min(85, Math.max(45, Math.round(numeric * 14)));
+
+    const four =
+    Math.max(8, Math.round((5 - numeric) * 18));
+
+    const three = 8;
+    const two = 3;
+    const one = 1;
+
+    const rows = [
+        ["5", five],
+        ["4", four],
+        ["3", three],
+        ["2", two],
+        ["1", one]
+    ];
+
+    return rows.map(row => `
+
+        <div class="rating-row">
+
+            <span>${row[0]} ★</span>
+
+            <div class="rating-bar">
+                <div class="rating-fill" style="width:${row[1]}%"></div>
+            </div>
+
+            <span>${row[1]}%</span>
+
+        </div>
+
+    `).join("");
+
+}
+
+function generateTopics(course){
+
+    if(course.department === "English"){
+        return ["Reading", "Writing", "Analysis", "Communication"];
+    }
+
+    if(course.department === "Math"){
+        return ["Problem Solving", "Equations", "Functions", "Applications"];
+    }
+
+    if(course.department === "Science"){
+        return ["Lab Skills", "Scientific Thinking", "Analysis", "Research"];
+    }
+
+    if(course.department === "Social Studies"){
+        return ["History", "Government", "Culture", "Critical Thinking"];
+    }
+
+    if(course.department === "Fine Arts"){
+        return ["Creativity", "Performance", "Design", "Technique"];
+    }
+
+    if(course.department === "Technology"){
+        return ["Digital Skills", "Software", "Problem Solving", "Projects"];
+    }
+
+    return ["Course Skills", "Projects", "Participation", "Career Readiness"];
+
+}
+
+function getCourseIcon(department){
+
+    if(department === "English") return "✎";
+    if(department === "Math") return "∑";
+    if(department === "Science") return "⚗";
+    if(department === "Social Studies") return "🌐";
+    if(department === "World Languages") return "🗣";
+    if(department === "Fine Arts") return "🎨";
+    if(department === "Technology") return "</>";
+    if(department === "Business") return "$";
+    if(department === "Medical") return "+";
+    if(department === "Physical Education") return "🏃";
+    if(department === "NJROTC") return "⚓";
+
+    return "📘";
+
+}
+
+[typeFilter, departmentFilter, gradeFilter].forEach((filter) => {
+
+    filter.addEventListener("change", () => {
+
+        visibleCourseCount = 8;
+
+        const filteredCourses =
+        getFilteredCourses();
+
+        if(filteredCourses.length > 0){
+            selectedCourseIndex = filteredCourses[0].originalIndex;
+            renderCourseDetails(filteredCourses[0]);
+        }
+
+        renderCourseList();
+
+    });
+
+});
+
+viewMoreCoursesBtn.addEventListener("click", () => {
+
+    visibleCourseCount += 6;
+
+    renderCourseList();
+
+});
+
+guideTabs.forEach((tab) => {
+
+    tab.addEventListener("click", () => {
+
+        const selectedTab =
+        tab.dataset.guideTab;
+
+        guideTabs.forEach((button) => {
+            button.classList.remove("active");
+        });
+
+        guidePanels.forEach((panel) => {
+            panel.classList.remove("active");
+        });
+
+        tab.classList.add("active");
+
+        document
+        .getElementById(`${selectedTab}-guide-panel`)
+        .classList.add("active");
+
+    });
+
+});
+
+loadStudentGuideCourses();
 
 /* =========================
    GRADE CALCULATOR
