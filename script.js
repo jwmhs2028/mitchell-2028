@@ -1724,6 +1724,7 @@ function attachPollVoteButtons(){
 
             try{
 
+                const response =
                 await fetch(feedbackApiUrl, {
                     method:"POST",
                     body:JSON.stringify({
@@ -1733,6 +1734,21 @@ function attachPollVoteButtons(){
                         voterId:getVoterId()
                     })
                 });
+               
+                const result =
+                await response.json();
+               
+                if(!result.success){
+                
+                    if(result.alreadyVoted){
+                        alert("You already voted on this idea.");
+                        await loadFeedbackPolls();
+                        return;
+                    }
+               
+                    throw new Error(result.message || "Vote could not be saved");
+               
+                }
 
                 if(vote === "no"){
 
