@@ -769,7 +769,453 @@ guideTabs.forEach((tab) => {
 
 });
 
+/* =========================
+   STUDENT GUIDE CLUBS
+========================= */
+
+const clubList =
+document.getElementById("club-list");
+
+const clubDetailPanel =
+document.getElementById("club-detail-panel");
+
+const clubTypeFilter =
+document.getElementById("club-type-filter");
+
+const clubCategoryFilter =
+document.getElementById("club-category-filter");
+
+const clubGradeFilter =
+document.getElementById("club-grade-filter");
+
+const clubSearchInput =
+document.getElementById("club-search-input");
+
+let allClubs = [];
+let selectedClubIndex = 0;
+
+const clubsSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vRTraMHVcYD9Ac9ki1fHVUAQgcvWBuS8GMIiyXf4lJ6nkEaRgVE-LNogJspvCemNYjgdvGkwvz6a23P/pub?output=csv";
+
+async function loadStudentGuideClubs(){
+
+    if(!clubList || !clubDetailPanel){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(clubsSheetUrl);
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv).slice(1);
+
+        allClubs = rows
+        .filter(row => row.length >= 2 && row[1])
+        .map((row, index) => {
+
+            return {
+                originalIndex:index,
+                type:row[0] || "Other",
+                title:row[1] || "Untitled Club",
+                description:row[2] || "No description available yet.",
+                rating:row[3] || "Interest",
+                reviews:row[4] || "Student interest",
+                extraInfo:row[5] || "",
+                category:row[6] || "General",
+                gradeLevel:row[7] || "9-12",
+                meetingTime:row[8] || "TBD",
+                sponsor:row[9] || "TBD",
+                topics:row[10] || ""
+            };
+
+        });
+
+        populateClubFilters();
+        renderClubList();
+
+        if(allClubs.length > 0){
+            renderClubDetails(allClubs[0]);
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        clubList.innerHTML = `
+
+        <div class="course-list-card">
+            <div class="course-list-main">
+                <h3>Unable To Load Clubs</h3>
+                <p>Please try again later.</p>
+            </div>
+        </div>
+
+        `;
+
+        clubDetailPanel.innerHTML = `
+
+        <div class="coming-soon-card">
+            <h3>Clubs Unavailable</h3>
+            <p>The clubs guide could not be loaded.</p>
+        </div>
+
+        `;
+
+    }
+
+}
+
+function populateClubFilters(){
+
+    populateClubSelect(clubTypeFilter, [
+        "All",
+        ...new Set(allClubs.map(club => club.type))
+    ]);
+
+    populateClubSelect(clubCategoryFilter, [
+        "All",
+        ...new Set(allClubs.map(club => club.category))
+    ]);
+
+    populateClubSelect(clubGradeFilter, [
+        "All",
+        ...new Set(allClubs.map(club => club.gradeLevel))
+    ]);
+
+}
+
+function populateClubSelect(select, options){
+
+    if(!select){
+        return;
+    }
+
+    select.innerHTML = "";
+
+    options.forEach((optionText) => {
+
+        const option =
+        document.createElement("option");
+
+        option.value = optionText;
+
+        option.textContent =
+        optionText === "All"
+        ? select.id.includes("type")
+            ? "All Types"
+            : select.id.includes("category")
+                ? "All Categories"
+                : "All Grades"
+        : optionText;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+function getFilteredClubs(){
+
+    const searchTerm =
+    clubSearchInput
+    ? clubSearchInput.value.toLowerCase().trim()
+    : "";
+
+    return allClubs.filter((club) => {
+
+        const matchesType =
+        clubTypeFilter.value === "All"
+        || club.type === clubTypeFilter.value;
+
+        const matchesCategory =
+        clubCategoryFilter.value === "All"
+        || club.category === clubCategoryFilter.value;
+
+        const matchesGrade =
+        clubGradeFilter.value === "All"
+        || club.gradeLevel === clubGradeFilter.value;
+
+        const searchableText =
+        `
+        ${club.type}
+        ${club.title}
+        ${club.description}
+        ${club.rating}
+        ${club.reviews}
+        ${club.extraInfo}
+        ${club.category}
+        ${club.gradeLevel}
+        ${club.meetingTime}
+        ${club.sponsor}
+        ${club.topics}
+        `.toLowerCase();
+
+        const matchesSearch =
+        searchableText.includes(searchTerm);
+
+        return matchesType && matchesCategory && matchesGrade && matchesSearch;
+
+    });
+
+}
+
+function renderClubList(){
+
+    const filteredClubs =
+    getFilteredClubs();
+
+    clubList.innerHTML = "";
+
+    if(filteredClubs.length === 0){
+
+        clubList.innerHTML = `
+
+        <div class="course-list-card">
+            <div class="course-list-main">
+                <h3>No Clubs Found</h3>
+                <p>Try changing the filters or search term.</p>
+            </div>
+        </div>
+
+        `;
+
+        clubDetailPanel.innerHTML = `
+
+        <div class="coming-soon-card">
+            <h3>No Club Selected</h3>
+            <p>Select a club to view more information.</p>
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    filteredClubs.forEach((club) => {
+
+        const card =
+        document.createElement("div");
+
+        card.className =
+        `course-list-card ${club.originalIndex === selectedClubIndex ? "active" : ""}`;
+
+        card.innerHTML = `
+
+            <div class="course-icon">
+                ${getClubIcon(club.category)}
+            </div>
+
+            <div class="course-list-main">
+
+                <h3>${club.title}</h3>
+
+                <div class="course-tags">
+                    <span class="course-tag">${club.type}</span>
+                    <span class="course-tag">${club.category}</span>
+                </div>
+
+            </div>
+
+            <div class="course-grade">
+                Grades: ${club.gradeLevel}
+            </div>
+
+            <div class="course-rating-small">
+                ${formatRating(club.rating)}${isNumericRating(club.rating) ? " ★" : ""}
+                <span>${club.reviews}</span>
+            </div>
+
+        `;
+
+        card.addEventListener("click", () => {
+
+            selectedClubIndex = club.originalIndex;
+
+            renderClubList();
+            renderClubDetails(club);
+
+        });
+
+        clubList.appendChild(card);
+
+    });
+
+}
+
+function renderClubDetails(club){
+
+    const topics =
+    club.topics
+    ? club.topics.split(",").map(topic => topic.trim()).filter(Boolean)
+    : ["Leadership", "Community", "Activities", "Involvement"];
+
+    clubDetailPanel.innerHTML = `
+
+        <div class="detail-top">
+
+            <div class="detail-title-wrap">
+
+                <div class="course-icon">
+                    ${getClubIcon(club.category)}
+                </div>
+
+                <div>
+                    <h3>${club.title}</h3>
+
+                    <div class="course-tags">
+                        <span class="course-tag">${club.type}</span>
+                        <span class="course-tag">${club.category}</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="detail-rating">
+                ${formatRating(club.rating)}${isNumericRating(club.rating) ? " ★" : ""}
+                <span>${club.reviews}</span>
+            </div>
+
+        </div>
+
+        <p class="detail-description">
+            ${club.description}
+        </p>
+
+        <div class="detail-info-grid">
+
+            <div class="detail-info-item">
+                <span>📅</span>
+                <strong>Grade Level</strong>
+                <p>${club.gradeLevel}</p>
+            </div>
+
+            <div class="detail-info-item">
+                <span>🕒</span>
+                <strong>Meeting Time</strong>
+                <p>${club.meetingTime}</p>
+            </div>
+
+            <div class="detail-info-item">
+                <span>👤</span>
+                <strong>Sponsor</strong>
+                <p>${club.sponsor}</p>
+            </div>
+
+            <div class="detail-info-item">
+                <span>🏷️</span>
+                <strong>Category</strong>
+                <p>${club.category}</p>
+            </div>
+
+        </div>
+
+        <div class="detail-topics">
+
+            <h4>Club Focus</h4>
+
+            <div class="topic-list">
+
+                ${topics.map(topic => `
+                    <div class="topic-item">${topic}</div>
+                `).join("")}
+
+            </div>
+
+        </div>
+
+        <div class="rating-breakdown">
+
+            <h4>Student Interest</h4>
+
+            ${generateRatingBars(club.rating)}
+
+        </div>
+
+    `;
+
+}
+
+function isNumericRating(rating){
+
+    return !Number.isNaN(parseFloat(formatRating(rating)));
+
+}
+
+function getClubIcon(category){
+
+    if(category === "Academic") return "🎓";
+    if(category === "Science") return "⚗";
+    if(category === "STEM") return "🤖";
+    if(category === "Business") return "$";
+    if(category === "Service") return "🤝";
+    if(category === "Leadership") return "⭐";
+    if(category === "Fine Arts") return "🎨";
+    if(category === "Performing Arts") return "🎭";
+    if(category === "Media") return "📰";
+    if(category === "Medical") return "+";
+    if(category === "Environment") return "🌱";
+    if(category === "Culture") return "🌎";
+    if(category === "Interest") return "♟";
+    if(category === "Wellness") return "♡";
+    if(category === "Civic") return "🏛";
+    if(category === "Advocacy") return "📢";
+    if(category === "World Languages") return "🗣";
+    if(category === "Arts") return "✎";
+
+    return "👥";
+
+}
+
+[clubTypeFilter, clubCategoryFilter, clubGradeFilter].forEach((filter) => {
+
+    if(!filter){
+        return;
+    }
+
+    filter.addEventListener("change", () => {
+
+        const filteredClubs =
+        getFilteredClubs();
+
+        if(filteredClubs.length > 0){
+            selectedClubIndex = filteredClubs[0].originalIndex;
+            renderClubDetails(filteredClubs[0]);
+        }
+
+        renderClubList();
+
+    });
+
+});
+
+if(clubSearchInput){
+
+    clubSearchInput.addEventListener("input", () => {
+
+        const filteredClubs =
+        getFilteredClubs();
+
+        if(filteredClubs.length > 0){
+            selectedClubIndex = filteredClubs[0].originalIndex;
+            renderClubDetails(filteredClubs[0]);
+        }
+
+        renderClubList();
+
+    });
+
+}
+
 loadStudentGuideCourses();
+loadStudentGuideClubs();
 
 /* =========================
    GRADE CALCULATOR
