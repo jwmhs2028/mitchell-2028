@@ -919,6 +919,238 @@ select{
 
     text-align:center;
 }
+
+/* =========================
+   COMMUNICATION
+========================= */
+
+.communication-section{
+    background:#030303;
+}
+
+.communication-box{
+    max-width:1400px;
+
+    margin:auto;
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.045),
+    rgba(255,255,255,.015));
+
+    border:
+    1px solid rgba(197,178,122,.14);
+
+    border-radius:34px;
+
+    padding:60px;
+
+    overflow:hidden;
+
+    box-shadow:
+    0 0 40px rgba(197,178,122,.08);
+}
+
+.communication-grid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+    gap:28px;
+}
+
+.communication-card{
+    position:relative;
+
+    display:flex;
+
+    gap:24px;
+
+    align-items:flex-start;
+
+    background:
+    linear-gradient(
+    145deg,
+    rgba(255,255,255,.055),
+    rgba(255,255,255,.02));
+
+    border:
+    1px solid rgba(197,178,122,.16);
+
+    border-radius:30px;
+
+    padding:34px;
+
+    overflow:hidden;
+
+    transition:.35s ease;
+
+    box-shadow:
+    0 10px 35px rgba(0,0,0,.24);
+}
+
+.communication-card::before{
+    content:"";
+
+    position:absolute;
+
+    top:-120px;
+    right:-120px;
+
+    width:230px;
+    height:230px;
+
+    background:
+    radial-gradient(
+    rgba(197,178,122,.16),
+    transparent 70%);
+
+    pointer-events:none;
+}
+
+.communication-card:hover{
+    transform:translateY(-8px);
+
+    border-color:#c5b27a;
+
+    box-shadow:
+    0 0 35px rgba(197,178,122,.16);
+}
+
+.communication-icon{
+    width:64px;
+    height:64px;
+
+    flex:0 0 auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #d7c07b,
+    #9b823c);
+
+    color:black;
+
+    font-size:2rem;
+
+    box-shadow:
+    0 0 24px rgba(197,178,122,.22);
+
+    position:relative;
+    z-index:2;
+}
+
+.communication-content{
+    position:relative;
+    z-index:2;
+}
+
+.communication-label{
+    display:inline-block;
+
+    margin-bottom:10px;
+
+    color:#c5b27a;
+
+    font-size:.8rem;
+
+    font-weight:800;
+
+    letter-spacing:1.5px;
+
+    text-transform:uppercase;
+}
+
+.communication-content h3{
+    font-size:1.7rem;
+
+    margin-bottom:14px;
+
+    color:white;
+}
+
+.communication-content p{
+    color:rgba(255,255,255,.74);
+
+    line-height:1.8;
+
+    margin-bottom:24px;
+}
+
+.communication-btn{
+    display:inline-block;
+
+    background:
+    linear-gradient(
+    135deg,
+    #d7c07b,
+    #b89a46);
+
+    color:black;
+
+    padding:14px 22px;
+
+    border-radius:14px;
+
+    font-weight:800;
+
+    transition:.3s ease;
+}
+
+.communication-btn:hover{
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 0 24px rgba(197,178,122,.32);
+}
+
+.communication-btn.secondary{
+    background:transparent;
+
+    color:white;
+
+    border:
+    1px solid rgba(197,178,122,.28);
+}
+
+.communication-btn.secondary:hover{
+    background:#c5b27a;
+
+    color:black;
+}
+
+@media(max-width:768px){
+
+    .communication-box{
+        padding:26px;
+    }
+
+    .communication-card{
+        flex-direction:column;
+
+        padding:28px;
+    }
+
+    .communication-content h3{
+        font-size:1.4rem;
+    }
+
+    .communication-btn{
+        width:100%;
+
+        text-align:center;
+    }
+
+}
+
 /* =========================
    REQUESTS
 ========================= */
