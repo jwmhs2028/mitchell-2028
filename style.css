@@ -1303,6 +1303,165 @@ select{
 }
 
 /* =========================
+   ADVISORS
+========================= */
+
+.advisors-block{
+    margin-top:54px;
+
+    padding:42px;
+
+    background:
+    linear-gradient(
+    135deg,
+    #0b0b0b,
+    #17130b);
+
+    border:
+    1px solid rgba(197,163,63,.32);
+
+    color:white;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.advisors-block::before{
+    content:"";
+
+    position:absolute;
+
+    top:-120px;
+    right:-120px;
+
+    width:260px;
+    height:260px;
+
+    background:
+    radial-gradient(
+    rgba(197,163,63,.22),
+    transparent 70%);
+
+    pointer-events:none;
+}
+
+.advisors-block > span{
+    position:relative;
+    z-index:2;
+
+    color:var(--gold-light);
+
+    font-size:.75rem;
+
+    font-weight:900;
+
+    letter-spacing:5px;
+
+    text-transform:uppercase;
+}
+
+.advisors-block > p{
+    position:relative;
+    z-index:2;
+
+    margin-top:10px;
+
+    color:rgba(255,255,255,.7);
+
+    line-height:1.8;
+
+    max-width:780px;
+}
+
+.advisor-grid{
+    position:relative;
+    z-index:2;
+
+    margin-top:28px;
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:22px;
+}
+
+.advisor-card{
+    background:
+    rgba(255,255,255,.055);
+
+    border:
+    1px solid rgba(197,163,63,.24);
+
+    padding:34px;
+
+    transition:.35s ease;
+}
+
+.advisor-card:hover{
+    transform:translateY(-6px);
+
+    border-color:var(--gold-light);
+
+    box-shadow:
+    0 18px 45px rgba(0,0,0,.18);
+}
+
+.advisor-card p{
+    color:var(--gold-light);
+
+    font-size:.72rem;
+
+    font-weight:900;
+
+    letter-spacing:4px;
+
+    text-transform:uppercase;
+
+    margin-bottom:12px;
+}
+
+.advisor-card h3{
+    color:white;
+
+    font-size:1.8rem;
+
+    text-transform:uppercase;
+
+    font-weight:900;
+
+    margin-bottom:20px;
+}
+
+.advisor-card blockquote{
+    border-top:
+    1px solid rgba(197,163,63,.28);
+
+    padding-top:16px;
+
+    color:rgba(255,255,255,.72);
+
+    font-style:italic;
+
+    line-height:1.7;
+
+    font-weight:600;
+}
+
+@media(max-width:768px){
+
+    .advisors-block{
+        padding:28px;
+    }
+
+    .advisor-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+/* =========================
    COMMUNICATION
 ========================= */
 
