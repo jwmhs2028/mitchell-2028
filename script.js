@@ -1558,7 +1558,7 @@ async function loadFeedbackPolls(){
     try{
 
         const response =
-        await fetch(`${feedbackApiUrl}?action=getPolls`);
+        await fetch(`${feedbackApiUrl}?action=getPolls&voterId=${encodeURIComponent(getVoterId())}`);
 
         const data =
         await response.json();
@@ -1674,12 +1674,20 @@ function renderPollCard(poll, featured){
 
             <div class="poll-actions">
 
-                <button class="poll-vote-btn yes" data-vote="yes" data-poll-id="${poll.id}">
-                    Yes
+                <button
+                class="poll-vote-btn yes ${poll.userVote === "yes" ? "selected" : ""}"
+                data-vote="yes"
+                data-poll-id="${poll.id}"
+                ${poll.hasVoted ? "disabled" : ""}>
+                    ${poll.userVote === "yes" ? "You voted Yes" : "Yes"}
                 </button>
-
-                <button class="poll-vote-btn no" data-vote="no" data-poll-id="${poll.id}">
-                    No
+               
+                <button
+                class="poll-vote-btn no ${poll.userVote === "no" ? "selected" : ""}"
+                data-vote="no"
+                data-poll-id="${poll.id}"
+                ${poll.hasVoted ? "disabled" : ""}>
+                    ${poll.userVote === "no" ? "You voted No" : "No"}
                 </button>
 
             </div>
@@ -1721,7 +1729,8 @@ function attachPollVoteButtons(){
                     body:JSON.stringify({
                         action:"vote",
                         pollId:pollId,
-                        vote:vote
+                        vote:vote,
+                        voterId:getVoterId()
                     })
                 });
 
