@@ -1355,35 +1355,42 @@ footer{
     margin-top:4px;
 }
 
-.view-more-btn{
-    display:block;
+.guide-search-row{
+    margin-top:18px;
+    margin-bottom:18px;
+}
 
-    margin:10px auto 0;
-
-    width:250px;
+#course-search-input{
+    width:100%;
 
     background:
-    rgba(255,255,255,.04);
-
-    color:#d7c07b;
+    rgba(255,255,255,.045);
 
     border:
-    1px solid rgba(197,178,122,.28);
+    1px solid rgba(197,178,122,.2);
 
     border-radius:14px;
 
-    padding:13px 22px;
+    padding:18px 22px;
 
-    cursor:pointer;
+    color:white;
 
-    font-weight:700;
+    outline:none;
+
+    font-size:1rem;
 
     transition:.3s ease;
 }
 
-.view-more-btn:hover{
-    background:#c5b27a;
-    color:black;
+#course-search-input::placeholder{
+    color:rgba(255,255,255,.55);
+}
+
+#course-search-input:focus{
+    border-color:#c5b27a;
+
+    box-shadow:
+    0 0 22px rgba(197,178,122,.18);
 }
 
 .course-detail-panel{
