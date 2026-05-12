@@ -15,30 +15,30 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
 <!-- =========================
-     HERO
+     NAVBAR
 ========================= -->
 
-<header class="hero" id="home">
+<header class="site-header" id="home">
 
-  <nav class="navbar">
+  <nav class="top-nav">
 
-    <div class="brand">
+    <a href="#home" class="brand">
 
-      <img src="images/logo.png" class="logo">
+      <img src="images/logo.png" class="logo" alt="Class of 2028 Logo">
 
       <div class="brand-text">
-        <h2>James W. Mitchell</h2>
-        <p>CLASS OF 2028</p>
+        <h2>Mitchell Mustangs</h2>
+        <p>CLASS OF 2028 · STUDENT COUNCIL</p>
       </div>
 
-    </div>
+    </a>
 
     <div class="nav-tabs">
 
@@ -62,119 +62,76 @@
         Calculator
       </a>
 
+      <a href="#council" class="tab">
+        Council
+      </a>
+
       <a href="#communication" class="tab">
-        Communication
+        Follow Us
       </a>
 
       <a href="#requests" class="tab">
-        Requests
+        Ideas
       </a>
 
     </div>
 
-    <a href="#events" class="nav-btn">
-      Stay Updated
-    </a>
-
   </nav>
 
-  <section class="hero-content">
+</header>
 
-    <div class="hero-left">
+<!-- =========================
+     HERO
+========================= -->
 
-      <div class="accent-line"></div>
+<section class="hero-clean">
 
-      <div>
+  <div class="hero-bg"></div>
 
-        <span class="mini-title">
-          JAMES W. MITCHELL HIGH SCHOOL
-        </span>
+  <div class="hero-inner">
 
-        <h1>
-          CLASS OF<br>
-          <span>2028</span>
-        </h1>
+    <div class="hero-copy">
 
-        <p>
-          Your official hub for announcements,
-          Homecoming, Prom, spirit events,
-          student activities, and more.
-        </p>
+      <span class="eyebrow">
+        JAMES W. MITCHELL HIGH SCHOOL
+      </span>
 
-        <div class="hero-buttons">
+      <h1>
+        CLASS OF 2028
+        <span>STUDENT COUNCIL</span>
+      </h1>
 
-          <a href="#events" class="primary-btn">
-            Latest Updates
-          </a>
+      <p>
+        Your official hub for Class of 2028 announcements, events, student
+        resources, course information, clubs, requests, and Mustang spirit.
+      </p>
 
-          <a href="#requests" class="secondary-btn">
-            Submit Ideas
-          </a>
+      <div class="hero-buttons">
 
-        </div>
+        <a href="#events" class="primary-btn">
+          View Updates
+        </a>
+
+        <a href="#courses" class="secondary-btn">
+          Student Guide
+        </a>
 
       </div>
 
     </div>
 
-    <div class="hero-right">
+    <div class="hero-badge-card">
 
-      <img src="images/mustang.png" class="mustang">
+      <img src="images/mustang.png" alt="Mitchell Mustang" class="hero-mustang">
 
-    </div>
-
-  </section>
-
-  <div class="wave">
-
-    <svg viewBox="0 0 1440 180" preserveAspectRatio="none">
-
-      <path fill="#ffffff"
-      d="M0,96L80,106.7C160,117,320,139,480,149.3C640,160,800,160,960,149.3C1120,139,1280,117,1360,106.7L1440,96L1440,320L0,320Z">
-      </path>
-
-    </svg>
-
-  </div>
-
-</header>
-
-<!-- =========================
-     ABOUT
-========================= -->
-
-<section class="section" id="about">
-
-  <div class="section-title">
-
-    <span>WELCOME</span>
-
-    <h2>Mitchell Mustangs</h2>
-
-  </div>
-
-  <div class="about-grid">
-
-    <div class="about-text">
-
-      <p>
-        Welcome to the official Class of 2028 website.
-        Stay informed with announcements,
-        student council updates, Homecoming,
-        Prom, and school activities.
-      </p>
-
-      <p>
-        Submit your own ideas for themes,
-        games, pep rallies, and school events
-        directly to student council.
-      </p>
-
-    </div>
-
-    <div class="about-card">
-
-      <img src="images/mustang.png">
+      <div class="badge-card-text">
+        <span>CLASS HUB</span>
+        <h3>Built for students.</h3>
+        <p>
+          Stay connected with council updates, school resources, and everything
+          happening for the Class of 2028.
+        </p>
+      </div>
 
     </div>
 
@@ -183,66 +140,90 @@
 </section>
 
 <!-- =========================
-     COUNCIL
+     MARQUEE STRIP
 ========================= -->
 
-<section class="council-section" id="council">
+<section class="marquee-strip" aria-label="Class of 2028 marquee">
 
-  <div class="section-header">
+  <div class="marquee-track">
 
-    <span class="section-tag">
-      STUDENT COUNCIL
-    </span>
+    <span>CLASS OF 2028</span>
+    <span>STUDENT COUNCIL</span>
+    <span>MITCHELL MUSTANGS</span>
+    <span>CLASS OF 2028</span>
+    <span>STUDENT COUNCIL</span>
+    <span>MITCHELL MUSTANGS</span>
 
-    <h2>2026–2027 Junior Council</h2>
+  </div>
+
+</section>
+
+<!-- =========================
+     ABOUT
+========================= -->
+
+<section class="section about-clean" id="about">
+
+  <div class="section-heading left">
+
+    <span>WELCOME</span>
+
+    <h2>
+      Mitchell Mustangs
+    </h2>
 
     <p>
-      Meet the student leaders representing
-      the Mitchell Class of 2028.
+      Welcome to the official Class of 2028 website. This site is designed to
+      keep students informed, connected, and involved throughout the school year.
     </p>
 
   </div>
 
-  <div class="council-grid">
+  <div class="about-clean-grid">
 
-    <div class="council-card president">
-      <h3>President</h3>
-      <p>Aarnav Vurputoor</p>
+    <div class="about-feature-card">
+
+      <span class="card-number">
+        01
+      </span>
+
+      <h3>Announcements</h3>
+
+      <p>
+        Stay updated with student council news, important reminders, spirit
+        events, Homecoming, Prom, and school activities.
+      </p>
+
     </div>
 
-    <div class="council-card">
-      <h3>Vice President</h3>
-      <p>Casey Martanovic</p>
+    <div class="about-feature-card">
+
+      <span class="card-number">
+        02
+      </span>
+
+      <h3>Student Voice</h3>
+
+      <p>
+        Submit ideas for themes, pep rallies, games, events, and improvements
+        directly to the Class of 2028 council.
+      </p>
+
     </div>
 
-    <div class="council-card">
-      <h3>Secretary</h3>
-      <p>Avantika Krishna</p>
-    </div>
+    <div class="about-feature-card">
 
-    <div class="council-card">
-      <h3>Treasurer</h3>
-      <p>Indiana Duncan</p>
-    </div>
+      <span class="card-number">
+        03
+      </span>
 
-    <div class="council-card">
-      <h3>Representative</h3>
-      <p>Apollo Abbas</p>
-    </div>
+      <h3>Resources</h3>
 
-    <div class="council-card">
-      <h3>Representative</h3>
-      <p>Lucas Zheng</p>
-    </div>
+      <p>
+        Use the Student Guide to explore courses, clubs, student groups,
+        resources, and tools made for Mitchell students.
+      </p>
 
-    <div class="council-card">
-      <h3>Representative</h3>
-      <p>Xavier Buck</p>
-    </div>
-
-    <div class="council-card">
-      <h3>Representative</h3>
-      <p>Pablo Jimenez</p>
     </div>
 
   </div>
@@ -253,13 +234,19 @@
      LIVE UPDATES
 ========================= -->
 
-<section class="section events" id="events">
+<section class="section events-clean" id="events">
 
-  <div class="section-title center">
+  <div class="section-heading center">
 
     <span>LATEST ANNOUNCEMENTS</span>
 
-    <h2>Latest Updates</h2>
+    <h2>
+      Latest Updates
+    </h2>
+
+    <p>
+      Important information and recent announcements from the Class of 2028.
+    </p>
 
   </div>
 
@@ -283,10 +270,12 @@
 
       <div>
         <span class="section-tag">STUDENT GUIDE</span>
+
         <h2>Student Guide</h2>
+
         <p>
-          Your all-in-one resource for courses, clubs, and important
-          information at J. W. Mitchell High School.
+          Your all-in-one resource for courses, clubs, organizations, and
+          important student information at J. W. Mitchell High School.
         </p>
       </div>
 
@@ -308,9 +297,7 @@
 
     </div>
 
-    <!-- =========================
-         COURSES PANEL
-    ========================= -->
+    <!-- COURSES PANEL -->
 
     <div class="guide-panel active" id="courses-guide-panel">
 
@@ -320,34 +307,34 @@
         type="text"
         id="course-search-input"
         placeholder="Search courses...">
-      
+
       </div>
-      
+
       <div class="guide-filters">
-      
+
         <div class="guide-filter">
           <label>Course Type</label>
           <select id="course-type-filter">
             <option value="All">All Types</option>
           </select>
         </div>
-      
+
         <div class="guide-filter">
           <label>Department</label>
           <select id="course-department-filter">
             <option value="All">All Departments</option>
           </select>
         </div>
-      
+
         <div class="guide-filter">
           <label>Grade Level</label>
           <select id="course-grade-filter">
             <option value="All">All Grades</option>
           </select>
         </div>
-      
+
       </div>
-      
+
       <div class="guide-layout">
 
         <div class="course-list-area">
@@ -362,9 +349,7 @@
 
     </div>
 
-    <!-- =========================
-         CLUBS PANEL
-    ========================= -->
+    <!-- CLUBS PANEL -->
 
     <div class="guide-panel" id="clubs-guide-panel">
 
@@ -416,18 +401,39 @@
 
     </div>
 
-    <!-- =========================
-         RESOURCES PANEL
-    ========================= -->
+    <!-- RESOURCES PANEL -->
 
     <div class="guide-panel" id="resources-guide-panel">
 
-      <div class="coming-soon-card">
-        <h3>School Resources</h3>
-        <p>
-          This section can include forms, links, graduation info, testing info,
-          and other student resources.
-        </p>
+      <div class="resource-card-grid">
+
+        <div class="resource-card">
+          <span>📌</span>
+          <h3>Graduation Info</h3>
+          <p>
+            Add graduation requirements, testing information, class resources,
+            and important documents here.
+          </p>
+        </div>
+
+        <div class="resource-card">
+          <span>📝</span>
+          <h3>Forms</h3>
+          <p>
+            Link student forms, request forms, council forms, and school
+            resource documents.
+          </p>
+        </div>
+
+        <div class="resource-card">
+          <span>💡</span>
+          <h3>Student Help</h3>
+          <p>
+            Add helpful information for tutoring, course selection, clubs, and
+            student support.
+          </p>
+        </div>
+
       </div>
 
     </div>
@@ -437,8 +443,8 @@
       <div>
         <span class="note-icon">💡</span>
         <p>
-          Course and club information is updated by student council and school staff.
-          Have a question or see something missing?
+          Course and club information is updated by student council and school
+          staff. Have a question or see something missing?
         </p>
       </div>
 
@@ -458,11 +464,16 @@
 
 <section class="section grade-section" id="calculator">
 
-  <div class="section-title center">
+  <div class="section-heading center">
 
     <span>TOOLS</span>
 
     <h2>Grade Calculator</h2>
+
+    <p>
+      Estimate your current grade and predict how future assignments could
+      affect your final average.
+    </p>
 
   </div>
 
@@ -478,8 +489,6 @@
         📖 Class Categories
       </h3>
 
-      <!-- LABELS -->
-
       <div class="grade-labels">
 
         <span>Category Name</span>
@@ -491,17 +500,11 @@
 
       </div>
 
-      <!-- CATEGORY INPUTS -->
-
       <div id="categories"></div>
-
-      <!-- ADD BUTTON -->
 
       <button id="add-category" class="grade-btn">
         ➕ Add Category
       </button>
-
-      <!-- FINAL GRADE -->
 
       <div class="final-grade-box">
 
@@ -534,11 +537,9 @@
       </h3>
 
       <p class="grade-desc">
-        Add the points for your next assignment
-        to see how it affects your final grade.
+        Add the points for your next assignment to see how it affects your
+        final grade.
       </p>
-
-      <!-- FRACTION INPUT -->
 
       <div class="input-group">
 
@@ -564,8 +565,6 @@
 
       </div>
 
-      <!-- CATEGORY -->
-
       <div class="input-group">
 
         <label>
@@ -576,13 +575,9 @@
 
       </div>
 
-      <!-- BUTTON -->
-
       <button class="grade-btn predict-btn" id="predict-btn">
         🧮 Predict New Grade
       </button>
-
-      <!-- PREDICTION -->
 
       <div class="prediction-box">
 
@@ -609,6 +604,99 @@
 </section>
 
 <!-- =========================
+     COUNCIL
+========================= -->
+
+<section class="section council-clean" id="council">
+
+  <div class="section-heading left">
+
+    <span>MEET THE BOARD</span>
+
+    <h2>
+      Class of 2028
+      <span>Student Council</span>
+    </h2>
+
+    <p>
+      Meet the student leaders representing the Mitchell Class of 2028.
+    </p>
+
+  </div>
+
+  <div class="council-clean-grid">
+
+    <div class="council-clean-card featured">
+      <p>President</p>
+      <h3>Aarnav Vurputoor</h3>
+      <blockquote>
+        “Leading with purpose, serving with pride.”
+      </blockquote>
+    </div>
+
+    <div class="council-clean-card">
+      <p>Vice President</p>
+      <h3>Casey Martanovic</h3>
+      <blockquote>
+        “Together, we can make this class stronger.”
+      </blockquote>
+    </div>
+
+    <div class="council-clean-card">
+      <p>Secretary</p>
+      <h3>Avantika Krishna</h3>
+      <blockquote>
+        “Organization turns ideas into action.”
+      </blockquote>
+    </div>
+
+    <div class="council-clean-card">
+      <p>Treasurer</p>
+      <h3>Indiana Duncan</h3>
+      <blockquote>
+        “Every great event starts with a smart plan.”
+      </blockquote>
+    </div>
+
+  </div>
+
+  <div class="representatives-block">
+
+    <span>CLASS REPRESENTATIVES</span>
+
+    <p>
+      The voices of our class — representing every student in the Class of 2028.
+    </p>
+
+    <div class="rep-grid">
+
+      <div class="rep-card">
+        <h3>Apollo Abbas</h3>
+        <p>Representative</p>
+      </div>
+
+      <div class="rep-card">
+        <h3>Lucas Zheng</h3>
+        <p>Representative</p>
+      </div>
+
+      <div class="rep-card">
+        <h3>Xavier Buck</h3>
+        <p>Representative</p>
+      </div>
+
+      <div class="rep-card">
+        <h3>Pablo Jimenez</h3>
+        <p>Representative</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =========================
      COMMUNICATION
 ========================= -->
 
@@ -616,11 +704,9 @@
 
   <div class="communication-box">
 
-    <div class="section-header">
+    <div class="section-heading center">
 
-      <span class="section-tag">
-        STAY CONNECTED
-      </span>
+      <span>STAY CONNECTED</span>
 
       <h2>Communication</h2>
 
@@ -696,7 +782,7 @@
   </div>
 
 </section>
-  
+
 <!-- =========================
      REQUESTS
 ========================= -->
@@ -705,18 +791,15 @@
 
   <div class="request-box">
 
-    <div class="section-header">
+    <div class="section-heading center">
 
-      <span class="section-tag">
-        HAVE AN IDEA?
-      </span>
+      <span>HAVE AN IDEA?</span>
 
       <h2>We Want To Hear From You!</h2>
 
       <p>
-        Suggest Homecoming themes,
-        spirit days, games,
-        and activities.
+        Suggest Homecoming themes, spirit days, games, activities, and anything
+        else you want Student Council to know.
       </p>
 
     </div>
@@ -743,7 +826,18 @@
      FOOTER
 ========================= -->
 
-<footer>
+<footer class="site-footer">
+
+  <div class="footer-brand">
+
+    <img src="images/logo.png" alt="Class of 2028 Logo">
+
+    <div>
+      <h3>Mitchell Class of 2028</h3>
+      <p>Student Council</p>
+    </div>
+
+  </div>
 
   <p>
     © 2028 James W. Mitchell High School
