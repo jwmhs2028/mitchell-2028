@@ -668,57 +668,36 @@ select{
 
 .poll-bar{
     display:flex;
-
     width:100%;
-
     height:58px;
-
     overflow:hidden;
-
-    border:
-    1px solid rgba(0,0,0,.08);
-
+    border:1px solid rgba(0,0,0,.08);
     background:#080808;
+}
+
+.poll-yes-fill,
+.poll-no-fill{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-weight:900;
+    min-width:0;
+    overflow:hidden;
+    white-space:nowrap;
+    transition:.4s ease;
 }
 
 .poll-yes-fill{
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:
-    linear-gradient(135deg,#d8bf78,#c5a33f);
-
-    color:white;
-
-    font-weight:900;
-
-    min-width:0;
-
-    transition:.4s ease;
+    background:linear-gradient(135deg,#d8bf78,#c5a33f);
 }
 
 .poll-no-fill{
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
     background:#080808;
+}
 
-    color:white;
-
-    font-weight:900;
-
-    min-width:0;
-
-    border-left:
-    3px solid white;
-
-    transition:.4s ease;
+.poll-no-fill.has-divider{
+    border-left:3px solid white;
 }
 
 .poll-total{
