@@ -1769,6 +1769,24 @@ function attachPollVoteButtons(){
 
 }
 
+function getVoterId(){
+
+    let voterId =
+    localStorage.getItem("jwmhs2028_voter_id");
+
+    if(!voterId){
+
+        voterId =
+        "voter_" + crypto.randomUUID();
+
+        localStorage.setItem("jwmhs2028_voter_id", voterId);
+
+    }
+
+    return voterId;
+
+}
+
 /* =========================
    INITIALIZE SITE
 ========================= */
