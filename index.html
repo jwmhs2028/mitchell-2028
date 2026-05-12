@@ -304,6 +304,10 @@
 
     </div>
 
+    <!-- =========================
+         COURSES PANEL
+    ========================= -->
+
     <div class="guide-panel active" id="courses-guide-panel">
 
       <div class="guide-search-row">
@@ -354,16 +358,63 @@
 
     </div>
 
+    <!-- =========================
+         CLUBS PANEL
+    ========================= -->
+
     <div class="guide-panel" id="clubs-guide-panel">
 
-      <div class="coming-soon-card">
-        <h3>Clubs & Organizations</h3>
-        <p>
-          This section can be connected to a separate Google Sheet next.
-        </p>
+      <div class="guide-search-row">
+
+        <input
+        type="text"
+        id="club-search-input"
+        placeholder="Search clubs and student groups...">
+
+      </div>
+
+      <div class="guide-filters">
+
+        <div class="guide-filter">
+          <label>Group Type</label>
+          <select id="club-type-filter">
+            <option value="All">All Types</option>
+          </select>
+        </div>
+
+        <div class="guide-filter">
+          <label>Category</label>
+          <select id="club-category-filter">
+            <option value="All">All Categories</option>
+          </select>
+        </div>
+
+        <div class="guide-filter">
+          <label>Grade Level</label>
+          <select id="club-grade-filter">
+            <option value="All">All Grades</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="guide-layout">
+
+        <div class="course-list-area">
+
+          <div id="club-list" class="course-list"></div>
+
+        </div>
+
+        <div id="club-detail-panel" class="course-detail-panel"></div>
+
       </div>
 
     </div>
+
+    <!-- =========================
+         RESOURCES PANEL
+    ========================= -->
 
     <div class="guide-panel" id="resources-guide-panel">
 
@@ -382,7 +433,7 @@
       <div>
         <span class="note-icon">💡</span>
         <p>
-          Course information is updated by student council and school staff.
+          Course and club information is updated by student council and school staff.
           Have a question or see something missing?
         </p>
       </div>
@@ -396,6 +447,7 @@
   </div>
 
 </section>
+
 <!-- =========================
      GRADE CALCULATOR
 ========================= -->
