@@ -528,6 +528,362 @@ select{
 }
 
 /* =========================
+   FEEDBACK POLLS
+========================= */
+
+.feedback-section{
+    background:#f6f2ea;
+}
+
+#featured-poll-container{
+    margin-bottom:24px;
+}
+
+.featured-poll-card,
+.poll-card{
+    background:#fff;
+
+    border:
+    1px solid rgba(197,163,63,.24);
+
+    box-shadow:
+    0 18px 50px rgba(0,0,0,.06);
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.featured-poll-card::before,
+.poll-card::before{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    top:0;
+
+    width:5px;
+    height:100%;
+
+    background:#c5a33f;
+}
+
+.featured-poll-card{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:42px;
+
+    padding:42px;
+}
+
+.poll-grid{
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:24px;
+}
+
+.poll-card{
+    padding:30px;
+}
+
+.poll-label{
+    color:#c5a33f;
+
+    font-size:.75rem;
+
+    font-weight:900;
+
+    letter-spacing:4px;
+
+    text-transform:uppercase;
+
+    margin-bottom:18px;
+}
+
+.poll-card h3,
+.featured-poll-card h3{
+    font-size:2rem;
+
+    line-height:1.1;
+
+    text-transform:uppercase;
+
+    font-weight:900;
+
+    margin-bottom:16px;
+
+    color:#111;
+}
+
+.poll-card p,
+.featured-poll-card p{
+    color:#6f6a60;
+
+    line-height:1.8;
+
+    margin-bottom:22px;
+}
+
+.poll-meta{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    margin-bottom:24px;
+}
+
+.poll-pill{
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    border:
+    1px solid rgba(197,163,63,.26);
+
+    background:#fbfaf7;
+
+    color:#5f5a50;
+
+    padding:10px 14px;
+
+    font-size:.78rem;
+
+    font-weight:800;
+
+    text-transform:uppercase;
+}
+
+.poll-results{
+    margin-bottom:18px;
+}
+
+.poll-bar{
+    display:flex;
+
+    width:100%;
+
+    height:58px;
+
+    overflow:hidden;
+
+    border:
+    1px solid rgba(0,0,0,.08);
+
+    background:#080808;
+}
+
+.poll-yes-fill{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+    linear-gradient(135deg,#d8bf78,#c5a33f);
+
+    color:white;
+
+    font-weight:900;
+
+    min-width:0;
+
+    transition:.4s ease;
+}
+
+.poll-no-fill{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:#080808;
+
+    color:white;
+
+    font-weight:900;
+
+    min-width:0;
+
+    border-left:
+    3px solid white;
+
+    transition:.4s ease;
+}
+
+.poll-total{
+    text-align:center;
+
+    color:#6f6a60;
+
+    font-weight:700;
+
+    margin-top:12px;
+}
+
+.poll-actions{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:16px;
+
+    margin-top:20px;
+
+    padding-top:20px;
+
+    border-top:
+    1px solid rgba(197,163,63,.24);
+}
+
+.poll-vote-btn{
+    border:none;
+
+    padding:16px 20px;
+
+    font-size:1rem;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.3s ease;
+}
+
+.poll-vote-btn.yes{
+    background:
+    linear-gradient(135deg,#d8bf78,#c5a33f);
+
+    color:white;
+}
+
+.poll-vote-btn.no{
+    background:#080808;
+
+    color:white;
+}
+
+.poll-vote-btn:hover{
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 12px 28px rgba(0,0,0,.12);
+}
+
+.suggest-change-btn{
+    display:none;
+
+    width:100%;
+
+    margin-top:14px;
+
+    text-align:center;
+
+    border:
+    1px solid #c5a33f;
+
+    color:#9b823c;
+
+    background:#fff;
+
+    padding:15px 20px;
+
+    font-weight:900;
+
+    transition:.3s ease;
+}
+
+.suggest-change-btn.show{
+    display:block;
+}
+
+.suggest-change-btn:hover{
+    background:#080808;
+
+    color:white;
+
+    border-color:#080808;
+}
+
+.poll-bottom-note{
+    margin-top:34px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:16px;
+
+    text-align:center;
+
+    color:#6f6a60;
+}
+
+.poll-bottom-note span{
+    color:#c5a33f;
+
+    font-size:2rem;
+}
+
+.poll-bottom-note h3{
+    color:#111;
+
+    text-transform:uppercase;
+
+    font-size:.95rem;
+
+    letter-spacing:4px;
+
+    margin-bottom:8px;
+}
+
+@media(max-width:1000px){
+
+    .featured-poll-card{
+        grid-template-columns:1fr;
+    }
+
+    .poll-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .featured-poll-card,
+    .poll-card{
+        padding:26px;
+    }
+
+    .poll-card h3,
+    .featured-poll-card h3{
+        font-size:1.5rem;
+    }
+
+    .poll-actions{
+        grid-template-columns:1fr;
+    }
+
+    .poll-bar{
+        height:52px;
+    }
+
+}
+
+/* =========================
    STUDENT GUIDE DASHBOARD
 ========================= */
 
