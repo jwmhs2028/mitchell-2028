@@ -759,6 +759,17 @@ select{
     0 12px 28px rgba(0,0,0,.12);
 }
 
+.poll-vote-btn:disabled{
+    cursor:not-allowed;
+    opacity:.72;
+    transform:none;
+}
+
+.poll-vote-btn.selected{
+    outline:3px solid rgba(197,163,63,.35);
+    box-shadow:0 0 0 4px rgba(197,163,63,.12);
+}
+
 .suggest-change-btn{
     display:none;
 
