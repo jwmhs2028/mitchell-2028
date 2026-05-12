@@ -1654,17 +1654,17 @@ function renderPollCard(poll, featured){
 
             <div class="poll-results">
 
-                <div class="poll-bar">
+               <div class="poll-bar">
 
-                    <div class="poll-yes-fill" style="width:${yesWidth}%">
-                        Yes ${yesPercent}%
-                    </div>
-
-                    <div class="poll-no-fill" style="width:${noWidth}%">
-                        No ${noPercent}%
-                    </div>
-
-                </div>
+                   <div class="poll-yes-fill" style="width:${yesWidth}%">
+                       ${yesPercent > 0 ? `Yes ${yesPercent}%` : ""}
+                   </div>
+               
+                   <div class="poll-no-fill ${noPercent > 0 && yesPercent > 0 ? "has-divider" : ""}" style="width:${noWidth}%">
+                       ${noPercent > 0 ? `No ${noPercent}%` : ""}
+                   </div>
+               
+               </div>
 
                 <div class="poll-total">
                     Total Responses: ${poll.totalVotes}
