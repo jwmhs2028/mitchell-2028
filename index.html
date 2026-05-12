@@ -260,28 +260,129 @@
 </section>
 
 <!-- =========================
-     COURSES DIRECTORY
+     STUDENT GUIDE
 ========================= -->
 
-<section class="section directory-section" id="courses">
+<section class="section student-guide-section" id="courses">
 
-  <div class="section-title center">
-    <span>ACADEMICS</span>
-    <h2>Course Directory</h2>
-  </div>
+  <div class="student-guide-shell">
 
-  <div class="course-hub">
+    <div class="guide-hero">
 
-    <div class="directory-search-wrap">
-      <input
-      type="text"
-      id="course-search"
-      placeholder="Search courses...">
+      <div class="guide-hero-icon">
+        📖
+      </div>
+
+      <div>
+        <span class="section-tag">STUDENT GUIDE</span>
+        <h2>Student Guide</h2>
+        <p>
+          Your all-in-one resource for courses, clubs, and important
+          information at J. W. Mitchell High School.
+        </p>
+      </div>
+
     </div>
 
-    <div id="course-filters" class="directory-filters"></div>
+    <div class="guide-tabs">
 
-    <div id="courses-container" class="directory-grid compact-directory"></div>
+      <button class="guide-tab active" data-guide-tab="courses">
+        📚 Courses
+      </button>
+
+      <button class="guide-tab" data-guide-tab="clubs">
+        👥 Clubs & Organizations
+      </button>
+
+      <button class="guide-tab" data-guide-tab="resources">
+        🏛️ School Resources
+      </button>
+
+    </div>
+
+    <div class="guide-panel active" id="courses-guide-panel">
+
+      <div class="guide-filters">
+
+        <div class="guide-filter">
+          <label>Course Type</label>
+          <select id="course-type-filter">
+            <option value="All">All Types</option>
+          </select>
+        </div>
+
+        <div class="guide-filter">
+          <label>Department</label>
+          <select id="course-department-filter">
+            <option value="All">All Departments</option>
+          </select>
+        </div>
+
+        <div class="guide-filter">
+          <label>Grade Level</label>
+          <select id="course-grade-filter">
+            <option value="All">All Grades</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="guide-layout">
+
+        <div class="course-list-area">
+
+          <div id="course-list" class="course-list"></div>
+
+          <button id="view-more-courses" class="view-more-btn">
+            View More Courses ⌄
+          </button>
+
+        </div>
+
+        <div id="course-detail-panel" class="course-detail-panel"></div>
+
+      </div>
+
+    </div>
+
+    <div class="guide-panel" id="clubs-guide-panel">
+
+      <div class="coming-soon-card">
+        <h3>Clubs & Organizations</h3>
+        <p>
+          This section can be connected to a separate Google Sheet next.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="guide-panel" id="resources-guide-panel">
+
+      <div class="coming-soon-card">
+        <h3>School Resources</h3>
+        <p>
+          This section can include forms, links, graduation info, testing info,
+          and other student resources.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="guide-footer-note">
+
+      <div>
+        <span class="note-icon">💡</span>
+        <p>
+          Course information is updated by student council and school staff.
+          Have a question or see something missing?
+        </p>
+      </div>
+
+      <a href="#requests" class="guide-request-btn">
+        Submit a Request
+      </a>
+
+    </div>
 
   </div>
 
