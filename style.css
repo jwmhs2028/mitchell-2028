@@ -1360,7 +1360,8 @@ footer{
     margin-bottom:18px;
 }
 
-#course-search-input{
+#course-search-input,
+#club-search-input{
     width:100%;
 
     background:
@@ -1382,11 +1383,13 @@ footer{
     transition:.3s ease;
 }
 
-#course-search-input::placeholder{
+#course-search-input::placeholder,
+#club-search-input::placeholder{
     color:rgba(255,255,255,.55);
 }
 
-#course-search-input:focus{
+#course-search-input:focus,
+#club-search-input:focus{
     border-color:#c5b27a;
 
     box-shadow:
@@ -1544,7 +1547,7 @@ footer{
 }
 
 .topic-item::before{
-    content:"✓";
+    content:"âœ“";
 
     display:inline-flex;
 
