@@ -1537,10 +1537,245 @@ if(addCategoryBtn){
 }
 
 /* =========================
+   FEEDBACK POLLS
+========================= */
+
+const featuredPollContainer =
+document.getElementById("featured-poll-container");
+
+const pollsContainer =
+document.getElementById("polls-container");
+
+const feedbackApiUrl =
+"https://script.google.com/macros/s/AKfycbxICM-yhAspiDBV_n9dd-9rqGE47qtbcvx_JRH85T6k1AHEdistv1uBVrgNtVIcjmvw/exec";
+
+async function loadFeedbackPolls(){
+
+    if(!featuredPollContainer || !pollsContainer){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(`${feedbackApiUrl}?action=getPolls`);
+
+        const data =
+        await response.json();
+
+        if(!data.success){
+            throw new Error("Polls could not be loaded");
+        }
+
+        const polls =
+        data.polls;
+
+        const featuredPoll =
+        polls.find(poll => poll.featured) || polls[0];
+
+        const regularPolls =
+        polls.filter(poll => poll.id !== featuredPoll.id);
+
+        featuredPollContainer.innerHTML =
+        renderPollCard(featuredPoll, true);
+
+        pollsContainer.innerHTML =
+        regularPolls.map(poll => renderPollCard(poll, false)).join("");
+
+        attachPollVoteButtons();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        featuredPollContainer.innerHTML = `
+
+        <div class="featured-poll-card">
+
+            <div>
+                <div class="poll-label">Feedback Unavailable</div>
+                <h3>Polls could not be loaded</h3>
+                <p>Please try again later.</p>
+            </div>
+
+        </div>
+
+        `;
+
+    }
+
+}
+
+function renderPollCard(poll, featured){
+
+    const yesPercent =
+    Number(poll.yesPercent) || 0;
+
+    const noPercent =
+    Number(poll.noPercent) || 0;
+
+    const yesWidth =
+    poll.totalVotes > 0 ? yesPercent : 50;
+
+    const noWidth =
+    poll.totalVotes > 0 ? noPercent : 50;
+
+    return `
+
+    <div class="${featured ? "featured-poll-card" : "poll-card"}" data-poll-id="${poll.id}">
+
+        <div class="poll-info">
+
+            <div class="poll-label">
+                ${featured ? "Featured Idea" : "Idea"}
+            </div>
+
+            <h3>${poll.title}</h3>
+
+            <p>${poll.description}</p>
+
+            <div class="poll-meta">
+
+                <span class="poll-pill">
+                    🏷 ${poll.category}
+                </span>
+
+                <span class="poll-pill">
+                    🕒 ${poll.status}
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="poll-vote-area">
+
+            <div class="poll-results">
+
+                <div class="poll-bar">
+
+                    <div class="poll-yes-fill" style="width:${yesWidth}%">
+                        Yes ${yesPercent}%
+                    </div>
+
+                    <div class="poll-no-fill" style="width:${noWidth}%">
+                        No ${noPercent}%
+                    </div>
+
+                </div>
+
+                <div class="poll-total">
+                    Total Responses: ${poll.totalVotes}
+                </div>
+
+            </div>
+
+            <div class="poll-actions">
+
+                <button class="poll-vote-btn yes" data-vote="yes" data-poll-id="${poll.id}">
+                    Yes
+                </button>
+
+                <button class="poll-vote-btn no" data-vote="no" data-poll-id="${poll.id}">
+                    No
+                </button>
+
+            </div>
+
+            <a href="#requests" class="suggest-change-btn" data-suggest-for="${poll.id}">
+                💬 Suggest Changes
+            </a>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+function attachPollVoteButtons(){
+
+    const voteButtons =
+    document.querySelectorAll(".poll-vote-btn");
+
+    voteButtons.forEach((button) => {
+
+        button.addEventListener("click", async () => {
+
+            const pollId =
+            button.dataset.pollId;
+
+            const vote =
+            button.dataset.vote;
+
+            button.disabled = true;
+            button.textContent = "Saving...";
+
+            try{
+
+                await fetch(feedbackApiUrl, {
+                    method:"POST",
+                    body:JSON.stringify({
+                        action:"vote",
+                        pollId:pollId,
+                        vote:vote
+                    })
+                });
+
+                if(vote === "no"){
+
+                    const suggestButton =
+                    document.querySelector(`[data-suggest-for="${pollId}"]`);
+
+                    if(suggestButton){
+                        suggestButton.classList.add("show");
+                    }
+
+                }
+
+                await loadFeedbackPolls();
+
+                if(vote === "no"){
+
+                    const suggestButton =
+                    document.querySelector(`[data-suggest-for="${pollId}"]`);
+
+                    if(suggestButton){
+                        suggestButton.classList.add("show");
+                    }
+
+                }
+
+            }
+
+            catch(error){
+
+                console.error(error);
+
+                button.disabled = false;
+                button.textContent =
+                vote === "yes" ? "Yes" : "No";
+
+                alert("Your vote could not be saved. Please try again.");
+
+            }
+
+        });
+
+    });
+
+}
+
+/* =========================
    INITIALIZE SITE
 ========================= */
 
 loadUpdates();
+
+loadFeedbackPolls();
 
 loadStudentGuideCourses();
 loadStudentGuideClubs();
