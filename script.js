@@ -155,8 +155,8 @@ document.getElementById("course-department-filter");
 const gradeFilter =
 document.getElementById("course-grade-filter");
 
-const viewMoreCoursesBtn =
-document.getElementById("view-more-courses");
+const courseSearchInput =
+document.getElementById("course-search-input");
 
 const guideTabs =
 document.querySelectorAll(".guide-tab");
@@ -165,7 +165,6 @@ const guidePanels =
 document.querySelectorAll(".guide-panel");
 
 let allCourses = [];
-let visibleCourseCount = 8;
 let selectedCourseIndex = 0;
 
 const courseSheetUrl =
@@ -380,6 +379,7 @@ function populateSelect(select, options){
         document.createElement("option");
 
         option.value = optionText;
+
         option.textContent =
         optionText === "All"
         ? select.id.includes("type")
@@ -397,6 +397,9 @@ function populateSelect(select, options){
 
 function getFilteredCourses(){
 
+    const searchTerm =
+    courseSearchInput.value.toLowerCase().trim();
+
     return allCourses.filter((course) => {
 
         const matchesType =
@@ -411,7 +414,25 @@ function getFilteredCourses(){
         gradeFilter.value === "All"
         || course.gradeLevel === gradeFilter.value;
 
-        return matchesType && matchesDepartment && matchesGrade;
+        const searchableText =
+        `
+        ${course.type}
+        ${course.title}
+        ${course.description}
+        ${course.rating}
+        ${course.reviews}
+        ${course.extraInfo}
+        ${course.department}
+        ${course.gradeLevel}
+        ${course.prerequisites}
+        ${course.credits}
+        ${course.topics}
+        `.toLowerCase();
+
+        const matchesSearch =
+        searchableText.includes(searchTerm);
+
+        return matchesType && matchesDepartment && matchesGrade && matchesSearch;
 
     });
 
@@ -424,17 +445,14 @@ function renderCourseList(){
 
     courseList.innerHTML = "";
 
-    const visibleCourses =
-    filteredCourses.slice(0, visibleCourseCount);
-
-    if(visibleCourses.length === 0){
+    if(filteredCourses.length === 0){
 
         courseList.innerHTML = `
 
         <div class="course-list-card">
             <div class="course-list-main">
                 <h3>No Courses Found</h3>
-                <p>Try changing the filters.</p>
+                <p>Try changing the filters or search term.</p>
             </div>
         </div>
 
@@ -449,13 +467,11 @@ function renderCourseList(){
 
         `;
 
-        viewMoreCoursesBtn.style.display = "none";
-
         return;
 
     }
 
-    visibleCourses.forEach((course) => {
+    filteredCourses.forEach((course) => {
 
         const card =
         document.createElement("div");
@@ -503,11 +519,6 @@ function renderCourseList(){
         courseList.appendChild(card);
 
     });
-
-    viewMoreCoursesBtn.style.display =
-    filteredCourses.length > visibleCourseCount
-    ? "block"
-    : "none";
 
 }
 
@@ -705,8 +716,6 @@ function getCourseIcon(department){
 
     filter.addEventListener("change", () => {
 
-        visibleCourseCount = 8;
-
         const filteredCourses =
         getFilteredCourses();
 
@@ -721,9 +730,15 @@ function getCourseIcon(department){
 
 });
 
-viewMoreCoursesBtn.addEventListener("click", () => {
+courseSearchInput.addEventListener("input", () => {
 
-    visibleCourseCount += 6;
+    const filteredCourses =
+    getFilteredCourses();
+
+    if(filteredCourses.length > 0){
+        selectedCourseIndex = filteredCourses[0].originalIndex;
+        renderCourseDetails(filteredCourses[0]);
+    }
 
     renderCourseList();
 
