@@ -42,6 +42,39 @@ tabs.forEach((tab) => {
 });
 
 /* =========================
+   SAFE TEXT HELPERS
+========================= */
+
+function escapeHTML(value){
+
+    return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+function safeUrl(value){
+
+    const url =
+    String(value || "").trim();
+
+    if(
+        url.startsWith("http://")
+        || url.startsWith("https://")
+        || url.startsWith("#")
+        || url.startsWith("mailto:")
+    ){
+        return url;
+    }
+
+    return "#";
+
+}
+
+/* =========================
    GOOGLE SHEETS UPDATES
 ========================= */
 
@@ -84,14 +117,14 @@ async function loadUpdates(){
 
                     ${image ? `
                     <img
-                    src="${image}"
+                    src="${escapeHTML(image)}"
                     class="update-image"
-                    alt="${title}">
+                    alt="${escapeHTML(title)}">
                     ` : ""}
 
-                    <h3>${title}</h3>
+                    <h3>${escapeHTML(title)}</h3>
 
-                    <p>${description}</p>
+                    <p>${escapeHTML(description)}</p>
 
                 </div>
 
@@ -187,6 +220,807 @@ function parseCSV(csv){
     }
 
     return rows;
+
+}
+
+/* =========================
+   STUDENT DASHBOARD SHEETS
+========================= */
+
+const councilProjectsSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vQeMGUQHV6CMpvsaGOfd2JA-DbLfBDaVUKCoEleJPX8PMI6LeOXKRuO-KoNYUjS0KOK1R25tmYCRb48/pub?output=csv";
+
+const quickLinksSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSAMnlOh_x8FjB1fdGIjDmsnp9-alXvVd9w9NorXFacoDkbrZJeCgbmn4Kx-e2SwMVp5rMeTZIBgi7f/pub?output=csv";
+
+const bellScheduleSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vQZh0vXKshkIhNs9J7m7MoMhc2PNwfC3VCGdFm-jAqzC31dOOVBoP57Npu3955eoku0GOm2dVfiDP5n/pub?output=csv";
+
+const weeklyHappeningsSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSqhG-hCgKuMomTaGCQdDfTA-UyLCJSFVf716mm87c5XyHnjKHCErzCIVjNZGjEReGPAI-dj3T_jyFF/pub?output=csv";
+
+const faqSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vQgmb3X2UyqatNuOBBJ2jh6Xtgz2xiQ988DIceEW6PUUFBK4vMxD7t_cVGwY2jP29P62V2H2vg_23P8/pub?output=csv";
+
+let allBellSchedules = {};
+let selectedBellScheduleName = "";
+
+/* =========================
+   DARK MODE
+========================= */
+
+const themeToggle =
+document.getElementById("theme-toggle");
+
+const themeToggleIcon =
+document.getElementById("theme-toggle-icon");
+
+const themeToggleText =
+document.getElementById("theme-toggle-text");
+
+function applySavedTheme(){
+
+    const savedTheme =
+    localStorage.getItem("jwmhs2028_theme");
+
+    if(savedTheme === "dark"){
+        document.body.classList.add("dark-mode");
+    }
+
+    updateThemeToggleText();
+
+}
+
+function updateThemeToggleText(){
+
+    const isDark =
+    document.body.classList.contains("dark-mode");
+
+    if(themeToggleIcon){
+        themeToggleIcon.textContent =
+        isDark ? "☀️" : "🌙";
+    }
+
+    if(themeToggleText){
+        themeToggleText.textContent =
+        isDark ? "Light Mode" : "Dark Mode";
+    }
+
+}
+
+if(themeToggle){
+
+    themeToggle.addEventListener("click", () => {
+
+        document.body.classList.toggle("dark-mode");
+
+        const isDark =
+        document.body.classList.contains("dark-mode");
+
+        localStorage.setItem(
+            "jwmhs2028_theme",
+            isDark ? "dark" : "light"
+        );
+
+        updateThemeToggleText();
+
+    });
+
+}
+
+/* =========================
+   WEEKLY HAPPENINGS
+========================= */
+
+async function loadWeeklyHappenings(){
+
+    const container =
+    document.getElementById("weekly-happenings-container");
+
+    if(!container){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(weeklyHappeningsSheetUrl);
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv).slice(1);
+
+        const happenings =
+        rows
+        .filter(row => row[0] || row[1] || row[2])
+        .map(row => {
+            return {
+                title:row[0] || "Untitled Update",
+                date:row[1] || "",
+                description:row[2] || "",
+                tag:row[3] || ""
+            };
+        });
+
+        if(happenings.length === 0){
+            throw new Error("No weekly happenings found");
+        }
+
+        container.innerHTML =
+        happenings.slice(0, 5).map(item => {
+
+            const dateParts =
+            formatWeeklyDate(item.date);
+
+            return `
+
+            <div class="weekly-item">
+
+                <div class="weekly-date">
+                    <span>${escapeHTML(dateParts.top)}</span>
+                    <strong>${escapeHTML(dateParts.bottom)}</strong>
+                </div>
+
+                <div class="weekly-main">
+                    <h4>${escapeHTML(item.title)}</h4>
+                    <p>${escapeHTML(item.description)}</p>
+                </div>
+
+                <div class="weekly-tag">
+                    ${escapeHTML(item.tag)}
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+
+        <div class="dashboard-loading">
+            Weekly happenings could not be loaded.
+        </div>
+
+        `;
+
+    }
+
+}
+
+function formatWeeklyDate(dateText){
+
+    const raw =
+    String(dateText || "").trim();
+
+    if(!raw){
+        return {
+            top:"DATE",
+            bottom:"TBD"
+        };
+    }
+
+    const parsedDate =
+    new Date(raw);
+
+    if(!Number.isNaN(parsedDate.getTime())){
+
+        return {
+            top:parsedDate.toLocaleDateString("en-US", {
+                weekday:"short"
+            }).toUpperCase(),
+            bottom:parsedDate.toLocaleDateString("en-US", {
+                month:"short",
+                day:"numeric"
+            }).toUpperCase()
+        };
+
+    }
+
+    const parts =
+    raw.split(" ");
+
+    if(parts.length >= 2){
+
+        return {
+            top:parts[0].toUpperCase(),
+            bottom:parts.slice(1).join(" ").toUpperCase()
+        };
+
+    }
+
+    return {
+        top:"DATE",
+        bottom:raw.toUpperCase()
+    };
+
+}
+
+/* =========================
+   QUICK LINKS
+========================= */
+
+async function loadQuickLinks(){
+
+    const container =
+    document.getElementById("quick-links-container");
+
+    if(!container){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(quickLinksSheetUrl);
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv).slice(1);
+
+        const links =
+        rows
+        .filter(row => row[0] && row[2])
+        .map(row => {
+            return {
+                title:row[0] || "Link",
+                description:row[1] || "",
+                link:row[2] || "#",
+                icon:row[3] || "🔗"
+            };
+        });
+
+        if(links.length === 0){
+            throw new Error("No quick links found");
+        }
+
+        container.innerHTML =
+        links.slice(0, 8).map(link => {
+
+            const isExternal =
+            String(link.link).startsWith("http");
+
+            return `
+
+            <a
+            href="${safeUrl(link.link)}"
+            class="quick-link-tile"
+            ${isExternal ? `target="_blank" rel="noopener noreferrer"` : ""}>
+
+                <span>${escapeHTML(link.icon)}</span>
+
+                <strong>${escapeHTML(link.title)}</strong>
+
+                ${link.description ? `
+                <small>${escapeHTML(link.description)}</small>
+                ` : ""}
+
+            </a>
+
+            `;
+
+        }).join("");
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+
+        <div class="dashboard-loading">
+            Quick links could not be loaded.
+        </div>
+
+        `;
+
+    }
+
+}
+
+/* =========================
+   COUNCIL PROJECTS TRACKER
+========================= */
+
+async function loadCouncilProjects(){
+
+    const container =
+    document.getElementById("projects-container");
+
+    if(!container){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(councilProjectsSheetUrl);
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv).slice(1);
+
+        const projects =
+        rows
+        .filter(row => row[0])
+        .map(row => {
+            return {
+                project:row[0] || "Untitled Project",
+                status:row[1] || "Planning",
+                description:row[2] || "",
+                priority:row[3] || ""
+            };
+        });
+
+        if(projects.length === 0){
+            throw new Error("No projects found");
+        }
+
+        container.innerHTML =
+        projects.slice(0, 6).map(project => {
+
+            return `
+
+            <div class="project-row">
+
+                <div class="project-info">
+
+                    <h4>${escapeHTML(project.project)}</h4>
+
+                    <p>
+                        ${escapeHTML(project.description)}
+                        ${project.priority ? ` · ${escapeHTML(project.priority)} Priority` : ""}
+                    </p>
+
+                </div>
+
+                <span class="project-status ${getStatusClass(project.status)}">
+                    ${escapeHTML(project.status)}
+                </span>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+
+        <div class="dashboard-loading">
+            Council projects could not be loaded.
+        </div>
+
+        `;
+
+    }
+
+}
+
+function getStatusClass(status){
+
+    const normalized =
+    String(status || "")
+    .toLowerCase()
+    .trim()
+    .replaceAll("&", "and")
+    .replaceAll("/", " ")
+    .replaceAll(" ", "-");
+
+    if(normalized.includes("planning")){
+        return "status-planning";
+    }
+
+    if(normalized.includes("progress")){
+        return "status-in-progress";
+    }
+
+    if(normalized.includes("feedback")){
+        return "status-collecting-feedback";
+    }
+
+    if(normalized.includes("completed") || normalized.includes("done")){
+        return "status-completed";
+    }
+
+    if(normalized.includes("paused") || normalized.includes("hold")){
+        return "status-paused";
+    }
+
+    return "status-default";
+
+}
+
+/* =========================
+   BELL SCHEDULE WITH LUNCH SUPPORT
+========================= */
+
+async function loadBellSchedule(){
+
+    const select =
+    document.getElementById("bell-schedule-select");
+
+    const container =
+    document.getElementById("bell-schedule-container");
+
+    if(!select || !container){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(bellScheduleSheetUrl);
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv).slice(1);
+
+        allBellSchedules =
+        buildBellScheduleData(rows);
+
+        const scheduleNames =
+        Object.keys(allBellSchedules);
+
+        if(scheduleNames.length === 0){
+            throw new Error("No bell schedules found");
+        }
+
+        select.innerHTML =
+        scheduleNames.map((scheduleName) => {
+            return `
+            <option value="${escapeHTML(scheduleName)}">
+                ${escapeHTML(scheduleName)}
+            </option>
+            `;
+        }).join("");
+
+        selectedBellScheduleName =
+        scheduleNames[0];
+
+        select.value =
+        selectedBellScheduleName;
+
+        renderBellSchedule(selectedBellScheduleName);
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        select.innerHTML = `
+        <option value="">Schedule unavailable</option>
+        `;
+
+        container.innerHTML = `
+
+        <div class="dashboard-loading">
+            Bell schedule could not be loaded.
+        </div>
+
+        `;
+
+    }
+
+}
+
+function buildBellScheduleData(rows){
+
+    const schedules = {};
+
+    rows.forEach((row) => {
+
+        const scheduleName =
+        row[0] || "Regular Bell Schedule";
+
+        const period =
+        row[1] || "";
+
+        const startTime =
+        row[2] || "";
+
+        const endTime =
+        row[3] || "";
+
+        const notes =
+        row[4] || "";
+
+        const lunchGroup =
+        row[5] || "";
+
+        const lunchStart =
+        row[6] || "";
+
+        const lunchEnd =
+        row[7] || "";
+
+        const lunchRooms =
+        row[8] || "";
+
+        if(!period && !lunchGroup){
+            return;
+        }
+
+        if(!schedules[scheduleName]){
+            schedules[scheduleName] = [];
+        }
+
+        const periodKey =
+        `${period}|${startTime}|${endTime}|${notes}`;
+
+        let existingPeriod =
+        schedules[scheduleName].find(item => item.key === periodKey);
+
+        if(!existingPeriod){
+
+            existingPeriod = {
+                key:periodKey,
+                period:period || "Lunch",
+                startTime:startTime,
+                endTime:endTime,
+                notes:notes,
+                lunches:[]
+            };
+
+            schedules[scheduleName].push(existingPeriod);
+
+        }
+
+        if(lunchGroup || lunchStart || lunchEnd || lunchRooms){
+
+            existingPeriod.lunches.push({
+                group:lunchGroup || "Lunch",
+                start:lunchStart || "",
+                end:lunchEnd || "",
+                rooms:lunchRooms || ""
+            });
+
+        }
+
+    });
+
+    return schedules;
+
+}
+
+function renderBellSchedule(scheduleName){
+
+    const container =
+    document.getElementById("bell-schedule-container");
+
+    if(!container){
+        return;
+    }
+
+    const periods =
+    allBellSchedules[scheduleName] || [];
+
+    if(periods.length === 0){
+
+        container.innerHTML = `
+
+        <div class="dashboard-loading">
+            No periods found for this schedule.
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    container.innerHTML =
+    periods.map(period => {
+
+        return `
+
+        <div class="bell-period-row">
+
+            <div class="bell-period-main">
+
+                <h4>${escapeHTML(period.period)}</h4>
+
+                <p>
+                    ${escapeHTML(formatTimeRange(period.startTime, period.endTime))}
+                </p>
+
+            </div>
+
+            ${period.notes ? `
+            <div class="bell-note">
+                ${escapeHTML(period.notes)}
+            </div>
+            ` : ""}
+
+            ${period.lunches.length > 0 ? `
+            <div class="lunch-list">
+
+                ${period.lunches.map(lunch => `
+
+                    <div class="lunch-row">
+
+                        <strong>${escapeHTML(lunch.group)}</strong>
+
+                        <span>
+                            ${escapeHTML(formatTimeRange(lunch.start, lunch.end))}
+                        </span>
+
+                        <p>${escapeHTML(lunch.rooms)}</p>
+
+                    </div>
+
+                `).join("")}
+
+            </div>
+            ` : ""}
+
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+function formatTimeRange(start, end){
+
+    if(start && end){
+        return `${start} – ${end}`;
+    }
+
+    if(start){
+        return start;
+    }
+
+    if(end){
+        return end;
+    }
+
+    return "Time TBD";
+
+}
+
+const bellScheduleSelect =
+document.getElementById("bell-schedule-select");
+
+if(bellScheduleSelect){
+
+    bellScheduleSelect.addEventListener("change", () => {
+
+        selectedBellScheduleName =
+        bellScheduleSelect.value;
+
+        renderBellSchedule(selectedBellScheduleName);
+
+    });
+
+}
+
+/* =========================
+   FAQ
+========================= */
+
+async function loadFAQ(){
+
+    const container =
+    document.getElementById("faq-container");
+
+    if(!container){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(faqSheetUrl);
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv).slice(1);
+
+        const faqs =
+        rows
+        .filter(row => row[0] && row[1])
+        .map(row => {
+            return {
+                question:row[0] || "",
+                answer:row[1] || ""
+            };
+        });
+
+        if(faqs.length === 0){
+            throw new Error("No FAQs found");
+        }
+
+        container.innerHTML =
+        faqs.slice(0, 6).map((faq, index) => {
+
+            return `
+
+            <div class="faq-item ${index === 0 ? "open" : ""}">
+
+                <button class="faq-question" type="button">
+
+                    ${escapeHTML(faq.question)}
+
+                    <span>⌄</span>
+
+                </button>
+
+                <div class="faq-answer">
+                    ${escapeHTML(faq.answer)}
+                </div>
+
+            </div>
+
+            `;
+
+        }).join("");
+
+        attachFAQListeners();
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+
+        <div class="dashboard-loading">
+            FAQs could not be loaded.
+        </div>
+
+        `;
+
+    }
+
+}
+
+function attachFAQListeners(){
+
+    const faqQuestions =
+    document.querySelectorAll(".faq-question");
+
+    faqQuestions.forEach((question) => {
+
+        question.addEventListener("click", () => {
+
+            const item =
+            question.closest(".faq-item");
+
+            if(!item){
+                return;
+            }
+
+            item.classList.toggle("open");
+
+        });
+
+    });
 
 }
 
@@ -495,22 +1329,22 @@ function renderCourseList(){
 
             <div class="course-list-main">
 
-                <h3>${course.title}</h3>
+                <h3>${escapeHTML(course.title)}</h3>
 
                 <div class="course-tags">
-                    <span class="course-tag">${course.type}</span>
-                    <span class="course-tag">${course.department}</span>
+                    <span class="course-tag">${escapeHTML(course.type)}</span>
+                    <span class="course-tag">${escapeHTML(course.department)}</span>
                 </div>
 
             </div>
 
             <div class="course-grade">
-                Grades: ${course.gradeLevel}
+                Grades: ${escapeHTML(course.gradeLevel)}
             </div>
 
             <div class="course-rating-small">
-                ${formatRating(course.rating)}${isNumericRating(course.rating) ? " ★" : ""}
-                <span>${course.reviews}</span>
+                ${escapeHTML(formatRating(course.rating))}${isNumericRating(course.rating) ? " ★" : ""}
+                <span>${escapeHTML(course.reviews)}</span>
             </div>
 
         `;
@@ -548,25 +1382,25 @@ function renderCourseDetails(course){
                 </div>
 
                 <div>
-                    <h3>${course.title}</h3>
+                    <h3>${escapeHTML(course.title)}</h3>
 
                     <div class="course-tags">
-                        <span class="course-tag">${course.type}</span>
-                        <span class="course-tag">${course.department}</span>
+                        <span class="course-tag">${escapeHTML(course.type)}</span>
+                        <span class="course-tag">${escapeHTML(course.department)}</span>
                     </div>
                 </div>
 
             </div>
 
             <div class="detail-rating">
-                ${formatRating(course.rating)}${isNumericRating(course.rating) ? " ★" : ""}
-                <span>${course.reviews}</span>
+                ${escapeHTML(formatRating(course.rating))}${isNumericRating(course.rating) ? " ★" : ""}
+                <span>${escapeHTML(course.reviews)}</span>
             </div>
 
         </div>
 
         <p class="detail-description">
-            ${course.description}
+            ${escapeHTML(course.description)}
         </p>
 
         <div class="detail-info-grid">
@@ -574,25 +1408,25 @@ function renderCourseDetails(course){
             <div class="detail-info-item">
                 <span>📅</span>
                 <strong>Grade Level</strong>
-                <p>${course.gradeLevel}</p>
+                <p>${escapeHTML(course.gradeLevel)}</p>
             </div>
 
             <div class="detail-info-item">
                 <span>📌</span>
                 <strong>Prerequisites</strong>
-                <p>${course.prerequisites}</p>
+                <p>${escapeHTML(course.prerequisites)}</p>
             </div>
 
             <div class="detail-info-item">
                 <span>📚</span>
                 <strong>Credits</strong>
-                <p>${course.credits}</p>
+                <p>${escapeHTML(course.credits)}</p>
             </div>
 
             <div class="detail-info-item">
                 <span>🏛️</span>
                 <strong>Department</strong>
-                <p>${course.department}</p>
+                <p>${escapeHTML(course.department)}</p>
             </div>
 
         </div>
@@ -604,7 +1438,7 @@ function renderCourseDetails(course){
             <div class="topic-list">
 
                 ${topics.map(topic => `
-                    <div class="topic-item">${topic}</div>
+                    <div class="topic-item">${escapeHTML(topic)}</div>
                 `).join("")}
 
             </div>
@@ -869,22 +1703,22 @@ function renderClubList(){
 
             <div class="course-list-main">
 
-                <h3>${club.title}</h3>
+                <h3>${escapeHTML(club.title)}</h3>
 
                 <div class="course-tags">
-                    <span class="course-tag">${club.type}</span>
-                    <span class="course-tag">${club.category}</span>
+                    <span class="course-tag">${escapeHTML(club.type)}</span>
+                    <span class="course-tag">${escapeHTML(club.category)}</span>
                 </div>
 
             </div>
 
             <div class="course-grade">
-                Grades: ${club.gradeLevel}
+                Grades: ${escapeHTML(club.gradeLevel)}
             </div>
 
             <div class="course-rating-small">
-                ${formatRating(club.rating)}${isNumericRating(club.rating) ? " ★" : ""}
-                <span>${club.reviews}</span>
+                ${escapeHTML(formatRating(club.rating))}${isNumericRating(club.rating) ? " ★" : ""}
+                <span>${escapeHTML(club.reviews)}</span>
             </div>
 
         `;
@@ -922,25 +1756,25 @@ function renderClubDetails(club){
                 </div>
 
                 <div>
-                    <h3>${club.title}</h3>
+                    <h3>${escapeHTML(club.title)}</h3>
 
                     <div class="course-tags">
-                        <span class="course-tag">${club.type}</span>
-                        <span class="course-tag">${club.category}</span>
+                        <span class="course-tag">${escapeHTML(club.type)}</span>
+                        <span class="course-tag">${escapeHTML(club.category)}</span>
                     </div>
                 </div>
 
             </div>
 
             <div class="detail-rating">
-                ${formatRating(club.rating)}${isNumericRating(club.rating) ? " ★" : ""}
-                <span>${club.reviews}</span>
+                ${escapeHTML(formatRating(club.rating))}${isNumericRating(club.rating) ? " ★" : ""}
+                <span>${escapeHTML(club.reviews)}</span>
             </div>
 
         </div>
 
         <p class="detail-description">
-            ${club.description}
+            ${escapeHTML(club.description)}
         </p>
 
         <div class="detail-info-grid">
@@ -948,25 +1782,25 @@ function renderClubDetails(club){
             <div class="detail-info-item">
                 <span>📅</span>
                 <strong>Grade Level</strong>
-                <p>${club.gradeLevel}</p>
+                <p>${escapeHTML(club.gradeLevel)}</p>
             </div>
 
             <div class="detail-info-item">
                 <span>🕒</span>
                 <strong>Meeting Time</strong>
-                <p>${club.meetingTime}</p>
+                <p>${escapeHTML(club.meetingTime)}</p>
             </div>
 
             <div class="detail-info-item">
                 <span>👤</span>
                 <strong>Sponsor</strong>
-                <p>${club.sponsor}</p>
+                <p>${escapeHTML(club.sponsor)}</p>
             </div>
 
             <div class="detail-info-item">
                 <span>🏷️</span>
                 <strong>Category</strong>
-                <p>${club.category}</p>
+                <p>${escapeHTML(club.category)}</p>
             </div>
 
         </div>
@@ -978,7 +1812,7 @@ function renderClubDetails(club){
             <div class="topic-list">
 
                 ${topics.map(topic => `
-                    <div class="topic-item">${topic}</div>
+                    <div class="topic-item">${escapeHTML(topic)}</div>
                 `).join("")}
 
             </div>
@@ -1296,13 +2130,13 @@ function createCategoryRow(name = "", weight = "", earned = "", total = ""){
         type="text"
         class="cat-name"
         placeholder="Category Name"
-        value="${name}">
+        value="${escapeHTML(name)}">
 
         <input
         type="number"
         class="cat-weight"
         placeholder="Weight %"
-        value="${weight}">
+        value="${escapeHTML(weight)}">
 
         <div class="fraction-group">
 
@@ -1310,7 +2144,7 @@ function createCategoryRow(name = "", weight = "", earned = "", total = ""){
             type="number"
             class="cat-earned"
             placeholder="Points Earned"
-            value="${earned}">
+            value="${escapeHTML(earned)}">
 
             <span>/</span>
 
@@ -1318,7 +2152,7 @@ function createCategoryRow(name = "", weight = "", earned = "", total = ""){
             type="number"
             class="cat-total"
             placeholder="Total Points"
-            value="${total}">
+            value="${escapeHTML(total)}">
 
         </div>
 
@@ -1624,7 +2458,7 @@ function renderPollCard(poll, featured){
 
     return `
 
-    <div class="${featured ? "featured-poll-card" : "poll-card"}" data-poll-id="${poll.id}">
+    <div class="${featured ? "featured-poll-card" : "poll-card"}" data-poll-id="${escapeHTML(poll.id)}">
 
         <div class="poll-info">
 
@@ -1632,18 +2466,18 @@ function renderPollCard(poll, featured){
                 ${featured ? "Featured Idea" : "Idea"}
             </div>
 
-            <h3>${poll.title}</h3>
+            <h3>${escapeHTML(poll.title)}</h3>
 
-            <p>${poll.description}</p>
+            <p>${escapeHTML(poll.description)}</p>
 
             <div class="poll-meta">
 
                 <span class="poll-pill">
-                    🏷 ${poll.category}
+                    🏷 ${escapeHTML(poll.category)}
                 </span>
 
                 <span class="poll-pill">
-                    🕒 ${poll.status}
+                    🕒 ${escapeHTML(poll.status)}
                 </span>
 
             </div>
@@ -1667,7 +2501,7 @@ function renderPollCard(poll, featured){
                </div>
 
                 <div class="poll-total">
-                    Total Responses: ${poll.totalVotes}
+                    Total Responses: ${escapeHTML(poll.totalVotes)}
                 </div>
 
             </div>
@@ -1677,7 +2511,7 @@ function renderPollCard(poll, featured){
                 <button
                 class="poll-vote-btn yes ${poll.userVote === "yes" ? "selected" : ""}"
                 data-vote="yes"
-                data-poll-id="${poll.id}"
+                data-poll-id="${escapeHTML(poll.id)}"
                 ${poll.hasVoted ? "disabled" : ""}>
                     ${poll.userVote === "yes" ? "You voted Yes" : "Yes"}
                 </button>
@@ -1685,14 +2519,14 @@ function renderPollCard(poll, featured){
                 <button
                 class="poll-vote-btn no ${poll.userVote === "no" ? "selected" : ""}"
                 data-vote="no"
-                data-poll-id="${poll.id}"
+                data-poll-id="${escapeHTML(poll.id)}"
                 ${poll.hasVoted ? "disabled" : ""}>
                     ${poll.userVote === "no" ? "You voted No" : "No"}
                 </button>
 
             </div>
 
-            <a href="#requests" class="suggest-change-btn" data-suggest-for="${poll.id}">
+            <a href="#requests" class="suggest-change-btn" data-suggest-for="${escapeHTML(poll.id)}">
                 💬 Suggest Changes
             </a>
 
@@ -1801,8 +2635,15 @@ function getVoterId(){
 
     if(!voterId){
 
-        voterId =
-        "voter_" + crypto.randomUUID();
+        if(window.crypto && crypto.randomUUID){
+            voterId =
+            "voter_" + crypto.randomUUID();
+        }
+
+        else{
+            voterId =
+            "voter_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+        }
 
         localStorage.setItem("jwmhs2028_voter_id", voterId);
 
@@ -1816,7 +2657,15 @@ function getVoterId(){
    INITIALIZE SITE
 ========================= */
 
+applySavedTheme();
+
 loadUpdates();
+
+loadWeeklyHappenings();
+loadQuickLinks();
+loadCouncilProjects();
+loadBellSchedule();
+loadFAQ();
 
 loadFeedbackPolls();
 
