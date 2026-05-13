@@ -26,20 +26,106 @@ document.querySelectorAll(".fade-up")
 ========================= */
 
 const tabs = document.querySelectorAll(".tab");
+const mobileMenuLinks = document.querySelectorAll(".mobile-menu-link");
+const mobileBottomLinks = document.querySelectorAll(".mobile-bottom-link");
+
+function setActiveNavigation(hash){
+
+    const targetHash =
+    hash || "#home";
+
+    tabs.forEach((tab) => {
+
+        tab.classList.toggle(
+            "active",
+            tab.getAttribute("href") === targetHash
+        );
+
+    });
+
+    mobileMenuLinks.forEach((link) => {
+
+        link.classList.toggle(
+            "active",
+            link.getAttribute("href") === targetHash
+        );
+
+    });
+
+    mobileBottomLinks.forEach((link) => {
+
+        link.classList.toggle(
+            "active",
+            link.getAttribute("href") === targetHash
+        );
+
+    });
+
+}
 
 tabs.forEach((tab) => {
 
     tab.addEventListener("click", () => {
 
-        tabs.forEach((t) => {
-            t.classList.remove("active");
-        });
-
-        tab.classList.add("active");
+        setActiveNavigation(tab.getAttribute("href"));
 
     });
 
 });
+
+mobileMenuLinks.forEach((link) => {
+
+    link.addEventListener("click", () => {
+
+        setActiveNavigation(link.getAttribute("href"));
+        closeMobileMenu();
+
+    });
+
+});
+
+mobileBottomLinks.forEach((link) => {
+
+    link.addEventListener("click", () => {
+
+        setActiveNavigation(link.getAttribute("href"));
+
+    });
+
+});
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+const mobileMenuToggle =
+document.getElementById("mobile-menu-toggle");
+
+const mobileMenuPanel =
+document.getElementById("mobile-menu-panel");
+
+function closeMobileMenu(){
+
+    if(mobileMenuToggle){
+        mobileMenuToggle.classList.remove("open");
+    }
+
+    if(mobileMenuPanel){
+        mobileMenuPanel.classList.remove("open");
+    }
+
+}
+
+if(mobileMenuToggle && mobileMenuPanel){
+
+    mobileMenuToggle.addEventListener("click", () => {
+
+        mobileMenuToggle.classList.toggle("open");
+        mobileMenuPanel.classList.toggle("open");
+
+    });
+
+}
 
 /* =========================
    SAFE TEXT HELPERS
@@ -242,8 +328,14 @@ const weeklyHappeningsSheetUrl =
 const faqSheetUrl =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQgmb3X2UyqatNuOBBJ2jh6Xtgz2xiQ988DIceEW6PUUFBK4vMxD7t_cVGwY2jP29P62V2H2vg_23P8/pub?output=csv";
 
+const heroCountdownSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vRVxzEdCkIZj2SFlhtNQ5C8OEJK3XuO4WZVUjQS1RQO-3T9fymlzByHQ6pftc41LJS75sHUa4sESaLv/pub?output=csv";
+
 let allBellSchedules = {};
 let selectedBellScheduleName = "";
+
+let heroCountdownTarget = null;
+let heroCountdownInterval = null;
 
 /* =========================
    DARK MODE
@@ -304,6 +396,232 @@ if(themeToggle){
 
         updateThemeToggleText();
 
+    });
+
+}
+
+/* =========================
+   HERO COUNTDOWN
+========================= */
+
+async function loadHeroCountdown(){
+
+    const card =
+    document.getElementById("hero-countdown-card");
+
+    const labelEl =
+    document.getElementById("hero-countdown-label");
+
+    const titleEl =
+    document.getElementById("hero-countdown-title");
+
+    const buttonEl =
+    document.getElementById("hero-countdown-button");
+
+    const dateLabelEl =
+    document.getElementById("hero-countdown-date-label");
+
+    if(!card || !labelEl || !titleEl || !buttonEl || !dateLabelEl){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(heroCountdownSheetUrl);
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv).slice(1);
+
+        const countdown =
+        rows.find(row => row[0] && row[2]);
+
+        if(!countdown){
+            throw new Error("No countdown found");
+        }
+
+        const title =
+        countdown[0] || "Countdown";
+
+        const description =
+        countdown[1] || "Let the countdown begin!";
+
+        const targetDateTime =
+        countdown[2] || "";
+
+        const dateLabel =
+        countdown[3] || "";
+
+        const buttonText =
+        countdown[4] || "";
+
+        const buttonLink =
+        countdown[5] || "";
+
+        heroCountdownTarget =
+        new Date(targetDateTime);
+
+        if(Number.isNaN(heroCountdownTarget.getTime())){
+            throw new Error("Invalid countdown date");
+        }
+
+        labelEl.textContent =
+        title;
+
+        titleEl.textContent =
+        description;
+
+        dateLabelEl.textContent =
+        dateLabel || formatHeroCountdownDate(heroCountdownTarget);
+
+        const hasButton =
+        buttonText.trim() && buttonLink.trim();
+
+        if(hasButton){
+
+            buttonEl.textContent =
+            buttonText;
+
+            buttonEl.href =
+            safeUrl(buttonLink);
+
+            buttonEl.style.display =
+            "inline-flex";
+
+        }
+
+        else{
+
+            buttonEl.style.display =
+            "none";
+
+        }
+
+        updateHeroCountdown();
+
+        if(heroCountdownInterval){
+            clearInterval(heroCountdownInterval);
+        }
+
+        heroCountdownInterval =
+        setInterval(updateHeroCountdown, 1000);
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        labelEl.textContent =
+        "Countdown Unavailable";
+
+        titleEl.textContent =
+        "Countdown could not be loaded.";
+
+        dateLabelEl.textContent =
+        "Check back soon.";
+
+        buttonEl.style.display =
+        "none";
+
+        setHeroCountdownValues(0, 0, 0, 0);
+
+    }
+
+}
+
+function updateHeroCountdown(){
+
+    if(!heroCountdownTarget){
+        return;
+    }
+
+    const now =
+    new Date();
+
+    const difference =
+    heroCountdownTarget.getTime() - now.getTime();
+
+    if(difference <= 0){
+
+        setHeroCountdownValues(0, 0, 0, 0);
+
+        const titleEl =
+        document.getElementById("hero-countdown-title");
+
+        if(titleEl){
+            titleEl.textContent =
+            "The countdown is over!";
+        }
+
+        return;
+
+    }
+
+    const days =
+    Math.floor(difference / (1000 * 60 * 60 * 24));
+
+    const hours =
+    Math.floor((difference / (1000 * 60 * 60)) % 24);
+
+    const minutes =
+    Math.floor((difference / (1000 * 60)) % 60);
+
+    const seconds =
+    Math.floor((difference / 1000) % 60);
+
+    setHeroCountdownValues(days, hours, minutes, seconds);
+
+}
+
+function setHeroCountdownValues(days, hours, minutes, seconds){
+
+    const daysEl =
+    document.getElementById("hero-countdown-days");
+
+    const hoursEl =
+    document.getElementById("hero-countdown-hours");
+
+    const minutesEl =
+    document.getElementById("hero-countdown-minutes");
+
+    const secondsEl =
+    document.getElementById("hero-countdown-seconds");
+
+    if(daysEl){
+        daysEl.textContent =
+        String(days).padStart(2, "0");
+    }
+
+    if(hoursEl){
+        hoursEl.textContent =
+        String(hours).padStart(2, "0");
+    }
+
+    if(minutesEl){
+        minutesEl.textContent =
+        String(minutes).padStart(2, "0");
+    }
+
+    if(secondsEl){
+        secondsEl.textContent =
+        String(seconds).padStart(2, "0");
+    }
+
+}
+
+function formatHeroCountdownDate(date){
+
+    return date.toLocaleString("en-US", {
+        timeZone:"America/New_York",
+        month:"long",
+        day:"numeric",
+        year:"numeric",
+        hour:"numeric",
+        minute:"2-digit"
     });
 
 }
@@ -2660,6 +2978,8 @@ function getVoterId(){
 applySavedTheme();
 
 loadUpdates();
+
+loadHeroCountdown();
 
 loadWeeklyHappenings();
 loadQuickLinks();
