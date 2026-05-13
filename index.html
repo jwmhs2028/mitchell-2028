@@ -40,7 +40,13 @@
 
     </a>
 
-    <div class="nav-tabs">
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" type="button" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="nav-tabs" id="nav-tabs">
 
       <a href="#home" class="tab active">
         Home
@@ -91,6 +97,50 @@
 
   </nav>
 
+  <div class="mobile-menu-panel" id="mobile-menu-panel">
+
+    <a href="#home" class="mobile-menu-link active">
+      Home
+    </a>
+
+    <a href="#council" class="mobile-menu-link">
+      Council
+    </a>
+
+    <a href="#dashboard" class="mobile-menu-link">
+      Dashboard
+    </a>
+
+    <a href="#about" class="mobile-menu-link">
+      About
+    </a>
+
+    <a href="#events" class="mobile-menu-link">
+      Updates
+    </a>
+
+    <a href="#feedback" class="mobile-menu-link">
+      Feedback
+    </a>
+
+    <a href="#courses" class="mobile-menu-link">
+      Student Guide
+    </a>
+
+    <a href="#calculator" class="mobile-menu-link">
+      Calculator
+    </a>
+
+    <a href="#communication" class="mobile-menu-link">
+      Follow Us
+    </a>
+
+    <a href="#requests" class="mobile-menu-link">
+      Ideas
+    </a>
+
+  </div>
+
 </header>
 
 <!-- =========================
@@ -133,18 +183,169 @@
 
     </div>
 
-    <div class="hero-badge-card">
+    <div class="hero-side">
 
-      <img src="images/mustang.png" alt="Mitchell Mustang" class="hero-mustang">
+      <div class="hero-badge-card">
 
-      <div class="badge-card-text">
-        <span>CLASS HUB</span>
-        <h3>Built for students.</h3>
-        <p>
-          Stay connected with council updates, school resources, and everything
-          happening for the Class of 2028.
-        </p>
+        <img src="images/mustang.png" alt="Mitchell Mustang" class="hero-mustang">
+
+        <div class="badge-card-text">
+          <span>CLASS HUB</span>
+          <h3>Built for students.</h3>
+          <p>
+            Stay connected with council updates, school resources, and everything
+            happening for the Class of 2028.
+          </p>
+        </div>
+
       </div>
+
+      <!-- =========================
+           HERO COUNTDOWN
+      ========================= -->
+
+      <div class="hero-countdown-card" id="hero-countdown-card">
+
+        <div class="hero-countdown-top">
+
+          <div>
+            <span id="hero-countdown-label">
+              COUNTDOWN
+            </span>
+
+            <h3 id="hero-countdown-title">
+              Loading countdown...
+            </h3>
+          </div>
+
+          <a href="#events" id="hero-countdown-button" class="hero-countdown-btn">
+            View Details
+          </a>
+
+        </div>
+
+        <div class="hero-countdown-grid">
+
+          <div class="hero-countdown-box">
+            <strong id="hero-countdown-days">00</strong>
+            <p>Days</p>
+          </div>
+
+          <div class="hero-countdown-box">
+            <strong id="hero-countdown-hours">00</strong>
+            <p>Hours</p>
+          </div>
+
+          <div class="hero-countdown-box">
+            <strong id="hero-countdown-minutes">00</strong>
+            <p>Minutes</p>
+          </div>
+
+          <div class="hero-countdown-box">
+            <strong id="hero-countdown-seconds">00</strong>
+            <p>Seconds</p>
+          </div>
+
+        </div>
+
+        <div class="hero-countdown-date">
+          <span>📅</span>
+          <p id="hero-countdown-date-label">
+            Date loading...
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =========================
+     MOBILE HOME PREVIEW LINKS
+========================= -->
+
+<section class="mobile-home-preview" aria-label="Mobile homepage shortcuts">
+
+  <div class="mobile-preview-group">
+
+    <div class="mobile-preview-heading">
+
+      <div>
+        <span>👥</span>
+        <h2>Student Council</h2>
+      </div>
+
+      <a href="#council">
+        View All →
+      </a>
+
+    </div>
+
+    <div class="mobile-preview-grid">
+
+      <a href="#events" class="mobile-preview-card">
+        <span>📣</span>
+        <div>
+          <h3>Council Updates</h3>
+          <p>Read the latest announcements and important updates.</p>
+        </div>
+      </a>
+
+      <a href="#events" class="mobile-preview-card">
+        <span>📅</span>
+        <div>
+          <h3>Upcoming Events</h3>
+          <p>See what's coming up and get involved.</p>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="mobile-preview-group">
+
+    <div class="mobile-preview-heading">
+
+      <div>
+        <span>▦</span>
+        <h2>Student Dashboard</h2>
+      </div>
+
+      <a href="#dashboard">
+        View All →
+      </a>
+
+    </div>
+
+    <div class="mobile-preview-grid three">
+
+      <a href="#dashboard" class="mobile-preview-card">
+        <span>📋</span>
+        <div>
+          <h3>What's Happening This Week</h3>
+          <p>Your weekly rundown of events and activities.</p>
+        </div>
+      </a>
+
+      <a href="#dashboard" class="mobile-preview-card">
+        <span>🔔</span>
+        <div>
+          <h3>Bell Schedule</h3>
+          <p>View today’s schedule and important times.</p>
+        </div>
+      </a>
+
+      <a href="#dashboard" class="mobile-preview-card">
+        <span>🔗</span>
+        <div>
+          <h3>Quick Links</h3>
+          <p>Access school tools resources and forms.</p>
+        </div>
+      </a>
 
     </div>
 
@@ -1160,6 +1361,39 @@
   </p>
 
 </footer>
+
+<!-- =========================
+     MOBILE QUICK MENU
+========================= -->
+
+<nav class="mobile-bottom-nav" aria-label="Mobile quick navigation">
+
+  <a href="#home" class="mobile-bottom-link active">
+    <span>🏠</span>
+    <p>Home</p>
+  </a>
+
+  <a href="#events" class="mobile-bottom-link">
+    <span>📣</span>
+    <p>Updates</p>
+  </a>
+
+  <a href="#dashboard" class="mobile-bottom-link">
+    <span>▦</span>
+    <p>Dashboard</p>
+  </a>
+
+  <a href="#feedback" class="mobile-bottom-link">
+    <span>📊</span>
+    <p>Polls</p>
+  </a>
+
+  <a href="#requests" class="mobile-bottom-link">
+    <span>💡</span>
+    <p>Ideas</p>
+  </a>
+
+</nav>
 
 <script src="script.js"></script>
 
