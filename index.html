@@ -22,6 +22,39 @@
 <body>
 
 <!-- =========================
+     ANNOUNCEMENT BAR
+========================= -->
+
+<div class="makeover-alert" id="makeover-alert">
+
+  <div class="makeover-alert-inner">
+
+    <div class="makeover-alert-message">
+
+      <span>📣</span>
+
+      <strong>Announcement:</strong>
+
+      <p>
+        Stay updated with Class of 2028 news, events, schedules, and student resources.
+      </p>
+
+    </div>
+
+    <a href="#events" class="makeover-alert-btn">
+      View Updates
+      <span>→</span>
+    </a>
+
+    <button class="makeover-alert-close" id="makeover-alert-close" type="button" aria-label="Close announcement">
+      ×
+    </button>
+
+  </div>
+
+</div>
+
+<!-- =========================
      NAVBAR
 ========================= -->
 
@@ -151,58 +184,53 @@
 
   <div class="hero-bg"></div>
 
-  <div class="hero-inner">
+  <div class="hero-inner makeover-hero-inner">
 
-    <div class="hero-copy">
+    <div class="makeover-hero-left">
 
-      <span class="eyebrow">
-        JAMES W. MITCHELL HIGH SCHOOL
-      </span>
+      <div class="makeover-hero-kicker">
+        Mitchell Mustangs · Class of 2028
+      </div>
 
       <h1>
-        CLASS OF 2028
-        <span>STUDENT COUNCIL</span>
+        Class of 2028
+        <span>Student Council</span>
       </h1>
 
       <p>
-        Your official hub for Class of 2028 announcements, events, student
-        resources, course information, clubs, requests, and Mustang spirit.
+        Your hub for announcements, events, resources, schedules, feedback,
+        and everything happening for the Mitchell Class of 2028.
       </p>
 
-      <div class="hero-buttons">
+      <div class="hero-buttons makeover-hero-buttons">
 
         <a href="#events" class="primary-btn">
           View Updates
+          <span>→</span>
         </a>
 
         <a href="#dashboard" class="secondary-btn">
-          Student Dashboard
+          Open Dashboard
+          <span>→</span>
         </a>
 
       </div>
 
     </div>
 
-    <div class="hero-side">
+    <div class="makeover-hero-center">
 
-      <div class="hero-badge-card">
+      <div class="makeover-logo-stack">
 
-        <img src="images/mustang.png" alt="Mitchell Mustang" class="hero-mustang">
+        <img src="images/mitchell-m.png" alt="Mitchell M logo" class="makeover-m-logo">
 
-        <div class="badge-card-text">
-          <span>CLASS HUB</span>
-          <h3>Built for students.</h3>
-          <p>
-            Stay connected with council updates, school resources, and everything
-            happening for the Class of 2028.
-          </p>
-        </div>
+        <img src="images/mustang.png" alt="Mitchell Mustang logo" class="makeover-mustang-logo">
 
       </div>
 
-      <!-- =========================
-           HERO COUNTDOWN
-      ========================= -->
+    </div>
+
+    <div class="makeover-hero-right">
 
       <div class="hero-countdown-card" id="hero-countdown-card">
 
@@ -233,17 +261,17 @@
 
           <div class="hero-countdown-box">
             <strong id="hero-countdown-hours">00</strong>
-            <p>Hours</p>
+            <p>Hrs</p>
           </div>
 
           <div class="hero-countdown-box">
             <strong id="hero-countdown-minutes">00</strong>
-            <p>Minutes</p>
+            <p>Mins</p>
           </div>
 
           <div class="hero-countdown-box">
             <strong id="hero-countdown-seconds">00</strong>
-            <p>Seconds</p>
+            <p>Secs</p>
           </div>
 
         </div>
@@ -258,6 +286,58 @@
       </div>
 
     </div>
+
+  </div>
+
+  <div class="makeover-quick-strip">
+
+    <a href="#dashboard" class="makeover-strip-card">
+      <span>📅</span>
+      <div>
+        <strong>Weekly Happenings</strong>
+        <p>See what’s new</p>
+      </div>
+    </a>
+
+    <a href="#dashboard" class="makeover-strip-card">
+      <span>🔗</span>
+      <div>
+        <strong>Quick Links</strong>
+        <p>Important resources</p>
+      </div>
+    </a>
+
+    <a href="#dashboard" class="makeover-strip-card">
+      <span>📋</span>
+      <div>
+        <strong>Projects</strong>
+        <p>Council tracker</p>
+      </div>
+    </a>
+
+    <a href="#dashboard" class="makeover-strip-card">
+      <span>🕒</span>
+      <div>
+        <strong>Bell Schedule</strong>
+        <p>View schedules</p>
+      </div>
+    </a>
+
+    <a href="#feedback" class="makeover-strip-card">
+      <span>📊</span>
+      <div>
+        <strong>Feedback</strong>
+        <p>Vote on ideas</p>
+      </div>
+    </a>
+
+    <a href="#requests" class="makeover-strip-card">
+      <span>💡</span>
+      <div>
+        <strong>Submit Ideas</strong>
+        <p>Student voice</p>
+      </div>
+    </a>
 
   </div>
 
@@ -286,19 +366,19 @@
 
     <div class="mobile-preview-grid">
 
-      <a href="#events" class="mobile-preview-card">
-        <span>📣</span>
+      <a href="#council" class="mobile-preview-card">
+        <span>🏛️</span>
         <div>
-          <h3>Council Updates</h3>
-          <p>Read the latest announcements and important updates.</p>
+          <h3>Meet Your Council</h3>
+          <p>View officers, representatives, sponsors, and advisors.</p>
         </div>
       </a>
 
-      <a href="#events" class="mobile-preview-card">
-        <span>📅</span>
+      <a href="#requests" class="mobile-preview-card">
+        <span>💬</span>
         <div>
-          <h3>Upcoming Events</h3>
-          <p>See what's coming up and get involved.</p>
+          <h3>Share Your Voice</h3>
+          <p>Submit ideas, requests, and feedback to Student Council.</p>
         </div>
       </a>
 
@@ -326,7 +406,7 @@
       <a href="#dashboard" class="mobile-preview-card">
         <span>📋</span>
         <div>
-          <h3>What's Happening This Week</h3>
+          <h3>What’s Happening This Week</h3>
           <p>Your weekly rundown of events and activities.</p>
         </div>
       </a>
@@ -335,7 +415,7 @@
         <span>🔔</span>
         <div>
           <h3>Bell Schedule</h3>
-          <p>View today’s schedule and important times.</p>
+          <p>View regular, activity, pep rally, and early release schedules.</p>
         </div>
       </a>
 
@@ -343,7 +423,7 @@
         <span>🔗</span>
         <div>
           <h3>Quick Links</h3>
-          <p>Access school tools resources and forms.</p>
+          <p>Access school tools, resources, and forms.</p>
         </div>
       </a>
 
