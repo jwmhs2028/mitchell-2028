@@ -1,3 +1,9 @@
+/* =========================================================
+   JWMHS CLASS OF 2028 WEBSITE
+   FULL SCRIPT.JS
+   Google Sheets + Dashboard + Countdown + Polls + Mobile Nav
+========================================================= */
+
 /* =========================
    SCROLL ANIMATIONS
 ========================= */
@@ -7,27 +13,30 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
 
         if(entry.isIntersecting){
-
             entry.target.classList.add("show");
-
         }
 
     });
 
 }, {
-    threshold: 0.1
+    threshold:0.1
 });
 
 document.querySelectorAll(".fade-up")
 .forEach((el) => observer.observe(el));
 
 /* =========================
-   ACTIVE NAV TABS
+   ACTIVE NAVIGATION
 ========================= */
 
-const tabs = document.querySelectorAll(".tab");
-const mobileMenuLinks = document.querySelectorAll(".mobile-menu-link");
-const mobileBottomLinks = document.querySelectorAll(".mobile-bottom-link");
+const tabs =
+document.querySelectorAll(".tab");
+
+const mobileMenuLinks =
+document.querySelectorAll(".mobile-menu-link");
+
+const mobileBottomLinks =
+document.querySelectorAll(".mobile-bottom-link");
 
 function setActiveNavigation(hash){
 
@@ -128,6 +137,46 @@ if(mobileMenuToggle && mobileMenuPanel){
 }
 
 /* =========================
+   ANNOUNCEMENT BAR
+========================= */
+
+const makeoverAlert =
+document.getElementById("makeover-alert");
+
+const makeoverAlertClose =
+document.getElementById("makeover-alert-close");
+
+function loadMakeoverAlertState(){
+
+    if(!makeoverAlert){
+        return;
+    }
+
+    const alertClosed =
+    localStorage.getItem("jwmhs2028_makeover_alert_closed");
+
+    if(alertClosed === "true"){
+        makeoverAlert.classList.add("hide");
+    }
+
+}
+
+if(makeoverAlertClose && makeoverAlert){
+
+    makeoverAlertClose.addEventListener("click", () => {
+
+        makeoverAlert.classList.add("hide");
+
+        localStorage.setItem(
+            "jwmhs2028_makeover_alert_closed",
+            "true"
+        );
+
+    });
+
+}
+
+/* =========================
    SAFE TEXT HELPERS
 ========================= */
 
@@ -157,95 +206,6 @@ function safeUrl(value){
     }
 
     return "#";
-
-}
-
-/* =========================
-   GOOGLE SHEETS UPDATES
-========================= */
-
-async function loadUpdates(){
-
-    const container =
-    document.getElementById("events-container");
-
-    if(!container){
-        return;
-    }
-
-    try{
-
-        const response = await fetch(
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vR5RuaHWBn_YylV0jvB7U6SevGSk9ayuiT1VO0M3uZ3rv4RCqcZrm333buUutaXExySMm5yHBT2KRAy/pub?output=csv"
-        );
-
-        const csv =
-        await response.text();
-
-        const rows =
-        parseCSV(csv).slice(1);
-
-        container.innerHTML = "";
-
-        rows.forEach((row) => {
-
-            if(row.length === 0) return;
-
-            const title = row[0] || "";
-            const description = row[1] || "";
-            const image = row[2] || "";
-
-            if(title){
-
-                const card = `
-
-                <div class="event-card fade-up">
-
-                    ${image ? `
-                    <img
-                    src="${escapeHTML(image)}"
-                    class="update-image"
-                    alt="${escapeHTML(title)}">
-                    ` : ""}
-
-                    <h3>${escapeHTML(title)}</h3>
-
-                    <p>${escapeHTML(description)}</p>
-
-                </div>
-
-                `;
-
-                container.innerHTML += card;
-
-            }
-
-        });
-
-        document.querySelectorAll(".fade-up")
-        .forEach((el) => observer.observe(el));
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-        container.innerHTML = `
-
-        <div class="event-card">
-
-            <h3>Unable To Load Updates</h3>
-
-            <p>
-            Please try again later.
-            </p>
-
-        </div>
-
-        `;
-
-    }
 
 }
 
@@ -310,8 +270,11 @@ function parseCSV(csv){
 }
 
 /* =========================
-   STUDENT DASHBOARD SHEETS
+   GOOGLE SHEETS LINKS
 ========================= */
+
+const updatesSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vR5RuaHWBn_YylV0jvB7U6SevGSk9ayuiT1VO0M3uZ3rv4RCqcZrm333buUutaXExySMm5yHBT2KRAy/pub?output=csv";
 
 const councilProjectsSheetUrl =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vQeMGUQHV6CMpvsaGOfd2JA-DbLfBDaVUKCoEleJPX8PMI6LeOXKRuO-KoNYUjS0KOK1R25tmYCRb48/pub?output=csv";
@@ -331,11 +294,11 @@ const faqSheetUrl =
 const heroCountdownSheetUrl =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vRVxzEdCkIZj2SFlhtNQ5C8OEJK3XuO4WZVUjQS1RQO-3T9fymlzByHQ6pftc41LJS75sHUa4sESaLv/pub?output=csv";
 
-let allBellSchedules = {};
-let selectedBellScheduleName = "";
+const courseSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vTraauIam0LG5jmQ6wRg9crrAGhDZEAwPU2E6kaiCN02afrLOuJop4SJK7JgptYRdcdeBQ_AgOuOl40/pub?output=csv";
 
-let heroCountdownTarget = null;
-let heroCountdownInterval = null;
+const clubsSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vRTraMHVcYD9Ac9ki1fHVUAQgcvWBuS8GMIiyXf4lJ6nkEaRgVE-LNogJspvCemNYjgdvGkwvz6a23P/pub?output=csv";
 
 /* =========================
    DARK MODE
@@ -401,8 +364,99 @@ if(themeToggle){
 }
 
 /* =========================
+   LIVE UPDATES
+========================= */
+
+async function loadUpdates(){
+
+    const container =
+    document.getElementById("events-container");
+
+    if(!container){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(updatesSheetUrl);
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv).slice(1);
+
+        container.innerHTML = "";
+
+        rows.forEach((row) => {
+
+            if(row.length === 0){
+                return;
+            }
+
+            const title =
+            row[0] || "";
+
+            const description =
+            row[1] || "";
+
+            const image =
+            row[2] || "";
+
+            if(title){
+
+                container.innerHTML += `
+
+                <div class="event-card fade-up">
+
+                    ${image ? `
+                    <img
+                    src="${escapeHTML(image)}"
+                    class="update-image"
+                    alt="${escapeHTML(title)}">
+                    ` : ""}
+
+                    <h3>${escapeHTML(title)}</h3>
+
+                    <p>${escapeHTML(description)}</p>
+
+                </div>
+
+                `;
+
+            }
+
+        });
+
+        document.querySelectorAll(".fade-up")
+        .forEach((el) => observer.observe(el));
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+
+        <div class="event-card">
+            <h3>Unable To Load Updates</h3>
+            <p>Please try again later.</p>
+        </div>
+
+        `;
+
+    }
+
+}
+
+/* =========================
    HERO COUNTDOWN
 ========================= */
+
+let heroCountdownTarget = null;
+let heroCountdownInterval = null;
 
 async function loadHeroCountdown(){
 
@@ -848,7 +902,7 @@ async function loadQuickLinks(){
 }
 
 /* =========================
-   COUNCIL PROJECTS TRACKER
+   COUNCIL PROJECTS
 ========================= */
 
 async function loadCouncilProjects(){
@@ -968,8 +1022,11 @@ function getStatusClass(status){
 }
 
 /* =========================
-   BELL SCHEDULE WITH LUNCH SUPPORT
+   BELL SCHEDULE
 ========================= */
+
+let allBellSchedules = {};
+let selectedBellScheduleName = "";
 
 async function loadBellSchedule(){
 
@@ -1373,9 +1430,6 @@ document.querySelectorAll(".guide-panel");
 let allCourses = [];
 let selectedCourseIndex = 0;
 
-const courseSheetUrl =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vTraauIam0LG5jmQ6wRg9crrAGhDZEAwPU2E6kaiCN02afrLOuJop4SJK7JgptYRdcdeBQ_AgOuOl40/pub?output=csv";
-
 async function loadStudentGuideCourses(){
 
     if(!courseList || !courseDetailPanel){
@@ -1536,7 +1590,8 @@ function populateSelect(select, options){
         const option =
         document.createElement("option");
 
-        option.value = optionText;
+        option.value =
+        optionText;
 
         option.textContent =
         optionText === "All"
@@ -1589,10 +1644,10 @@ function getFilteredCourses(){
         ${course.topics}
         `.toLowerCase();
 
-        const matchesSearch =
-        searchableText.includes(searchTerm);
-
-        return matchesType && matchesDepartment && matchesGrade && matchesSearch;
+        return searchableText.includes(searchTerm)
+        && matchesType
+        && matchesDepartment
+        && matchesGrade;
 
     });
 
@@ -1669,7 +1724,8 @@ function renderCourseList(){
 
         card.addEventListener("click", () => {
 
-            selectedCourseIndex = course.originalIndex;
+            selectedCourseIndex =
+            course.originalIndex;
 
             renderCourseList();
             renderCourseDetails(course);
@@ -1800,9 +1856,6 @@ document.getElementById("club-search-input");
 let allClubs = [];
 let selectedClubIndex = 0;
 
-const clubsSheetUrl =
-"https://docs.google.com/spreadsheets/d/e/2PACX-1vRTraMHVcYD9Ac9ki1fHVUAQgcvWBuS8GMIiyXf4lJ6nkEaRgVE-LNogJspvCemNYjgdvGkwvz6a23P/pub?output=csv";
-
 async function loadStudentGuideClubs(){
 
     if(!clubList || !clubDetailPanel){
@@ -1910,7 +1963,8 @@ function populateClubSelect(select, options){
         const option =
         document.createElement("option");
 
-        option.value = optionText;
+        option.value =
+        optionText;
 
         option.textContent =
         optionText === "All"
@@ -1963,10 +2017,10 @@ function getFilteredClubs(){
         ${club.topics}
         `.toLowerCase();
 
-        const matchesSearch =
-        searchableText.includes(searchTerm);
-
-        return matchesType && matchesCategory && matchesGrade && matchesSearch;
+        return searchableText.includes(searchTerm)
+        && matchesType
+        && matchesCategory
+        && matchesGrade;
 
     });
 
@@ -2043,7 +2097,8 @@ function renderClubList(){
 
         card.addEventListener("click", () => {
 
-            selectedClubIndex = club.originalIndex;
+            selectedClubIndex =
+            club.originalIndex;
 
             renderClubList();
             renderClubDetails(club);
@@ -2150,7 +2205,7 @@ function renderClubDetails(club){
 }
 
 /* =========================
-   SHARED STUDENT GUIDE HELPERS
+   STUDENT GUIDE HELPERS
 ========================= */
 
 function formatRating(rating){
@@ -2302,7 +2357,7 @@ function getClubIcon(category){
 }
 
 /* =========================
-   STUDENT GUIDE EVENT LISTENERS
+   STUDENT GUIDE LISTENERS
 ========================= */
 
 [typeFilter, departmentFilter, gradeFilter].forEach((filter) => {
@@ -2317,7 +2372,9 @@ function getClubIcon(category){
         getFilteredCourses();
 
         if(filteredCourses.length > 0){
-            selectedCourseIndex = filteredCourses[0].originalIndex;
+            selectedCourseIndex =
+            filteredCourses[0].originalIndex;
+
             renderCourseDetails(filteredCourses[0]);
         }
 
@@ -2335,7 +2392,9 @@ if(courseSearchInput){
         getFilteredCourses();
 
         if(filteredCourses.length > 0){
-            selectedCourseIndex = filteredCourses[0].originalIndex;
+            selectedCourseIndex =
+            filteredCourses[0].originalIndex;
+
             renderCourseDetails(filteredCourses[0]);
         }
 
@@ -2357,7 +2416,9 @@ if(courseSearchInput){
         getFilteredClubs();
 
         if(filteredClubs.length > 0){
-            selectedClubIndex = filteredClubs[0].originalIndex;
+            selectedClubIndex =
+            filteredClubs[0].originalIndex;
+
             renderClubDetails(filteredClubs[0]);
         }
 
@@ -2375,7 +2436,9 @@ if(clubSearchInput){
         getFilteredClubs();
 
         if(filteredClubs.length > 0){
-            selectedClubIndex = filteredClubs[0].originalIndex;
+            selectedClubIndex =
+            filteredClubs[0].originalIndex;
+
             renderClubDetails(filteredClubs[0]);
         }
 
@@ -2438,9 +2501,11 @@ function createCategoryRow(name = "", weight = "", earned = "", total = ""){
         return;
     }
 
-    const row = document.createElement("div");
+    const row =
+    document.createElement("div");
 
-    row.className = "grade-row";
+    row.className =
+    "grade-row";
 
     row.innerHTML = `
 
@@ -2478,13 +2543,13 @@ function createCategoryRow(name = "", weight = "", earned = "", total = ""){
 
     categoriesContainer.appendChild(row);
 
-    attachListeners();
+    attachGradeListeners();
     updateCategoryDropdown();
     calculateGrade();
 
 }
 
-function attachListeners(){
+function attachGradeListeners(){
 
     const inputs =
     document.querySelectorAll(
@@ -2517,19 +2582,13 @@ function calculateGrade(){
     rows.forEach((row) => {
 
         const weight =
-        parseFloat(
-            row.querySelector(".cat-weight").value
-        ) || 0;
+        parseFloat(row.querySelector(".cat-weight").value) || 0;
 
         const earned =
-        parseFloat(
-            row.querySelector(".cat-earned").value
-        ) || 0;
+        parseFloat(row.querySelector(".cat-earned").value) || 0;
 
         const total =
-        parseFloat(
-            row.querySelector(".cat-total").value
-        ) || 0;
+        parseFloat(row.querySelector(".cat-total").value) || 0;
 
         if(total > 0 && weight > 0){
 
@@ -2539,7 +2598,8 @@ function calculateGrade(){
             weightedTotal +=
             percent * (weight / 100);
 
-            totalWeight += weight;
+            totalWeight +=
+            weight;
 
         }
 
@@ -2548,10 +2608,8 @@ function calculateGrade(){
     let grade = 0;
 
     if(totalWeight > 0){
-
         grade =
         (weightedTotal / totalWeight) * 100;
-
     }
 
     if(finalGrade){
@@ -2577,7 +2635,8 @@ function updateCategoryDropdown(){
         const option =
         document.createElement("option");
 
-        option.value = index;
+        option.value =
+        index;
 
         option.textContent =
         input.value || `Category ${index + 1}`;
@@ -2587,10 +2646,6 @@ function updateCategoryDropdown(){
     });
 
 }
-
-/* =========================
-   PREDICT NEXT ASSIGNMENT
-========================= */
 
 const predictBtn =
 document.getElementById("predict-btn");
@@ -2609,37 +2664,25 @@ if(predictBtn){
         parseInt(nextCategory.value);
 
         const nextEarned =
-        parseFloat(
-            document.getElementById("next-earned").value
-        ) || 0;
+        parseFloat(document.getElementById("next-earned").value) || 0;
 
         const nextTotal =
-        parseFloat(
-            document.getElementById("next-total").value
-        ) || 0;
+        parseFloat(document.getElementById("next-total").value) || 0;
 
         rows.forEach((row, index) => {
 
             const weight =
-            parseFloat(
-                row.querySelector(".cat-weight").value
-            ) || 0;
+            parseFloat(row.querySelector(".cat-weight").value) || 0;
 
             let earned =
-            parseFloat(
-                row.querySelector(".cat-earned").value
-            ) || 0;
+            parseFloat(row.querySelector(".cat-earned").value) || 0;
 
             let total =
-            parseFloat(
-                row.querySelector(".cat-total").value
-            ) || 0;
+            parseFloat(row.querySelector(".cat-total").value) || 0;
 
             if(index === selectedIndex){
-
                 earned += nextEarned;
                 total += nextTotal;
-
             }
 
             if(total > 0 && weight > 0){
@@ -2650,7 +2693,8 @@ if(predictBtn){
                 weightedTotal +=
                 percent * (weight / 100);
 
-                totalWeight += weight;
+                totalWeight +=
+                weight;
 
             }
 
@@ -2659,10 +2703,8 @@ if(predictBtn){
         let predicted = 0;
 
         if(totalWeight > 0){
-
             predicted =
             (weightedTotal / totalWeight) * 100;
-
         }
 
         if(predictedGrade){
@@ -2673,10 +2715,6 @@ if(predictBtn){
     });
 
 }
-
-/* =========================
-   ADD CATEGORY BUTTON
-========================= */
 
 if(addCategoryBtn){
 
@@ -2933,6 +2971,7 @@ function attachPollVoteButtons(){
                 console.error(error);
 
                 button.disabled = false;
+
                 button.textContent =
                 vote === "yes" ? "Yes" : "No";
 
@@ -2977,6 +3016,10 @@ function getVoterId(){
 
 applySavedTheme();
 
+loadMakeoverAlertState();
+
+setActiveNavigation(window.location.hash || "#home");
+
 loadUpdates();
 
 loadHeroCountdown();
@@ -2994,51 +3037,3 @@ loadStudentGuideClubs();
 
 createCategoryRow();
 createCategoryRow();
-
-
-/* =========================================================
-   CLASS OF 2028 MAKEOVER SCRIPT
-   Paste at the very bottom of script.js
-========================================================= */
-
-/* =========================
-   ANNOUNCEMENT BAR CLOSE
-========================= */
-
-const makeoverAlert =
-document.getElementById("makeover-alert");
-
-const makeoverAlertClose =
-document.getElementById("makeover-alert-close");
-
-function loadMakeoverAlertState(){
-
-    if(!makeoverAlert){
-        return;
-    }
-
-    const alertClosed =
-    localStorage.getItem("jwmhs2028_makeover_alert_closed");
-
-    if(alertClosed === "true"){
-        makeoverAlert.classList.add("hide");
-    }
-
-}
-
-if(makeoverAlertClose && makeoverAlert){
-
-    makeoverAlertClose.addEventListener("click", () => {
-
-        makeoverAlert.classList.add("hide");
-
-        localStorage.setItem(
-            "jwmhs2028_makeover_alert_closed",
-            "true"
-        );
-
-    });
-
-}
-
-loadMakeoverAlertState();
