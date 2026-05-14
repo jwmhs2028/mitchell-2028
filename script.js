@@ -2994,3 +2994,51 @@ loadStudentGuideClubs();
 
 createCategoryRow();
 createCategoryRow();
+
+
+/* =========================================================
+   CLASS OF 2028 MAKEOVER SCRIPT
+   Paste at the very bottom of script.js
+========================================================= */
+
+/* =========================
+   ANNOUNCEMENT BAR CLOSE
+========================= */
+
+const makeoverAlert =
+document.getElementById("makeover-alert");
+
+const makeoverAlertClose =
+document.getElementById("makeover-alert-close");
+
+function loadMakeoverAlertState(){
+
+    if(!makeoverAlert){
+        return;
+    }
+
+    const alertClosed =
+    localStorage.getItem("jwmhs2028_makeover_alert_closed");
+
+    if(alertClosed === "true"){
+        makeoverAlert.classList.add("hide");
+    }
+
+}
+
+if(makeoverAlertClose && makeoverAlert){
+
+    makeoverAlertClose.addEventListener("click", () => {
+
+        makeoverAlert.classList.add("hide");
+
+        localStorage.setItem(
+            "jwmhs2028_makeover_alert_closed",
+            "true"
+        );
+
+    });
+
+}
+
+loadMakeoverAlertState();
