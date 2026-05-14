@@ -12,6 +12,92 @@
 
   <link rel="stylesheet" href="style.css"/>
 
+  <style>
+    /* =========================================================
+       MARQUEE FIXES
+       - Removes old top marquee section from the page
+       - Moves generated section marquees to the TOP of each section
+       - Makes each marquee bar and text taller
+    ========================================================= */
+
+    .section{
+      padding-top:190px;
+      padding-bottom:110px;
+    }
+
+    .section-ticker{
+      top:0;
+      bottom:auto;
+      min-height:78px;
+      display:flex;
+      align-items:center;
+      border-top:1px solid var(--border-soft);
+      border-bottom:1px solid var(--border-soft);
+    }
+
+    .section-ticker-track{
+      align-items:center;
+    }
+
+    .section-ticker-item{
+      padding:24px 66px;
+      font-size:1.55rem;
+      letter-spacing:5.5px;
+      min-height:78px;
+    }
+
+    .request-section{
+      padding-top:190px;
+    }
+
+    @media(max-width:768px){
+
+      .section{
+        padding-top:145px;
+        padding-bottom:72px;
+      }
+
+      .section-ticker{
+        min-height:66px;
+      }
+
+      .section-ticker-item{
+        padding:20px 42px;
+        font-size:1.15rem;
+        letter-spacing:3.5px;
+        min-height:66px;
+      }
+
+      .request-section{
+        padding-top:145px;
+      }
+
+    }
+
+    @media(max-width:520px){
+
+      .section{
+        padding-top:132px;
+      }
+
+      .section-ticker{
+        min-height:60px;
+      }
+
+      .section-ticker-item{
+        padding:18px 34px;
+        font-size:1rem;
+        letter-spacing:3px;
+        min-height:60px;
+      }
+
+      .request-section{
+        padding-top:132px;
+      }
+
+    }
+  </style>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -428,25 +514,6 @@
       </a>
 
     </div>
-
-  </div>
-
-</section>
-
-<!-- =========================
-     MARQUEE STRIP
-========================= -->
-
-<section class="marquee-strip" aria-label="Class of 2028 marquee">
-
-  <div class="marquee-track">
-
-    <span>CLASS OF 2028</span>
-    <span>STUDENT COUNCIL</span>
-    <span>MITCHELL MUSTANGS</span>
-    <span>CLASS OF 2028</span>
-    <span>STUDENT COUNCIL</span>
-    <span>MITCHELL MUSTANGS</span>
 
   </div>
 
