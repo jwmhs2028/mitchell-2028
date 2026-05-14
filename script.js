@@ -3011,6 +3011,155 @@ function getVoterId(){
 }
 
 /* =========================
+   REAL REPEATING SECTION TICKERS
+========================= */
+
+const sectionTickerData = {
+    council:[
+        "Meet The Board",
+        "Class Representatives",
+        "Sponsors & Advisors",
+        "Student Council"
+    ],
+    dashboard:[
+        "Weekly Happenings",
+        "Quick Links",
+        "Projects",
+        "Bell Schedule",
+        "FAQ",
+        "Student Dashboard"
+    ],
+    about:[
+        "Announcements",
+        "Student Voice",
+        "Resources",
+        "Mitchell Mustangs",
+        "Class Hub"
+    ],
+    events:[
+        "Latest Updates",
+        "Announcements",
+        "Events",
+        "Reminders",
+        "Class of 2028"
+    ],
+    feedback:[
+        "Student Feedback",
+        "Vote Yes Or No",
+        "Share Your Voice",
+        "Class Ideas"
+    ],
+    courses:[
+        "Student Guide",
+        "Courses",
+        "Clubs",
+        "Resources",
+        "School Tools"
+    ],
+    calculator:[
+        "Grade Calculator",
+        "Student Tools",
+        "Plan Ahead",
+        "Class Resources"
+    ],
+    communication:[
+        "Follow Us",
+        "Instagram",
+        "Student Requests",
+        "Stay Connected"
+    ],
+    requests:[
+        "Submit Ideas",
+        "Student Voice",
+        "Requests",
+        "Class of 2028"
+    ]
+};
+
+const tickerStyles = [
+    "solid-gold",
+    "outline-black",
+    "solid-black",
+    "outline-gold"
+];
+
+function createSectionTickers(){
+
+    Object.keys(sectionTickerData).forEach((sectionId) => {
+
+        const section =
+        document.getElementById(sectionId);
+
+        if(!section){
+            return;
+        }
+
+        if(section.querySelector(".section-ticker")){
+            return;
+        }
+
+        const ticker =
+        document.createElement("div");
+
+        ticker.className =
+        "section-ticker";
+
+        const track =
+        document.createElement("div");
+
+        track.className =
+        "section-ticker-track";
+
+        const groupOne =
+        createTickerGroup(sectionTickerData[sectionId]);
+
+        const groupTwo =
+        createTickerGroup(sectionTickerData[sectionId]);
+
+        track.appendChild(groupOne);
+        track.appendChild(groupTwo);
+
+        ticker.appendChild(track);
+        section.appendChild(ticker);
+
+    });
+
+}
+
+function createTickerGroup(items){
+
+    const group =
+    document.createElement("div");
+
+    group.className =
+    "section-ticker-group";
+
+    const repeatedItems = [
+        ...items,
+        ...items,
+        ...items
+    ];
+
+    repeatedItems.forEach((item, index) => {
+
+        const span =
+        document.createElement("span");
+
+        span.className =
+        tickerStyles[index % tickerStyles.length];
+
+        span.textContent =
+        `${item} •`;
+
+        group.appendChild(span);
+
+    });
+
+    return group;
+
+}
+
+/* =========================
    INITIALIZE SITE
 ========================= */
 
