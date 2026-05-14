@@ -2188,6 +2188,157 @@ body.dark-mode .hero-bg::after{
     line-height:1.7;
 }
 
+
+/* =========================
+   AP EXAM PREP RESOURCES
+========================= */
+
+.exam-prep-section{
+    background:#111111;
+    color:white;
+}
+
+body:not(.dark-mode) .exam-prep-section{
+    background:#111111;
+}
+
+.exam-prep-section .section-heading h2,
+.exam-prep-section .section-heading p{
+    color:white;
+}
+
+.exam-prep-section .section-heading p{
+    color:rgba(255,255,255,.68);
+}
+
+.exam-prep-list{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
+
+.exam-prep-group{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.exam-prep-category{
+    display:inline-flex;
+    align-items:center;
+    width:max-content;
+    background:rgba(197,163,63,.14);
+    border:1px solid rgba(197,163,63,.18);
+    color:var(--gold);
+    padding:10px 16px;
+    font-size:.78rem;
+    font-weight:900;
+    letter-spacing:5px;
+    text-transform:uppercase;
+}
+
+.exam-prep-category.blue{
+    background:rgba(74,144,226,.18);
+    color:#8fc1ff;
+    border-color:rgba(143,193,255,.18);
+}
+
+.exam-prep-category.green{
+    background:rgba(63,191,127,.16);
+    color:#61d394;
+    border-color:rgba(97,211,148,.18);
+}
+
+.exam-prep-resource{
+    min-height:92px;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    gap:22px;
+    background:#0b0b0b;
+    border:1px solid rgba(197,163,63,.18);
+    color:white;
+    padding:22px 26px;
+    transition:.3s ease;
+}
+
+.exam-prep-resource:hover{
+    transform:translateY(-4px);
+    border-color:rgba(197,163,63,.48);
+    background:#101010;
+    box-shadow:0 18px 45px rgba(0,0,0,.32);
+}
+
+.exam-prep-icon{
+    width:42px;
+    height:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gold);
+    font-size:1.45rem;
+    flex-shrink:0;
+}
+
+.exam-prep-main h3{
+    color:white;
+    font-size:1.05rem;
+    font-weight:900;
+    margin-bottom:7px;
+}
+
+.exam-prep-main p{
+    color:rgba(255,255,255,.62);
+    line-height:1.5;
+    font-weight:600;
+}
+
+.exam-prep-type{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    color:var(--gold);
+    font-size:.78rem;
+    font-weight:900;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    white-space:nowrap;
+}
+
+.exam-prep-type::after{
+    content:"\2197";
+    font-size:1.1rem;
+}
+
+.exam-prep-empty{
+    background:#0b0b0b;
+    border:1px solid rgba(197,163,63,.2);
+    color:rgba(255,255,255,.7);
+    padding:28px;
+    font-weight:700;
+}
+
+@media(max-width:768px){
+
+    .exam-prep-resource{
+        grid-template-columns:auto 1fr;
+        gap:16px;
+        padding:20px;
+    }
+
+    .exam-prep-type{
+        grid-column:2;
+    }
+
+    .exam-prep-category{
+        font-size:.68rem;
+        letter-spacing:3px;
+        max-width:100%;
+        white-space:normal;
+    }
+
+}
+
 /* =========================
    GRADE CALCULATOR
 ========================= */
