@@ -3016,10 +3016,10 @@ function getVoterId(){
 
 const sectionTickerData = {
     council:[
-        "Meet The Board",
-        "Class Representatives",
-        "Sponsors & Advisors",
-        "Student Council"
+        "Meet The Board ",
+        "Class Representatives ",
+        "Sponsors & Advisors ",
+        "Student Council "
     ],
     dashboard:[
         "Weekly Happenings",
