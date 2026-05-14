@@ -185,38 +185,54 @@ body.dark-mode{
 }
 
 /* =========================
-   REAL REPEATING SECTION MARQUEES / TICKERS
+   REAL REPEATING SECTION TICKERS
 ========================= */
 
 @keyframes realTickerScroll{
-    from{ transform:translateX(0); }
-    to{ transform:translateX(-50%); }
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-50%);
+    }
 }
+
+/* 
+   Adds room at the top of every section
+   so the marquee can sit above the section content.
+*/
+
+.section{
+    padding-top:150px;
+}
+
+/* The actual marquee bar */
 
 .section-ticker{
     position:absolute;
-    top:0;
-    bottom:auto;
     left:0;
     right:0;
+    top:0;
+    bottom:auto;
     width:100%;
-    min-height:var(--ticker-height);
     overflow:hidden;
     border-top:1px solid var(--border-soft);
     border-bottom:1px solid var(--border-soft);
-    background:rgba(197,163,63,.055);
+    background:rgba(197,163,63,.075);
     pointer-events:none;
     z-index:3;
-    display:flex;
-    align-items:center;
 }
+
+/* The moving track */
 
 .section-ticker-track{
     display:flex;
-    align-items:center;
     width:max-content;
     animation:realTickerScroll 70s linear infinite;
 }
+
+/* Each repeated group */
 
 .section-ticker-group{
     display:flex;
@@ -224,19 +240,23 @@ body.dark-mode{
     flex-shrink:0;
 }
 
+/* Each text item */
+
 .section-ticker-item{
     display:inline-flex;
     align-items:center;
     justify-content:center;
-    padding:24px 66px;
+    padding:22px 64px;
     font-size:1.55rem;
     line-height:1;
     font-weight:900;
-    letter-spacing:5.5px;
+    letter-spacing:5px;
     text-transform:uppercase;
     white-space:nowrap;
     flex-shrink:0;
 }
+
+/* Text color styles */
 
 .section-ticker-text.solid-gold{
     color:var(--gold);
@@ -258,8 +278,10 @@ body.dark-mode{
     -webkit-text-stroke:1px #080808;
 }
 
+/* Dark mode fixes */
+
 body.dark-mode .section-ticker{
-    background:rgba(216,191,120,.045);
+    background:rgba(216,191,120,.055);
 }
 
 body.dark-mode .section-ticker-text.solid-black{
@@ -270,9 +292,42 @@ body.dark-mode .section-ticker-text.outline-black{
     -webkit-text-stroke:1px #f6f2ea;
 }
 
-/* Old homepage marquee removed from HTML, hidden here too just in case */
+/* Hide old original homepage marquee if it still exists */
+
 .marquee-strip{
-    display:none !important;
+    display:none;
+}
+
+/* Tablet / mobile */
+
+@media(max-width:768px){
+
+    .section{
+        padding-top:120px;
+    }
+
+    .section-ticker-item{
+        padding:18px 38px;
+        font-size:1.08rem;
+        letter-spacing:3px;
+    }
+
+}
+
+/* Small phones */
+
+@media(max-width:520px){
+
+    .section{
+        padding-top:112px;
+    }
+
+    .section-ticker-item{
+        padding:17px 32px;
+        font-size:.98rem;
+        letter-spacing:2.5px;
+    }
+
 }
 
 /* =========================
