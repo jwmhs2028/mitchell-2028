@@ -3169,6 +3169,8 @@ loadMakeoverAlertState();
 
 setActiveNavigation(window.location.hash || "#home");
 
+createSectionTickers();
+
 loadUpdates();
 
 loadHeroCountdown();
