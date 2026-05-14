@@ -209,13 +209,13 @@ body.dark-mode{
     border-bottom:1px solid var(--border-soft);
     background:rgba(197,163,63,.055);
     pointer-events:none;
-    z-index:1;
+    z-index:3;
 }
 
 .section-ticker-track{
     display:flex;
     width:max-content;
-    animation:realTickerScroll 55s linear infinite;
+    animation:realTickerScroll 70s linear infinite;
 }
 
 .section-ticker-group{
@@ -235,6 +235,7 @@ body.dark-mode{
     letter-spacing:5px;
     text-transform:uppercase;
     white-space:nowrap;
+    flex-shrink:0;
 }
 
 .section-ticker-text.solid-gold{
@@ -256,6 +257,7 @@ body.dark-mode{
     color:transparent;
     -webkit-text-stroke:1px #080808;
 }
+
 body.dark-mode .section-ticker{
     background:rgba(216,191,120,.045);
 }
@@ -279,11 +281,12 @@ body.dark-mode .section-ticker-text.outline-black{
         font-size:1rem;
         letter-spacing:3px;
     }
+
 }
 
 @media(max-width:520px){
 
-   .section-ticker-item{
+    .section-ticker-item{
         padding:14px 28px;
         font-size:.9rem;
         letter-spacing:2.5px;
