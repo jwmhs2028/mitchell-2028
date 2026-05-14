@@ -3185,6 +3185,14 @@ const sectionTickerData = {
         "Resources",
         "School Tools"
     ],
+    "exam-prep":[
+        "AP Exam Prep",
+        "Study Resources",
+        "Review Videos",
+        "Practice Links",
+        "AP Courses",
+        "Exam Review"
+    ],
     calculator:[
         "Grade Calculator",
         "Student Tools",
