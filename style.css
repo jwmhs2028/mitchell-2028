@@ -2979,7 +2979,7 @@ body.dark-mode .hero-bg::after{
     }
 
     .mobile-preview-card::after{
-        content:"â€º";
+        content:"\203A";
         margin-left:auto;
         color:var(--gold);
         font-size:2rem;
