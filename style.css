@@ -181,10 +181,10 @@ body.dark-mode{
 }
 
 /* =========================
-   SECTION SCROLLING BARS
+   REAL REPEATING SECTION TICKERS
 ========================= */
 
-@keyframes sectionTicker{
+@keyframes realTickerScroll{
     from{
         transform:translateX(0);
     }
@@ -194,60 +194,102 @@ body.dark-mode{
     }
 }
 
-.section::after{
-    content:"CLASS OF 2028 • STUDENT COUNCIL • MITCHELL MUSTANGS • CLASS OF 2028 • STUDENT COUNCIL • MITCHELL MUSTANGS •";
+.section{
+    padding-bottom:150px;
+}
+
+.section-ticker{
     position:absolute;
     left:0;
+    right:0;
     bottom:0;
+    width:100%;
+    overflow:hidden;
+    border-top:1px solid var(--border-soft);
+    border-bottom:1px solid var(--border-soft);
+    background:rgba(197,163,63,.055);
+    pointer-events:none;
+    z-index:1;
+}
+
+.section-ticker-track{
+    display:flex;
     width:max-content;
-    min-width:200%;
-    padding:16px 0;
-    color:transparent;
-    -webkit-text-stroke:1px rgba(197,163,63,.32);
-    font-size:1.25rem;
+    animation:realTickerScroll 28s linear infinite;
+}
+
+.section-ticker-group{
+    display:flex;
+    align-items:center;
+    flex-shrink:0;
+}
+
+.section-ticker span{
+    display:inline-flex;
+    align-items:center;
+    padding:18px 34px;
+    font-size:1.35rem;
+    line-height:1;
     font-weight:900;
     letter-spacing:5px;
     text-transform:uppercase;
     white-space:nowrap;
-    animation:sectionTicker 38s linear infinite;
-    opacity:.65;
-    pointer-events:none;
 }
 
-#council::after{
-    content:"MEET THE BOARD • CLASS REPRESENTATIVES • SPONSORS & ADVISORS • STUDENT COUNCIL •";
+.section-ticker .solid-gold{
+    color:var(--gold);
+    -webkit-text-stroke:0;
 }
 
-#dashboard::after{
-    content:"WEEKLY HAPPENINGS • QUICK LINKS • PROJECTS • BELL SCHEDULE • FAQ • STUDENT DASHBOARD •";
+.section-ticker .solid-black{
+    color:#080808;
+    -webkit-text-stroke:0;
 }
 
-#about::after{
-    content:"ANNOUNCEMENTS • STUDENT VOICE • RESOURCES • MITCHELL MUSTANGS • CLASS HUB •";
+.section-ticker .outline-gold{
+    color:transparent;
+    -webkit-text-stroke:1px var(--gold);
 }
 
-#events::after{
-    content:"LATEST UPDATES • ANNOUNCEMENTS • EVENTS • REMINDERS • CLASS OF 2028 •";
+.section-ticker .outline-black{
+    color:transparent;
+    -webkit-text-stroke:1px #080808;
 }
 
-#feedback::after{
-    content:"STUDENT FEEDBACK • VOTE YES OR NO • SHARE YOUR VOICE • CLASS IDEAS •";
+body.dark-mode .section-ticker{
+    background:rgba(216,191,120,.045);
 }
 
-#courses::after{
-    content:"STUDENT GUIDE • COURSES • CLUBS • RESOURCES • SCHOOL TOOLS •";
+body.dark-mode .section-ticker .solid-black{
+    color:#f6f2ea;
 }
 
-#calculator::after{
-    content:"GRADE CALCULATOR • STUDENT TOOLS • PLAN AHEAD • CLASS RESOURCES •";
+body.dark-mode .section-ticker .outline-black{
+    -webkit-text-stroke:1px #f6f2ea;
 }
 
-#communication::after{
-    content:"FOLLOW US • INSTAGRAM • STUDENT REQUESTS • STAY CONNECTED •";
+@media(max-width:768px){
+
+    .section{
+        padding-bottom:120px;
+    }
+
+    .section-ticker span{
+        padding:15px 24px;
+        font-size:1rem;
+        letter-spacing:3px;
+    }
+
 }
 
-#requests::after{
-    content:"SUBMIT IDEAS • STUDENT VOICE • REQUESTS • CLASS OF 2028 •";
+@media(max-width:520px){
+
+    .section-ticker span{
+        padding:14px 20px;
+        font-size:.9rem;
+        letter-spacing:2.5px;
+    }
+
 }
 
 /* =========================
