@@ -3156,7 +3156,9 @@ function createTickerGroup(items){
 
         textSpan.textContent =
         item;
-   
+
+        itemWrap.appendChild(textSpan);
+
         group.appendChild(itemWrap);
 
     });
