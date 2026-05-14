@@ -3142,16 +3142,34 @@ function createTickerGroup(items){
 
     repeatedItems.forEach((item, index) => {
 
-        const span =
+        const itemWrap =
+        document.createElement("div");
+
+        itemWrap.className =
+        "section-ticker-item";
+
+        const textSpan =
         document.createElement("span");
 
-        span.className =
-        tickerStyles[index % tickerStyles.length];
+        textSpan.className =
+        `section-ticker-text ${tickerStyles[index % tickerStyles.length]}`;
 
-        span.textContent =
-        `${item} •`;
+        textSpan.textContent =
+        item;
 
-        group.appendChild(span);
+        const dotSpan =
+        document.createElement("span");
+
+        dotSpan.className =
+        "section-ticker-dot";
+
+        dotSpan.textContent =
+        "•";
+
+        itemWrap.appendChild(textSpan);
+        itemWrap.appendChild(dotSpan);
+   
+        group.appendChild(itemWrap);
 
     });
 
