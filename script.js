@@ -3120,7 +3120,12 @@ function createSectionTickers(){
         track.appendChild(groupTwo);
 
         ticker.appendChild(track);
-        section.appendChild(ticker);
+
+        /*
+           This puts each section marquee at the top of its own section
+           instead of appending it to the bottom.
+        */
+        section.insertBefore(ticker, section.firstElementChild);
 
     });
 
