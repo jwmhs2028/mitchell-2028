@@ -3156,18 +3156,6 @@ function createTickerGroup(items){
 
         textSpan.textContent =
         item;
-
-        const dotSpan =
-        document.createElement("span");
-
-        dotSpan.className =
-        "section-ticker-dot";
-
-        dotSpan.textContent =
-        "  •";
-
-        itemWrap.appendChild(textSpan);
-        itemWrap.appendChild(dotSpan);
    
         group.appendChild(itemWrap);
 
