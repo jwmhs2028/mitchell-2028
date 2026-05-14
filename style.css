@@ -3707,3 +3707,1023 @@ body.dark-mode .mobile-bottom-link:hover{
     }
 
 }
+
+/* =========================================================
+   CLASS OF 2028 MAKEOVER OVERRIDES
+   Paste at the very bottom of style.css
+========================================================= */
+
+/* =========================
+   GLOBAL MAKEOVER
+========================= */
+
+body{
+    background:#070707;
+}
+
+.section{
+    position:relative;
+}
+
+.section::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+    radial-gradient(circle at 8% 10%, rgba(197,163,63,.06), transparent 28%),
+    radial-gradient(circle at 95% 20%, rgba(197,163,63,.05), transparent 30%);
+}
+
+.section > *{
+    position:relative;
+    z-index:2;
+}
+
+.section-heading h2{
+    letter-spacing:-3px;
+}
+
+.section-heading span{
+    color:#d8bf78;
+}
+
+.section-heading p{
+    font-size:1.05rem;
+}
+
+/* =========================
+   ANNOUNCEMENT BAR
+========================= */
+
+.makeover-alert{
+    width:100%;
+    background:linear-gradient(135deg,#d8bf78,#c5a33f);
+    color:#080808;
+    border-bottom:1px solid rgba(8,8,8,.18);
+    position:relative;
+    z-index:10000;
+}
+
+.makeover-alert.hide{
+    display:none;
+}
+
+.makeover-alert-inner{
+    min-height:46px;
+    padding:8px 38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+}
+
+.makeover-alert-message{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-size:.9rem;
+    font-weight:700;
+    text-align:center;
+}
+
+.makeover-alert-message span{
+    font-size:1.1rem;
+}
+
+.makeover-alert-message strong{
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
+.makeover-alert-message p{
+    margin:0;
+}
+
+.makeover-alert-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:#080808;
+    color:#d8bf78;
+    padding:8px 16px;
+    border-radius:999px;
+    font-size:.75rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    white-space:nowrap;
+    transition:.25s ease;
+}
+
+.makeover-alert-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(0,0,0,.18);
+}
+
+.makeover-alert-close{
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    width:30px;
+    height:30px;
+    border:none;
+    background:rgba(8,8,8,.1);
+    color:#080808;
+    border-radius:50%;
+    font-size:1.3rem;
+    cursor:pointer;
+    transition:.25s ease;
+}
+
+.makeover-alert-close:hover{
+    background:#080808;
+    color:#d8bf78;
+}
+
+/* =========================
+   NAV MAKEOVER
+========================= */
+
+.site-header{
+    background:rgba(8,8,8,.94);
+    border-bottom:1px solid rgba(216,191,120,.25);
+}
+
+.top-nav{
+    min-height:96px;
+}
+
+.brand{
+    color:#f6f2ea;
+}
+
+.logo{
+    width:76px;
+    height:76px;
+    filter:drop-shadow(0 8px 20px rgba(197,163,63,.18));
+}
+
+.brand-text h2{
+    color:#f6f2ea;
+    font-size:1.08rem;
+}
+
+.brand-text p{
+    color:#d8bf78;
+}
+
+.tab{
+    color:#f6f2ea;
+    border:1px solid transparent;
+}
+
+.tab:hover,
+.tab.active{
+    background:linear-gradient(135deg,#d8bf78,#c5a33f);
+    color:#080808;
+    box-shadow:0 10px 25px rgba(197,163,63,.18);
+}
+
+.theme-toggle{
+    background:rgba(255,255,255,.04);
+    color:#f6f2ea;
+    border-color:rgba(216,191,120,.35);
+}
+
+.theme-toggle:hover{
+    background:#d8bf78;
+    color:#080808;
+}
+
+/* =========================
+   HERO MAKEOVER
+========================= */
+
+.hero-clean{
+    background:#070707;
+    min-height:auto;
+    overflow:hidden;
+    border-bottom:1px solid rgba(216,191,120,.25);
+}
+
+.hero-bg{
+    background:
+    radial-gradient(circle at 50% 35%, rgba(197,163,63,.16), transparent 26%),
+    linear-gradient(90deg, rgba(8,8,8,.98), rgba(8,8,8,.86)),
+    url('https://upload.wikimedia.org/wikipedia/commons/c/cf/JWMitchell_High_School.jpg');
+    background-size:cover;
+    background-position:center;
+    filter:brightness(.55) saturate(.85);
+}
+
+.hero-bg::after{
+    background:
+    linear-gradient(90deg, rgba(8,8,8,.95), rgba(8,8,8,.62), rgba(8,8,8,.96)),
+    radial-gradient(circle at 32% 40%, rgba(197,163,63,.16), transparent 25%);
+}
+
+.makeover-hero-inner{
+    min-height:620px;
+    grid-template-columns:1fr .86fr .9fr;
+    gap:44px;
+    padding:70px 4.8% 34px;
+    align-items:center;
+}
+
+.makeover-hero-left{
+    position:relative;
+    z-index:3;
+}
+
+.makeover-hero-kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    color:#d8bf78;
+    border:1px solid rgba(216,191,120,.28);
+    background:rgba(216,191,120,.08);
+    padding:10px 16px;
+    border-radius:999px;
+    font-size:.75rem;
+    font-weight:900;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    margin-bottom:24px;
+}
+
+.makeover-hero-left h1{
+    color:#f6f2ea;
+    font-size:clamp(4.2rem,6.5vw,8rem);
+    line-height:.88;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:-5px;
+    text-shadow:0 16px 50px rgba(0,0,0,.42);
+}
+
+.makeover-hero-left h1 span{
+    display:block;
+    color:#c5a33f;
+    background:linear-gradient(135deg,#d8bf78,#a88629);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.makeover-hero-left p{
+    max-width:620px;
+    margin-top:24px;
+    color:rgba(255,255,255,.86);
+    line-height:1.75;
+    font-size:1.1rem;
+}
+
+.makeover-hero-buttons{
+    margin-top:30px;
+}
+
+.makeover-hero-buttons .primary-btn,
+.makeover-hero-buttons .secondary-btn{
+    min-height:58px;
+    padding:17px 28px;
+    text-transform:uppercase;
+    gap:12px;
+}
+
+.makeover-hero-buttons .primary-btn{
+    background:linear-gradient(135deg,#d8bf78,#c5a33f);
+    color:#080808;
+}
+
+.makeover-hero-buttons .secondary-btn{
+    background:rgba(255,255,255,.035);
+    color:#f6f2ea;
+    border-color:rgba(216,191,120,.4);
+}
+
+.makeover-hero-center{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-width:0;
+}
+
+.makeover-logo-stack{
+    position:relative;
+    width:min(440px,100%);
+    min-height:360px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.makeover-logo-stack::before{
+    content:"";
+    position:absolute;
+    inset:8%;
+    background:radial-gradient(circle, rgba(197,163,63,.18), transparent 68%);
+    filter:blur(8px);
+}
+
+.makeover-logo-stack::after{
+    content:"";
+    position:absolute;
+    inset:18%;
+    border:1px solid rgba(216,191,120,.18);
+    transform:rotate(-7deg);
+}
+
+.makeover-m-logo{
+    position:absolute;
+    width:82%;
+    opacity:.28;
+    filter:drop-shadow(0 0 25px rgba(216,191,120,.35));
+}
+
+.makeover-mustang-logo{
+    position:relative;
+    z-index:3;
+    width:95%;
+    max-height:270px;
+    object-fit:contain;
+    filter:drop-shadow(0 0 28px rgba(216,191,120,.28));
+    transform:translateY(10px);
+}
+
+.makeover-hero-right{
+    width:100%;
+}
+
+/* =========================
+   COUNTDOWN MAKEOVER
+========================= */
+
+.hero-countdown-card{
+    border-radius:34px;
+    padding:34px;
+    background:
+    linear-gradient(145deg, rgba(13,13,13,.96), rgba(9,9,9,.82)),
+    radial-gradient(circle at 100% 0%, rgba(216,191,120,.22), transparent 35%);
+    border:1px solid rgba(216,191,120,.35);
+    box-shadow:
+    0 26px 80px rgba(0,0,0,.36),
+    0 0 42px rgba(197,163,63,.14),
+    inset 0 0 0 1px rgba(255,255,255,.03);
+}
+
+.hero-countdown-top{
+    margin-bottom:28px;
+}
+
+.hero-countdown-top span{
+    color:#d8bf78;
+    font-size:.8rem;
+    letter-spacing:4px;
+}
+
+.hero-countdown-top h3{
+    font-size:1.12rem;
+    color:rgba(255,255,255,.78);
+    margin-top:6px;
+    text-transform:none;
+    font-weight:700;
+}
+
+.hero-countdown-grid{
+    gap:14px;
+}
+
+.hero-countdown-box{
+    border-radius:18px;
+    padding:20px 10px;
+    background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
+    border:1px solid rgba(216,191,120,.2);
+}
+
+.hero-countdown-box strong{
+    font-size:2.55rem;
+    color:#d8bf78;
+}
+
+.hero-countdown-box p{
+    color:rgba(255,255,255,.76);
+}
+
+.hero-countdown-date{
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1px solid rgba(216,191,120,.18);
+}
+
+.hero-countdown-date p{
+    color:#f6f2ea;
+    font-weight:800;
+}
+
+.hero-countdown-btn{
+    background:rgba(216,191,120,.08);
+    border-color:rgba(216,191,120,.35);
+}
+
+/* =========================
+   QUICK STRIP
+========================= */
+
+.makeover-quick-strip{
+    position:relative;
+    z-index:5;
+    margin:0 4.8% 42px;
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    background:rgba(10,10,10,.92);
+    border:1px solid rgba(216,191,120,.24);
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 22px 60px rgba(0,0,0,.32);
+    backdrop-filter:blur(18px);
+}
+
+.makeover-strip-card{
+    min-height:92px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:20px;
+    color:#f6f2ea;
+    border-right:1px solid rgba(216,191,120,.16);
+    transition:.28s ease;
+}
+
+.makeover-strip-card:last-child{
+    border-right:none;
+}
+
+.makeover-strip-card > span{
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#d8bf78;
+    background:rgba(216,191,120,.09);
+    border:1px solid rgba(216,191,120,.18);
+    border-radius:14px;
+    font-size:1.4rem;
+    flex-shrink:0;
+}
+
+.makeover-strip-card strong{
+    display:block;
+    font-size:.86rem;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    margin-bottom:4px;
+}
+
+.makeover-strip-card p{
+    color:rgba(255,255,255,.56);
+    font-size:.78rem;
+}
+
+.makeover-strip-card:hover{
+    background:rgba(216,191,120,.1);
+    transform:translateY(-2px);
+}
+
+/* =========================
+   SECTION BASE MAKEOVER
+========================= */
+
+.council-clean,
+.dashboard-section,
+.about-clean,
+.events-clean,
+.feedback-section,
+.student-guide-section,
+.grade-section,
+.communication-section,
+.request-section{
+    background:#080808;
+    color:#f6f2ea;
+    border-top:1px solid rgba(216,191,120,.12);
+}
+
+.about-clean{
+    background:
+    linear-gradient(180deg,#080808,#0d0d0d);
+}
+
+.events-clean,
+.student-guide-section,
+.request-section{
+    background:#0b0b0b;
+}
+
+.section-heading h2{
+    color:#f6f2ea;
+}
+
+.section-heading p{
+    color:rgba(255,255,255,.68);
+}
+
+/* =========================
+   CARD MAKEOVER
+========================= */
+
+.about-feature-card,
+.event-card,
+.featured-poll-card,
+.poll-card,
+.dashboard-card,
+.student-guide-shell,
+.grade-card,
+.communication-box,
+.communication-card,
+.request-box,
+.council-clean-card,
+.rep-card{
+    background:
+    linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.025));
+    border:1px solid rgba(216,191,120,.22);
+    color:#f6f2ea;
+    border-radius:22px;
+    box-shadow:0 20px 55px rgba(0,0,0,.24);
+}
+
+.about-feature-card::before,
+.event-card::before,
+.featured-poll-card::before,
+.poll-card::before,
+.dashboard-card::before,
+.communication-card::before{
+    width:4px;
+    background:linear-gradient(180deg,#d8bf78,#8f722a);
+}
+
+.about-feature-card h3,
+.event-card h3,
+.poll-card h3,
+.featured-poll-card h3,
+.dashboard-card-header h3,
+.council-clean-card h3,
+.rep-card h3,
+.communication-content h3,
+.grade-heading,
+.guide-hero h2,
+.resource-card h3{
+    color:#f6f2ea;
+}
+
+.about-feature-card p,
+.event-card p,
+.poll-card p,
+.featured-poll-card p,
+.dashboard-loading,
+.weekly-main p,
+.project-info p,
+.bell-note,
+.faq-answer,
+.communication-content p,
+.grade-desc,
+.council-clean-card blockquote,
+.representatives-block > p{
+    color:rgba(255,255,255,.66);
+}
+
+/* =========================
+   COUNCIL MAKEOVER
+========================= */
+
+.council-clean-grid{
+    gap:22px;
+}
+
+.council-clean-card{
+    padding:34px;
+}
+
+.council-clean-card.featured{
+    background:
+    linear-gradient(135deg, rgba(216,191,120,.14), rgba(255,255,255,.035));
+}
+
+.council-clean-card p,
+.rep-card p,
+.representatives-block > span{
+    color:#d8bf78;
+}
+
+/* =========================
+   DASHBOARD MAKEOVER
+========================= */
+
+.dashboard-section{
+    padding-top:100px;
+}
+
+.dashboard-shell{
+    max-width:1600px;
+}
+
+.dashboard-grid{
+    grid-template-columns:1.1fr 1fr 1.1fr;
+    gap:22px;
+}
+
+.dashboard-card{
+    padding:28px;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-8px);
+    border-color:rgba(216,191,120,.42);
+}
+
+.dashboard-icon{
+    background:rgba(216,191,120,.1);
+    color:#d8bf78;
+    border-color:rgba(216,191,120,.22);
+    border-radius:16px;
+}
+
+.dashboard-card-link{
+    color:#f6f2ea;
+    border-color:rgba(216,191,120,.16);
+}
+
+.weekly-item,
+.quick-link-tile,
+.bell-select-wrap,
+.bell-period-row,
+.faq-item{
+    background:rgba(255,255,255,.045);
+    border-color:rgba(216,191,120,.16);
+    border-radius:14px;
+}
+
+.weekly-date strong,
+.weekly-main h4,
+.project-info h4,
+.bell-period-main h4,
+.bell-period-main p,
+.faq-question{
+    color:#f6f2ea;
+}
+
+.quick-link-tile{
+    color:#f6f2ea;
+}
+
+.quick-link-tile small{
+    color:rgba(255,255,255,.58);
+}
+
+.quick-link-tile:hover{
+    background:linear-gradient(135deg,#d8bf78,#c5a33f);
+    color:#080808;
+}
+
+.quick-link-tile:hover span,
+.quick-link-tile:hover small{
+    color:#080808;
+}
+
+.lunch-list{
+    background:rgba(0,0,0,.22);
+    border-color:rgba(216,191,120,.16);
+    border-radius:14px;
+}
+
+.lunch-row span{
+    color:#f6f2ea;
+}
+
+/* =========================
+   UPDATES / POLLS MAKEOVER
+========================= */
+
+#events-container{
+    gap:22px;
+}
+
+.event-card{
+    min-height:220px;
+}
+
+.poll-bar{
+    border-radius:14px;
+    border-color:rgba(216,191,120,.2);
+}
+
+.poll-pill{
+    background:rgba(216,191,120,.08);
+    color:#d8bf78;
+    border-color:rgba(216,191,120,.2);
+    border-radius:999px;
+}
+
+.suggest-change-btn{
+    background:rgba(255,255,255,.04);
+    color:#d8bf78;
+    border-color:rgba(216,191,120,.28);
+    border-radius:999px;
+}
+
+/* =========================
+   STUDENT GUIDE MAKEOVER
+========================= */
+
+.student-guide-shell{
+    border-radius:28px;
+}
+
+.guide-tabs{
+    border-radius:18px;
+    border-color:rgba(216,191,120,.22);
+}
+
+.guide-tab,
+.guide-filter,
+#course-search-input,
+#club-search-input,
+.course-list-card,
+.course-detail-panel,
+.resource-card,
+.guide-footer-note{
+    background:rgba(255,255,255,.045);
+    color:#f6f2ea;
+    border-color:rgba(216,191,120,.18);
+    border-radius:16px;
+}
+
+.guide-tab.active,
+.guide-tab:hover{
+    background:linear-gradient(135deg,#d8bf78,#c5a33f);
+    color:#080808;
+}
+
+.course-list-card:hover,
+.course-list-card.active{
+    background:rgba(216,191,120,.1);
+    border-color:rgba(216,191,120,.36);
+}
+
+.course-list-main h3,
+.detail-title-wrap h3,
+.detail-info-item strong,
+.detail-topics h4,
+.rating-breakdown h4{
+    color:#f6f2ea;
+}
+
+.detail-description,
+.detail-info-item,
+.topic-item,
+.resource-card p,
+.guide-footer-note p{
+    color:rgba(255,255,255,.65);
+}
+
+/* =========================
+   CALCULATOR MAKEOVER
+========================= */
+
+.grade-row input,
+.grade-row select,
+.input-group input,
+.input-group select{
+    background:rgba(255,255,255,.045);
+    border-color:rgba(216,191,120,.2);
+    color:#f6f2ea;
+    border-radius:14px;
+}
+
+.final-grade-box,
+.prediction-box{
+    background:rgba(216,191,120,.08);
+    border-color:rgba(216,191,120,.22);
+    border-radius:20px;
+}
+
+.input-group label{
+    color:#f6f2ea;
+}
+
+/* =========================
+   COMMUNICATION / REQUESTS
+========================= */
+
+.communication-btn,
+.guide-request-btn,
+.grade-btn,
+.voice-btn{
+    border-radius:999px;
+}
+
+.form-container{
+    border-radius:24px;
+    border-color:rgba(216,191,120,.22);
+}
+
+/* =========================
+   MOBILE MAKEOVER
+========================= */
+
+@media(max-width:1200px){
+
+    .makeover-hero-inner{
+        grid-template-columns:1fr;
+        min-height:auto;
+    }
+
+    .makeover-hero-center{
+        order:3;
+    }
+
+    .makeover-hero-right{
+        order:2;
+    }
+
+    .makeover-logo-stack{
+        min-height:260px;
+    }
+
+    .makeover-quick-strip{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:768px){
+
+    .makeover-alert-inner{
+        padding:10px 46px 10px 14px;
+        justify-content:flex-start;
+    }
+
+    .makeover-alert-message{
+        justify-content:flex-start;
+        text-align:left;
+        font-size:.78rem;
+        line-height:1.35;
+    }
+
+    .makeover-alert-message p{
+        display:none;
+    }
+
+    .makeover-alert-btn{
+        display:none;
+    }
+
+    .makeover-alert-close{
+        right:10px;
+    }
+
+    .top-nav{
+        min-height:84px;
+    }
+
+    .brand-text h2{
+        font-size:.82rem;
+    }
+
+    .brand-text p{
+        font-size:.52rem;
+        letter-spacing:2px;
+    }
+
+    .logo{
+        width:52px;
+        height:52px;
+    }
+
+    .mobile-menu-toggle span{
+        background:#f6f2ea;
+    }
+
+    .makeover-hero-inner{
+        padding:54px 20px 28px;
+        gap:26px;
+    }
+
+    .makeover-hero-kicker{
+        font-size:.62rem;
+        letter-spacing:1.8px;
+        margin-bottom:18px;
+    }
+
+    .makeover-hero-left h1{
+        font-size:clamp(3.25rem,16vw,5rem);
+        letter-spacing:-2.5px;
+    }
+
+    .makeover-hero-left p{
+        font-size:.98rem;
+        line-height:1.65;
+    }
+
+    .makeover-hero-buttons{
+        flex-direction:column;
+    }
+
+    .makeover-hero-buttons .primary-btn,
+    .makeover-hero-buttons .secondary-btn{
+        width:100%;
+    }
+
+    .makeover-logo-stack{
+        min-height:220px;
+    }
+
+    .makeover-m-logo{
+        width:70%;
+    }
+
+    .makeover-mustang-logo{
+        width:82%;
+    }
+
+    .hero-countdown-card{
+        padding:24px;
+        border-radius:26px;
+    }
+
+    .hero-countdown-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .hero-countdown-box strong{
+        font-size:2rem;
+    }
+
+    .makeover-quick-strip{
+        margin:0 20px 34px;
+        grid-template-columns:1fr;
+        border-radius:22px;
+    }
+
+    .makeover-strip-card{
+        min-height:78px;
+        border-right:none;
+        border-bottom:1px solid rgba(216,191,120,.14);
+    }
+
+    .makeover-strip-card:last-child{
+        border-bottom:none;
+    }
+
+    .section{
+        padding:72px 20px;
+    }
+
+    .section-heading h2{
+        font-size:2.4rem;
+        letter-spacing:-1.5px;
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    .featured-poll-card,
+    .poll-card,
+    .dashboard-card,
+    .about-feature-card,
+    .event-card,
+    .council-clean-card,
+    .rep-card,
+    .communication-card{
+        border-radius:20px;
+    }
+
+}
+
+@media(max-width:520px){
+
+    .makeover-hero-left h1{
+        font-size:3rem;
+    }
+
+    .makeover-logo-stack{
+        min-height:180px;
+    }
+
+    .hero-countdown-card{
+        padding:20px;
+    }
+
+    .hero-countdown-box strong{
+        font-size:1.65rem;
+    }
+
+    .makeover-strip-card{
+        padding:18px;
+    }
+
+}
