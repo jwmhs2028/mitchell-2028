@@ -3164,7 +3164,7 @@ function createTickerGroup(items){
         "section-ticker-dot";
 
         dotSpan.textContent =
-        "•";
+        "  •";
 
         itemWrap.appendChild(textSpan);
         itemWrap.appendChild(dotSpan);
