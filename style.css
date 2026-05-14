@@ -227,8 +227,8 @@ body.dark-mode{
 .section-ticker-item{
     display:inline-flex;
     align-items:center;
-    gap:46px;
-    padding:18px 46px;
+    justify-content:center;
+    padding:18px 58px;
     font-size:1.35rem;
     line-height:1;
     font-weight:900;
@@ -237,11 +237,6 @@ body.dark-mode{
     white-space:nowrap;
 }
 
-.section-ticker-dot{
-    color:var(--gold);
-    font-weight:900;
-    -webkit-text-stroke:0;
-}
 .section-ticker-text.solid-gold{
     color:var(--gold);
     -webkit-text-stroke:0;
@@ -280,8 +275,7 @@ body.dark-mode .section-ticker-text.outline-black{
     }
 
     .section-ticker-item{
-        gap:30px;
-        padding:15px 30px;
+        padding:15px 34px;
         font-size:1rem;
         letter-spacing:3px;
     }
@@ -289,9 +283,8 @@ body.dark-mode .section-ticker-text.outline-black{
 
 @media(max-width:520px){
 
-    .section-ticker-item{
-        gap:24px;
-        padding:14px 24px;
+   .section-ticker-item{
+        padding:14px 28px;
         font-size:.9rem;
         letter-spacing:2.5px;
     }
