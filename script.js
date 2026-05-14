@@ -300,6 +300,8 @@ const courseSheetUrl =
 const clubsSheetUrl =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vRTraMHVcYD9Ac9ki1fHVUAQgcvWBuS8GMIiyXf4lJ6nkEaRgVE-LNogJspvCemNYjgdvGkwvz6a23P/pub?output=csv";
 
+const examPrepSheetUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vRIzJfr4XejuAbEarmURoIK9wmiUmjMMZpoITiiiO9nFYYC5TNWlhVD9UEgWvC8GU7WuPU-wASwxcYq/pub?output=csv";
 /* =========================
    DARK MODE
 ========================= */
@@ -2477,6 +2479,133 @@ guideTabs.forEach((tab) => {
 });
 
 /* =========================
+   AP EXAM PREP RESOURCES
+========================= */
+
+async function loadExamPrepResources(){
+
+    const container =
+    document.getElementById("exam-prep-container");
+
+    if(!container){
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(examPrepSheetUrl);
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv).slice(1);
+
+        const resources =
+        rows
+        .filter(row => row[0] && row[1] && row[3])
+        .map(row => {
+            return {
+                category:row[0] || "Other",
+                title:row[1] || "Study Resource",
+                description:row[2] || "",
+                link:row[3] || "#",
+                icon:row[4] || "▶️",
+                type:row[5] || "Resource"
+            };
+        });
+
+        if(resources.length === 0){
+            throw new Error("No exam prep resources found");
+        }
+
+        const groupedResources = {};
+
+        resources.forEach((resource) => {
+
+            if(!groupedResources[resource.category]){
+                groupedResources[resource.category] = [];
+            }
+
+            groupedResources[resource.category].push(resource);
+
+        });
+
+        container.innerHTML =
+        Object.keys(groupedResources).map((category, index) => {
+
+            const categoryClass =
+            index % 3 === 0
+            ? ""
+            : index % 3 === 1
+                ? "blue"
+                : "green";
+
+            return `
+
+            <div class="exam-prep-group">
+
+                <div class="exam-prep-category ${categoryClass}">
+                    ${escapeHTML(category)}
+                </div>
+
+                ${groupedResources[category].map(resource => {
+
+                    const isExternal =
+                    String(resource.link).startsWith("http");
+
+                    return `
+
+                    <a
+                    href="${safeUrl(resource.link)}"
+                    class="exam-prep-resource"
+                    ${isExternal ? `target="_blank" rel="noopener noreferrer"` : ""}>
+
+                        <div class="exam-prep-icon">
+                            ${escapeHTML(resource.icon)}
+                        </div>
+
+                        <div class="exam-prep-main">
+                            <h3>${escapeHTML(resource.title)}</h3>
+                            <p>${escapeHTML(resource.description)}</p>
+                        </div>
+
+                        <div class="exam-prep-type">
+                            ${escapeHTML(resource.type)}
+                        </div>
+
+                    </a>
+
+                    `;
+
+                }).join("")}
+
+            </div>
+
+            `;
+
+        }).join("");
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        container.innerHTML = `
+
+        <div class="exam-prep-empty">
+            Study resources could not be loaded. Make sure your Google Sheet is published as a CSV.
+        </div>
+
+        `;
+
+    }
+
+}
+
+/* =========================
    GRADE CALCULATOR
 ========================= */
 
@@ -3193,6 +3322,8 @@ loadQuickLinks();
 loadCouncilProjects();
 loadBellSchedule();
 loadFAQ();
+
+loadExamPrepResources();
 
 loadFeedbackPolls();
 
