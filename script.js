@@ -1333,6 +1333,21 @@ function renderBellSchedule(scheduleName){
             </div>
             ` : ""}
 
+            ${period.lunches.length > 0 ? `
+            <div class="bell-period-lunches">
+
+                ${period.lunches.map(lunch => `
+
+                    <div class="bell-period-lunch-row">
+                        <strong>${escapeHTML(lunch.group || "Lunch")}</strong>
+                        <span>${escapeHTML(formatTimeRange(lunch.start, lunch.end))}</span>
+                    </div>
+
+                `).join("")}
+
+            </div>
+            ` : ""}
+
         </div>
 
         `;
@@ -1387,33 +1402,8 @@ function renderBellLunchTimes(scheduleName){
         return;
     }
 
-    const lunches =
-    getDesignatedLunches(scheduleName);
-
-    if(lunches.length === 0){
-
-        container.innerHTML = "";
-        container.hidden = true;
-
-        return;
-
-    }
-
-    container.hidden = false;
-
-    container.innerHTML =
-    lunches.map(lunch => {
-
-        return `
-
-        <div class="bell-lunch-time-row">
-            <strong>${escapeHTML(lunch.group || "Lunch")}</strong>
-            <span>${escapeHTML(lunch.time)}</span>
-        </div>
-
-        `;
-
-    }).join("");
+    container.innerHTML = "";
+    container.hidden = true;
 
 }
 
