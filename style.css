@@ -7283,3 +7283,25 @@ body:not(.tool-page) #about{display:none!important;}
 .exam-prep-group .exam-prep-resource{grid-template-columns:38px minmax(0,1fr)!important;gap:12px!important;min-height:70px!important;padding:12px 14px!important;border-radius:6px!important;}
 .exam-prep-group .exam-prep-type{grid-column:2!important;justify-content:flex-start!important;font-size:.66rem!important;}
 @media (max-width:768px){.designated-lunch-list{grid-template-columns:repeat(3,minmax(146px,1fr))!important;gap:7px!important;overflow-x:auto!important;padding-bottom:4px!important;scroll-snap-type:x proximity!important}.lunch-card-intro{display:none!important}.designated-lunch-row{padding:8px!important;scroll-snap-align:start!important}.designated-lunch-top{display:grid!important;grid-template-columns:1fr!important;gap:4px!important}.designated-lunch-top strong{font-size:.78rem!important}.designated-lunch-top span{font-size:.7rem!important}.designated-lunch-row p,.designated-lunch-row small{font-size:.68rem!important;margin-top:5px!important}.bell-card .bell-schedule-list{max-height:220px!important}.dashboard-card-link{min-height:34px!important;padding-top:10px!important;font-size:.68rem!important}.exam-prep-list{grid-template-columns:1fr!important;gap:12px!important}.exam-prep-group{padding:12px!important}.exam-prep-group .exam-prep-resource{grid-template-columns:32px minmax(0,1fr)!important;padding:10px!important;gap:9px!important}.exam-prep-icon{width:32px!important;height:32px!important;font-size:1rem!important}.exam-prep-subject strong{font-size:.74rem!important}}
+
+/* FINAL DASHBOARD POLISH OVERRIDES */
+.dashboard-grid .dashboard-card{background:linear-gradient(155deg,rgba(197,163,63,.14),var(--card-bg) 42%,rgba(8,8,8,.035))!important;}
+.bell-lunch-times{display:grid!important;grid-template-columns:1fr!important;gap:7px!important;margin:0 0 10px!important;}
+.bell-lunch-times[hidden]{display:none!important;}
+.bell-lunch-time-row{display:grid!important;grid-template-columns:minmax(58px,.7fr) minmax(0,1fr)!important;align-items:center!important;gap:8px!important;padding:8px 10px!important;border:1px solid var(--border-soft)!important;background:rgba(197,163,63,.08)!important;border-radius:6px!important;}
+.bell-lunch-time-row strong{color:var(--text)!important;font-size:.76rem!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:.06em!important;line-height:1!important;}
+.bell-lunch-time-row span{color:var(--gold)!important;font-family:"Inter",sans-serif!important;font-size:.74rem!important;font-weight:800!important;line-height:1.25!important;white-space:normal!important;text-align:right!important;font-variant-numeric:tabular-nums!important;}
+.designated-lunch-list{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+.designated-lunch-top span{display:none!important;}
+.hero-countdown-box strong{font-family:"Inter",sans-serif!important;font-variant-numeric:tabular-nums!important;letter-spacing:.08em!important;word-spacing:0!important;text-rendering:geometricPrecision!important;}
+.exam-prep-section{background:radial-gradient(circle at 10% 0%,rgba(197,163,63,.16),transparent 28%),radial-gradient(circle at 90% 18%,rgba(216,191,120,.12),transparent 30%),linear-gradient(135deg,var(--section-bg),var(--section-bg-alt))!important;color:var(--text)!important;}
+.exam-prep-section .section-heading h2{color:var(--text)!important;}
+.exam-prep-section .section-heading p{color:var(--muted)!important;}
+body:not(.dark-mode) .exam-prep-resource{background:linear-gradient(135deg,rgba(197,163,63,.08),rgba(255,255,255,.72)),var(--card-bg)!important;color:var(--text)!important;border-color:var(--border-soft)!important;box-shadow:var(--shadow)!important;}
+body:not(.dark-mode) .exam-prep-main h3{color:var(--text)!important;}
+body:not(.dark-mode) .exam-prep-main p{color:var(--muted)!important;}
+body:not(.dark-mode) .exam-prep-group{background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(197,163,63,.08))!important;border-color:var(--border-soft)!important;}
+body.dark-mode .exam-prep-section{background:radial-gradient(circle at 10% 0%,rgba(197,163,63,.12),transparent 28%),radial-gradient(circle at 90% 20%,rgba(197,163,63,.08),transparent 30%),#111111!important;color:white!important;}
+body.dark-mode .exam-prep-section .section-heading h2{color:white!important;}
+body.dark-mode .exam-prep-section .section-heading p{color:rgba(255,255,255,.68)!important;}
+@media (max-width:768px){.designated-lunch-list{grid-template-columns:repeat(3,minmax(146px,1fr))!important}.bell-lunch-times{gap:5px!important;margin-bottom:8px!important}.bell-lunch-time-row{grid-template-columns:1fr!important;gap:4px!important;padding:7px 8px!important}.bell-lunch-time-row strong{font-size:.68rem!important}.bell-lunch-time-row span{text-align:left!important;font-size:.66rem!important}.bell-period-main p{font-size:.68rem!important;line-height:1.25!important;overflow-wrap:anywhere!important}.hero-countdown-box strong{letter-spacing:.055em!important;font-size:1.58rem!important}}

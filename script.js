@@ -1144,6 +1144,7 @@ async function loadBellSchedule(){
         selectedBellScheduleName;
 
         renderBellSchedule(selectedBellScheduleName);
+        renderBellLunchTimes(selectedBellScheduleName);
         renderDesignatedLunches(selectedBellScheduleName);
 
     }
@@ -1172,6 +1173,19 @@ async function loadBellSchedule(){
 
             <div class="dashboard-loading">
                 Designated lunches could not be loaded.
+            </div>
+
+            `;
+        }
+
+        const lunchTimesContainer =
+        document.getElementById("bell-lunch-times-container");
+
+        if(lunchTimesContainer){
+            lunchTimesContainer.innerHTML = `
+
+            <div class="dashboard-loading">
+                Lunch times could not be loaded.
             </div>
 
             `;
@@ -1327,14 +1341,7 @@ function renderBellSchedule(scheduleName){
 
 }
 
-function renderDesignatedLunches(scheduleName){
-
-    const container =
-    document.getElementById("designated-lunches-container");
-
-    if(!container){
-        return;
-    }
+function getDesignatedLunches(scheduleName){
 
     const periods =
     allBellSchedules[scheduleName] || [];
@@ -1342,8 +1349,7 @@ function renderDesignatedLunches(scheduleName){
     const seenLunches =
     new Set();
 
-    const lunches =
-    periods.flatMap(period => {
+    return periods.flatMap(period => {
 
         return period.lunches.map(lunch => {
             return {
@@ -1370,6 +1376,59 @@ function renderDesignatedLunches(scheduleName){
 
     });
 
+}
+
+function renderBellLunchTimes(scheduleName){
+
+    const container =
+    document.getElementById("bell-lunch-times-container");
+
+    if(!container){
+        return;
+    }
+
+    const lunches =
+    getDesignatedLunches(scheduleName);
+
+    if(lunches.length === 0){
+
+        container.innerHTML = "";
+        container.hidden = true;
+
+        return;
+
+    }
+
+    container.hidden = false;
+
+    container.innerHTML =
+    lunches.map(lunch => {
+
+        return `
+
+        <div class="bell-lunch-time-row">
+            <strong>${escapeHTML(lunch.group || "Lunch")}</strong>
+            <span>${escapeHTML(lunch.time)}</span>
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+function renderDesignatedLunches(scheduleName){
+
+    const container =
+    document.getElementById("designated-lunches-container");
+
+    if(!container){
+        return;
+    }
+
+    const lunches =
+    getDesignatedLunches(scheduleName);
+
     if(lunches.length === 0){
 
         container.innerHTML = `
@@ -1393,7 +1452,6 @@ function renderDesignatedLunches(scheduleName){
 
             <div class="designated-lunch-top">
                 <strong>${escapeHTML(lunch.group || "Lunch")}</strong>
-                <span>${escapeHTML(lunch.time)}</span>
             </div>
 
             ${lunch.period ? `
@@ -1441,6 +1499,7 @@ if(bellScheduleSelect){
         bellScheduleSelect.value;
 
         renderBellSchedule(selectedBellScheduleName);
+        renderBellLunchTimes(selectedBellScheduleName);
         renderDesignatedLunches(selectedBellScheduleName);
 
     });
