@@ -1565,8 +1565,11 @@ body.dark-mode .hero-bg::after{
 .hero-inner{
     position:relative;
     z-index:2;
-    min-height:calc(100vh - 240px);
-    max-height:760px;
+    width:100%;
+    max-width:1480px;
+    height:clamp(520px, calc(100vh - 240px), 760px);
+    min-height:0;
+    margin:0 auto;
     display:grid;
     grid-template-columns:.9fr .78fr .86fr;
     align-items:center;
@@ -1872,7 +1875,9 @@ body.dark-mode .varsity-year{
 .makeover-quick-strip{
     position:relative;
     z-index:5;
-    margin:0 4.8% 28px;
+    width:calc(100% - 9.6%);
+    max-width:1340px;
+    margin:0 auto 28px;
     display:grid;
     grid-template-columns:repeat(6,1fr);
     background:var(--card-bg);
@@ -1940,6 +1945,117 @@ body.dark-mode .varsity-year{
     color:#080808;
     border-color:rgba(8,8,8,.2);
     background:rgba(8,8,8,.08);
+}
+
+.tools-launch-section{
+    background:
+        radial-gradient(circle at 18% 20%, rgba(197,163,63,.12), transparent 28%),
+        linear-gradient(135deg,var(--section-bg),var(--section-bg-alt));
+}
+
+.tools-launch-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:24px;
+}
+
+.tools-launch-card{
+    min-height:210px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    gap:28px;
+    padding:30px;
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+    transition:.3s ease;
+}
+
+.tools-launch-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(135deg, rgba(197,163,63,.16), transparent 42%),
+        radial-gradient(circle at 86% 14%, rgba(216,191,120,.18), transparent 28%);
+    pointer-events:none;
+}
+
+.tools-launch-card > *{
+    position:relative;
+    z-index:2;
+}
+
+.tools-launch-card > span{
+    width:58px;
+    height:58px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gold);
+    background:rgba(197,163,63,.1);
+    border:1px solid var(--border-soft);
+    font-size:1.65rem;
+}
+
+.tools-launch-card strong{
+    display:block;
+    color:var(--text);
+    font-size:1.4rem;
+    text-transform:uppercase;
+    font-weight:900;
+    margin-bottom:10px;
+}
+
+.tools-launch-card p{
+    color:var(--muted);
+    line-height:1.65;
+}
+
+.tools-launch-card:hover{
+    transform:translateY(-6px);
+    border-color:var(--gold);
+}
+
+body:not(.tool-page) #courses,
+body:not(.tool-page) #exam-prep,
+body:not(.tool-page) #calculator{
+    display:none;
+}
+
+body.tool-page .announcement-bar,
+body.tool-page .hero-clean,
+body.tool-page .mobile-home-preview,
+body.tool-page #council,
+body.tool-page #dashboard,
+body.tool-page #about,
+body.tool-page #student-tools,
+body.tool-page #events,
+body.tool-page #feedback,
+body.tool-page #communication,
+body.tool-page #requests{
+    display:none;
+}
+
+body.tool-page.page-guide #exam-prep,
+body.tool-page.page-guide #calculator,
+body.tool-page.page-exam #courses,
+body.tool-page.page-exam #calculator,
+body.tool-page.page-calculator #courses,
+body.tool-page.page-calculator #exam-prep{
+    display:none;
+}
+
+body.tool-page .top-nav{
+    position:sticky;
+    top:0;
+}
+
+body.tool-page .section{
+    min-height:calc(100vh - 92px);
 }
 
 .mobile-home-preview{
@@ -4185,6 +4301,8 @@ body.dark-mode .advisor-card blockquote{
 
     .hero-inner{
         grid-template-columns:1fr;
+        height:auto;
+        max-height:none;
         min-height:auto;
     }
 
@@ -4202,6 +4320,10 @@ body.dark-mode .advisor-card blockquote{
 
     .makeover-quick-strip{
         grid-template-columns:repeat(3,1fr);
+    }
+
+    .tools-launch-grid{
+        grid-template-columns:1fr;
     }
 
     .about-clean-grid,

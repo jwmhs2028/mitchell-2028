@@ -1,0 +1,23 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "content"
+    label: "Website Content"
+    files:
+      - label: "Homepage"
+        name: "home"
+        file: "content/home.json"
+        fields:
+          - { label: "Welcome Text", name: "welcome", widget: "string" }
+          - { label: "Homecoming Info", name: "homecoming", widget: "text" }
+          - { label: "Prom Info", name: "prom", widget: "text" }
+
+backend:
+  name: github
+  repo: president-28/mitchell-2028
+  branch: main
