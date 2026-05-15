@@ -1144,6 +1144,7 @@ async function loadBellSchedule(){
         selectedBellScheduleName;
 
         renderBellSchedule(selectedBellScheduleName);
+        renderDesignatedLunches(selectedBellScheduleName);
 
     }
 
@@ -1162,6 +1163,19 @@ async function loadBellSchedule(){
         </div>
 
         `;
+
+        const lunchContainer =
+        document.getElementById("designated-lunches-container");
+
+        if(lunchContainer){
+            lunchContainer.innerHTML = `
+
+            <div class="dashboard-loading">
+                Designated lunches could not be loaded.
+            </div>
+
+            `;
+        }
 
     }
 
@@ -1200,7 +1214,13 @@ function buildBellScheduleData(rows){
         const lunchRooms =
         row[8] || "";
 
-        if(!period && !lunchGroup){
+        const hasPeriodDetails =
+        period || startTime || endTime || notes;
+
+        const hasLunchDetails =
+        lunchGroup || lunchStart || lunchEnd || lunchRooms;
+
+        if(!hasPeriodDetails && !hasLunchDetails){
             return;
         }
 
@@ -1209,7 +1229,9 @@ function buildBellScheduleData(rows){
         }
 
         const periodKey =
-        `${period}|${startTime}|${endTime}|${notes}`;
+        hasPeriodDetails
+        ? `${period}|${startTime}|${endTime}|${notes}`
+        : "__designated_lunches__";
 
         let existingPeriod =
         schedules[scheduleName].find(item => item.key === periodKey);
@@ -1222,6 +1244,7 @@ function buildBellScheduleData(rows){
                 startTime:startTime,
                 endTime:endTime,
                 notes:notes,
+                lunchOnly:!hasPeriodDetails,
                 lunches:[]
             };
 
@@ -1229,7 +1252,7 @@ function buildBellScheduleData(rows){
 
         }
 
-        if(lunchGroup || lunchStart || lunchEnd || lunchRooms){
+        if(hasLunchDetails){
 
             existingPeriod.lunches.push({
                 group:lunchGroup || "Lunch",
@@ -1256,7 +1279,8 @@ function renderBellSchedule(scheduleName){
     }
 
     const periods =
-    allBellSchedules[scheduleName] || [];
+    (allBellSchedules[scheduleName] || [])
+    .filter(period => !period.lunchOnly);
 
     if(periods.length === 0){
 
@@ -1295,26 +1319,89 @@ function renderBellSchedule(scheduleName){
             </div>
             ` : ""}
 
-            ${period.lunches.length > 0 ? `
-            <div class="lunch-list">
+        </div>
 
-                ${period.lunches.map(lunch => `
+        `;
 
-                    <div class="lunch-row">
+    }).join("");
 
-                        <strong>${escapeHTML(lunch.group)}</strong>
+}
 
-                        <span>
-                            ${escapeHTML(formatTimeRange(lunch.start, lunch.end))}
-                        </span>
+function renderDesignatedLunches(scheduleName){
 
-                        <p>${escapeHTML(lunch.rooms)}</p>
+    const container =
+    document.getElementById("designated-lunches-container");
 
-                    </div>
+    if(!container){
+        return;
+    }
 
-                `).join("")}
+    const periods =
+    allBellSchedules[scheduleName] || [];
 
+    const seenLunches =
+    new Set();
+
+    const lunches =
+    periods.flatMap(period => {
+
+        return period.lunches.map(lunch => {
+            return {
+                period:period.lunchOnly ? "" : period.period,
+                group:lunch.group,
+                time:formatTimeRange(lunch.start, lunch.end),
+                rooms:lunch.rooms
+            };
+        });
+
+    })
+    .filter(lunch => {
+
+        const key =
+        `${lunch.period}|${lunch.group}|${lunch.time}|${lunch.rooms}`;
+
+        if(seenLunches.has(key)){
+            return false;
+        }
+
+        seenLunches.add(key);
+
+        return lunch.group || lunch.time !== "Time TBD" || lunch.rooms;
+
+    });
+
+    if(lunches.length === 0){
+
+        container.innerHTML = `
+
+        <div class="dashboard-loading">
+            No designated lunches listed for this schedule.
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    container.innerHTML =
+    lunches.map(lunch => {
+
+        return `
+
+        <div class="designated-lunch-row">
+
+            <div class="designated-lunch-top">
+                <strong>${escapeHTML(lunch.group || "Lunch")}</strong>
+                <span>${escapeHTML(lunch.time)}</span>
             </div>
+
+            ${lunch.period ? `
+            <p>${escapeHTML(lunch.period)}</p>
+            ` : ""}
+
+            ${lunch.rooms ? `
+            <small>${escapeHTML(lunch.rooms)}</small>
             ` : ""}
 
         </div>
@@ -1354,6 +1441,7 @@ if(bellScheduleSelect){
         bellScheduleSelect.value;
 
         renderBellSchedule(selectedBellScheduleName);
+        renderDesignatedLunches(selectedBellScheduleName);
 
     });
 
@@ -2547,6 +2635,39 @@ guideTabs.forEach((tab) => {
    AP EXAM PREP RESOURCES
 ========================= */
 
+function normalizeSheetHeader(header){
+
+    return String(header || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+
+}
+
+function getSheetColumnIndex(headers, names, fallbackIndex){
+
+    const normalizedHeaders =
+    headers.map(normalizeSheetHeader);
+
+    const index =
+    names
+    .map(normalizeSheetHeader)
+    .map(name => normalizedHeaders.indexOf(name))
+    .find(foundIndex => foundIndex >= 0);
+
+    return typeof index === "number" ? index : fallbackIndex;
+
+}
+
+function getSheetCell(row, index){
+
+    if(index < 0){
+        return "";
+    }
+
+    return row[index] || "";
+
+}
+
 async function loadExamPrepResources(){
 
     const container =
@@ -2564,20 +2685,75 @@ async function loadExamPrepResources(){
         const csv =
         await response.text();
 
+        const sheetRows =
+        parseCSV(csv);
+
+        const headers =
+        sheetRows[0] || [];
+
         const rows =
-        parseCSV(csv).slice(1);
+        sheetRows.slice(1);
+
+        const subjectIndex =
+        getSheetColumnIndex(headers, [
+            "subject",
+            "subjects",
+            "course subject",
+            "course",
+            "class",
+            "category"
+        ], 0);
+
+        const titleIndex =
+        getSheetColumnIndex(headers, [
+            "title",
+            "resource",
+            "resource title",
+            "name"
+        ], 1);
+
+        const descriptionIndex =
+        getSheetColumnIndex(headers, [
+            "description",
+            "details",
+            "notes"
+        ], 2);
+
+        const linkIndex =
+        getSheetColumnIndex(headers, [
+            "link",
+            "url",
+            "resource link"
+        ], 3);
+
+        const iconIndex =
+        getSheetColumnIndex(headers, [
+            "icon",
+            "emoji"
+        ], 4);
+
+        const typeIndex =
+        getSheetColumnIndex(headers, [
+            "type",
+            "resource type",
+            "format"
+        ], 5);
 
         const resources =
         rows
-        .filter(row => row[0] && row[1] && row[3])
+        .filter(row => (
+            getSheetCell(row, subjectIndex)
+            && getSheetCell(row, titleIndex)
+            && getSheetCell(row, linkIndex)
+        ))
         .map(row => {
             return {
-                category:row[0] || "Other",
-                title:row[1] || "Study Resource",
-                description:row[2] || "",
-                link:row[3] || "#",
-                icon:row[4] || "▶️",
-                type:row[5] || "Resource"
+                subject:getSheetCell(row, subjectIndex) || "Other",
+                title:getSheetCell(row, titleIndex) || "Study Resource",
+                description:getSheetCell(row, descriptionIndex) || "",
+                link:getSheetCell(row, linkIndex) || "#",
+                icon:getSheetCell(row, iconIndex) || "▶️",
+                type:getSheetCell(row, typeIndex) || "Resource"
             };
         });
 
@@ -2589,18 +2765,18 @@ async function loadExamPrepResources(){
 
         resources.forEach((resource) => {
 
-            if(!groupedResources[resource.category]){
-                groupedResources[resource.category] = [];
+            if(!groupedResources[resource.subject]){
+                groupedResources[resource.subject] = [];
             }
 
-            groupedResources[resource.category].push(resource);
+            groupedResources[resource.subject].push(resource);
 
         });
 
         container.innerHTML =
-        Object.keys(groupedResources).map((category, index) => {
+        Object.keys(groupedResources).map((subject, index) => {
 
-            const categoryClass =
+            const subjectClass =
             index % 3 === 0
             ? ""
             : index % 3 === 1
@@ -2611,11 +2787,12 @@ async function loadExamPrepResources(){
 
             <div class="exam-prep-group">
 
-                <div class="exam-prep-category ${categoryClass}">
-                    ${escapeHTML(category)}
+                <div class="exam-prep-category exam-prep-subject ${subjectClass}">
+                    <span>Subject</span>
+                    <strong>${escapeHTML(subject)}</strong>
                 </div>
 
-                ${groupedResources[category].map(resource => {
+                ${groupedResources[subject].map(resource => {
 
                     const isExternal =
                     String(resource.link).startsWith("http");
@@ -3220,7 +3397,7 @@ const sectionTickerData = {
         "Quick Links",
         "Projects",
         "Bell Schedule",
-        "FAQ",
+        "Designated Lunches",
         "Student Dashboard"
     ],
     about:[
@@ -3249,6 +3426,13 @@ const sectionTickerData = {
         "Clubs",
         "Resources",
         "School Tools"
+    ],
+    "student-tools":[
+        "Student Toolkit",
+        "Student Guide",
+        "Exam Prep",
+        "Grade Calculator",
+        "Quick Access"
     ],
     "exam-prep":[
         "AP Exam Prep",
