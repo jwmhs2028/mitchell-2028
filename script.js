@@ -1491,11 +1491,21 @@ function buildBellScheduleData(rows){
 
     const schedules = {};
     const lastPeriodBySchedule = {};
+    let lastScheduleName =
+    "Regular Bell Schedule";
 
     rows.forEach((row) => {
 
+        const rawScheduleName =
+        String(row[0] || "").trim();
+
         const scheduleName =
-        row[0] || "Regular Bell Schedule";
+        rawScheduleName || lastScheduleName || "Regular Bell Schedule";
+
+        if(rawScheduleName){
+            lastScheduleName =
+            rawScheduleName;
+        }
 
         const period =
         row[1] || "";
@@ -1597,7 +1607,44 @@ function buildBellScheduleData(rows){
 
     });
 
+    Object.keys(schedules).forEach((scheduleName) => {
+        mergeOrphanLunchPeriods(schedules[scheduleName]);
+    });
+
     return schedules;
+
+}
+
+function mergeOrphanLunchPeriods(periods){
+
+    let previousPeriod =
+    null;
+
+    periods.forEach((period) => {
+
+        if(!period.lunchOnly){
+            previousPeriod =
+            period;
+            return;
+        }
+
+        period.lunches.forEach((lunch) => {
+
+            const hostPeriod =
+            findLunchHostPeriod(
+                periods,
+                lunch.start,
+                lunch.end
+            )
+            || previousPeriod;
+
+            if(hostPeriod){
+                addLunchToPeriod(hostPeriod, lunch);
+            }
+
+        });
+
+    });
 
 }
 
