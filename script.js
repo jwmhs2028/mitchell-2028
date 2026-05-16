@@ -44,16 +44,71 @@ document.getElementById("more-menu");
 const moreMenuToggle =
 document.getElementById("more-menu-toggle");
 
+const mainPageHashes =
+new Set([
+    "#home",
+    "#council",
+    "#dashboard",
+    "#student-tools",
+    "#events",
+    "#feedback",
+    "#communication",
+    "#requests"
+]);
+
+function normalizeNavigationHash(value){
+
+    if(!value){
+        return "#home";
+    }
+
+    if(value === "index.html" || value.endsWith("/index.html")){
+        return "#home";
+    }
+
+    const hashIndex =
+    value.indexOf("#");
+
+    if(hashIndex >= 0){
+        return value.slice(hashIndex) || "#home";
+    }
+
+    return value;
+
+}
+
+function normalizeToolPageAnchors(){
+
+    if(!document.body.classList.contains("tool-page")){
+        return;
+    }
+
+    document.querySelectorAll("a[href^='#']")
+    .forEach((link) => {
+
+        const hash =
+        normalizeNavigationHash(link.getAttribute("href"));
+
+        if(mainPageHashes.has(hash)){
+            link.setAttribute("href", `index.html${hash}`);
+        }
+
+    });
+
+}
+
+normalizeToolPageAnchors();
+
 function setActiveNavigation(hash){
 
     const targetHash =
-    hash || "#home";
+    normalizeNavigationHash(hash || "#home");
 
     tabs.forEach((tab) => {
 
         tab.classList.toggle(
             "active",
-            tab.getAttribute("href") === targetHash
+            normalizeNavigationHash(tab.getAttribute("href")) === targetHash
         );
 
     });
@@ -62,7 +117,7 @@ function setActiveNavigation(hash){
 
         link.classList.toggle(
             "active",
-            link.getAttribute("href") === targetHash
+            normalizeNavigationHash(link.getAttribute("href")) === targetHash
         );
 
     });
@@ -71,7 +126,7 @@ function setActiveNavigation(hash){
 
         link.classList.toggle(
             "active",
-            link.getAttribute("href") === targetHash
+            normalizeNavigationHash(link.getAttribute("href")) === targetHash
         );
 
     });
@@ -94,7 +149,7 @@ tabs.forEach((tab) => {
 
     tab.addEventListener("click", () => {
 
-        setActiveNavigation(tab.getAttribute("href"));
+        setActiveNavigation(normalizeNavigationHash(tab.getAttribute("href")));
         closeMoreMenu();
 
     });
@@ -105,7 +160,7 @@ mobileMenuLinks.forEach((link) => {
 
     link.addEventListener("click", () => {
 
-        setActiveNavigation(link.getAttribute("href"));
+        setActiveNavigation(normalizeNavigationHash(link.getAttribute("href")));
         closeMobileMenu();
 
     });
@@ -116,7 +171,7 @@ mobileBottomLinks.forEach((link) => {
 
     link.addEventListener("click", () => {
 
-        setActiveNavigation(link.getAttribute("href"));
+        setActiveNavigation(normalizeNavigationHash(link.getAttribute("href")));
 
     });
 
@@ -380,12 +435,24 @@ document.getElementById("theme-toggle-icon");
 const themeToggleText =
 document.getElementById("theme-toggle-text");
 
+const mobileThemeToggle =
+document.getElementById("mobile-theme-toggle");
+
+const mobileThemeToggleIcon =
+document.getElementById("mobile-theme-toggle-icon");
+
+const mobileThemeToggleText =
+document.getElementById("mobile-theme-toggle-text");
+
 function applySavedTheme(){
 
     const savedTheme =
     localStorage.getItem("jwmhs2028_theme");
 
-    if(savedTheme === "dark"){
+    if(savedTheme === "light"){
+        document.body.classList.remove("dark-mode");
+    }
+    else{
         document.body.classList.add("dark-mode");
     }
 
@@ -408,25 +475,51 @@ function updateThemeToggleText(){
         isDark ? "Light Mode" : "Dark Mode";
     }
 
+    if(mobileThemeToggleIcon){
+        mobileThemeToggleIcon.textContent =
+        isDark ? "☀️" : "🌙";
+    }
+
+    if(mobileThemeToggleText){
+        mobileThemeToggleText.textContent =
+        isDark ? "Light" : "Dark";
+    }
+
+    if(themeToggle){
+        themeToggle.setAttribute("aria-pressed", String(isDark));
+    }
+
+    if(mobileThemeToggle){
+        mobileThemeToggle.setAttribute("aria-pressed", String(isDark));
+    }
+
+}
+
+function toggleTheme(){
+
+    document.body.classList.toggle("dark-mode");
+
+    const isDark =
+    document.body.classList.contains("dark-mode");
+
+    localStorage.setItem(
+        "jwmhs2028_theme",
+        isDark ? "dark" : "light"
+    );
+
+    updateThemeToggleText();
+
 }
 
 if(themeToggle){
 
-    themeToggle.addEventListener("click", () => {
+    themeToggle.addEventListener("click", toggleTheme);
 
-        document.body.classList.toggle("dark-mode");
+}
 
-        const isDark =
-        document.body.classList.contains("dark-mode");
+if(mobileThemeToggle){
 
-        localStorage.setItem(
-            "jwmhs2028_theme",
-            isDark ? "dark" : "light"
-        );
-
-        updateThemeToggleText();
-
-    });
+    mobileThemeToggle.addEventListener("click", toggleTheme);
 
 }
 

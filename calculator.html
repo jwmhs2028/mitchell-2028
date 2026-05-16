@@ -160,6 +160,11 @@
 
     </a>
 
+    <button class="mobile-theme-toggle" id="mobile-theme-toggle" type="button" aria-label="Toggle dark mode">
+      <span id="mobile-theme-toggle-icon">🌙</span>
+      <strong id="mobile-theme-toggle-text">Dark</strong>
+    </button>
+
     <button class="mobile-menu-toggle" id="mobile-menu-toggle" type="button" aria-label="Open menu">
       <span></span>
       <span></span>
@@ -888,6 +893,18 @@
         <strong>Student Guide</strong>
         <p>Explore courses, clubs, student groups, and Mitchell resources.</p>
       </div>
+      <div class="tool-preview guide-tool-preview" aria-hidden="true">
+        <div class="preview-line wide"></div>
+        <div class="preview-chip-row">
+          <i></i>
+          <i></i>
+          <i></i>
+        </div>
+        <div class="preview-split">
+          <span></span>
+          <span></span>
+        </div>
+      </div>
     </a>
 
     <a href="exam-prep.html" class="tools-launch-card">
@@ -896,6 +913,11 @@
         <strong>Exam Prep</strong>
         <p>Find review links, study resources, and prep materials in one place.</p>
       </div>
+      <div class="tool-preview exam-tool-preview" aria-hidden="true">
+        <div class="preview-subject">AP</div>
+        <div class="preview-resource"></div>
+        <div class="preview-resource short"></div>
+      </div>
     </a>
 
     <a href="calculator.html" class="tools-launch-card">
@@ -903,6 +925,14 @@
       <div>
         <strong>Grade Calculator</strong>
         <p>Estimate your current grade and test what future scores could do.</p>
+      </div>
+      <div class="tool-preview calculator-tool-preview" aria-hidden="true">
+        <div class="calc-mini-screen">92%</div>
+        <div class="calc-mini-bars">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
     </a>
 
@@ -1230,6 +1260,35 @@
 
   </div>
 
+  <div class="calculator-help-card">
+
+    <div class="calculator-help-copy">
+      <span>Don't know how it works?</span>
+      <h3>Start with your category weights.</h3>
+      <p>
+        In MyStudent, open your class grades on the web version. Near the top,
+        look for the category table that shows what percent of the grade each
+        category is worth. Use those percentages here, then enter your points.
+      </p>
+    </div>
+
+    <div class="weight-sample" aria-label="Sample category weight table">
+      <div class="sample-cell sample-label">Percent of Grade</div>
+      <div class="sample-cell sample-category">
+        <strong>Core Learning</strong>
+        <span>60%</span>
+        <small>Example score</small>
+      </div>
+      <div class="sample-cell sample-category accent">
+        <strong>Classwork</strong>
+        <span>40%</span>
+        <small>Example score</small>
+      </div>
+      <div class="sample-cell sample-label">Weighted Grade</div>
+    </div>
+
+  </div>
+
   <div class="grade-layout">
 
     <!-- LEFT SIDE -->
@@ -1412,6 +1471,37 @@
 
       <div class="communication-card">
 
+        <div class="communication-icon tiktok-icon">
+          ♪
+        </div>
+
+        <div class="communication-content">
+
+          <span class="communication-label">
+            TikTok
+          </span>
+
+          <h3>@jwmhs.stuco28</h3>
+
+          <p>
+            Follow our TikTok for quick class videos, reminders, spirit posts,
+            and short Student Council updates.
+          </p>
+
+          <a
+          href="https://www.tiktok.com/@jwmhs.stuco28"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="communication-btn">
+            Open TikTok
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="communication-card">
+
         <div class="communication-icon">
           💬
         </div>
@@ -1538,7 +1628,7 @@
 
 </nav>
 
-<script src="script.js?v=dashboard-lunch-periods-20260515"></script>
+<script src="script.js?v=site-polish-20260516"></script>
 
 <script data-goatcounter="https://jwmhs2028.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
