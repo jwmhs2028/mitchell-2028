@@ -422,6 +422,15 @@ const clubsSheetUrl =
 
 const examPrepSheetUrl =
 "https://docs.google.com/spreadsheets/d/e/2PACX-1vRIzJfr4XejuAbEarmURoIK9wmiUmjMMZpoITiiiO9nFYYC5TNWlhVD9UEgWvC8GU7WuPU-wASwxcYq/pub?output=csv";
+
+const viewerCounterApiUrl =
+"https://script.google.com/macros/s/AKfycbzXTnEq-tpPUsr7DXJN7E88V7_WvgLmKWTTmtpZZJlBHamW45_tkM4917rMjRb0wRRZ/exec";
+
+const viewerCounterCsvUrl =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vT0YxQoPJd-9g6BPZU9LB-SiObDeWGPcTPz4E5mNJ1eUJJ7T45paQfFSIbfvt7IXCmIyRfzZLJpVHAp/pub?output=csv";
+
+const viewerCounterStorageKey =
+"jwmhs2028_viewer_id";
 /* =========================
    DARK MODE
 ========================= */
@@ -520,6 +529,196 @@ if(themeToggle){
 if(mobileThemeToggle){
 
     mobileThemeToggle.addEventListener("click", toggleTheme);
+
+}
+
+/* =========================
+   VIEWER COUNTER
+========================= */
+
+function getViewerId(){
+
+    let viewerId =
+    localStorage.getItem(viewerCounterStorageKey);
+
+    if(!viewerId){
+
+        if(window.crypto && crypto.randomUUID){
+            viewerId =
+            crypto.randomUUID();
+        }
+        else{
+            viewerId =
+            `viewer-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        }
+
+        localStorage.setItem(viewerCounterStorageKey, viewerId);
+
+    }
+
+    return viewerId;
+
+}
+
+function updateViewerCounter(count, status){
+
+    const countElement =
+    document.getElementById("viewer-count");
+
+    const statusElement =
+    document.getElementById("viewer-count-status");
+
+    if(countElement && count !== undefined){
+        countElement.textContent =
+        String(count);
+    }
+
+    if(statusElement && status){
+        statusElement.textContent =
+        status;
+    }
+
+}
+
+async function loadViewerCounter(){
+
+    const countElement =
+    document.getElementById("viewer-count");
+
+    if(!countElement){
+        return;
+    }
+
+    if(!viewerCounterApiUrl){
+        loadViewerCounterFromCsv();
+        return;
+    }
+
+    try{
+
+        const data =
+        await requestViewerCounterPayload();
+
+        if(!data.success){
+            throw new Error(data.message || "Viewer counter unavailable");
+        }
+
+        updateViewerCounter(
+            data.uniqueViewers ?? data.count ?? "--",
+            "Live unique count from Google Sheets."
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        updateViewerCounter(
+            "Offline",
+            "Viewer counter could not be reached."
+        );
+
+    }
+
+}
+
+async function loadViewerCounterFromCsv(){
+
+    if(!viewerCounterCsvUrl){
+        updateViewerCounter("Ready", "Paste your Apps Script web app URL in script.js to start counting.");
+        return;
+    }
+
+    try{
+
+        const response =
+        await fetch(viewerCounterCsvUrl, {
+            cache:"no-store"
+        });
+
+        const csv =
+        await response.text();
+
+        const rows =
+        parseCSV(csv)
+        .filter(row => row.some(cell => String(cell || "").trim()));
+
+        const uniqueViewers =
+        Math.max(rows.length - 1, 0);
+
+        updateViewerCounter(
+            uniqueViewers,
+            "Showing the published Google Sheet count. Add the Apps Script web app URL to record new viewers."
+        );
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        updateViewerCounter(
+            "Ready",
+            "Paste your Apps Script web app URL in script.js to start counting."
+        );
+
+    }
+
+}
+
+function requestViewerCounterPayload(){
+
+    return new Promise((resolve, reject) => {
+
+        const callbackName =
+        `__jwmhsViewerCounter${Date.now()}${Math.random().toString(16).slice(2)}`;
+
+        const url =
+        new URL(viewerCounterApiUrl);
+
+        url.searchParams.set("action", "trackViewer");
+        url.searchParams.set("visitorId", getViewerId());
+        url.searchParams.set("path", window.location.pathname || "/");
+        url.searchParams.set("page", document.title || "Mitchell Class of 2028");
+        url.searchParams.set("referrer", document.referrer || "");
+        url.searchParams.set("userAgent", navigator.userAgent || "");
+        url.searchParams.set("callback", callbackName);
+
+        const script =
+        document.createElement("script");
+
+        const cleanup = () => {
+
+            delete window[callbackName];
+            script.remove();
+
+        };
+
+        const timeoutId =
+        window.setTimeout(() => {
+            cleanup();
+            reject(new Error("Viewer counter timed out"));
+        }, 8000);
+
+        window[callbackName] = (data) => {
+            window.clearTimeout(timeoutId);
+            cleanup();
+            resolve(data);
+        };
+
+        script.onerror = () => {
+            window.clearTimeout(timeoutId);
+            cleanup();
+            reject(new Error("Viewer counter failed to load"));
+        };
+
+        script.src =
+        url.toString();
+
+        document.head.appendChild(script);
+
+    });
 
 }
 
@@ -1291,6 +1490,7 @@ async function loadBellSchedule(){
 function buildBellScheduleData(rows){
 
     const schedules = {};
+    const lastPeriodBySchedule = {};
 
     rows.forEach((row) => {
 
@@ -1335,13 +1535,33 @@ function buildBellScheduleData(rows){
             schedules[scheduleName] = [];
         }
 
+        let existingPeriod =
+        null;
+
         const periodKey =
         hasPeriodDetails
         ? `${period}|${startTime}|${endTime}|${notes}`
         : "__designated_lunches__";
 
-        let existingPeriod =
-        schedules[scheduleName].find(item => item.key === periodKey);
+        if(!hasPeriodDetails && hasLunchDetails){
+
+            existingPeriod =
+            findLunchHostPeriod(
+                schedules[scheduleName],
+                lunchStart,
+                lunchEnd
+            )
+            || lastPeriodBySchedule[scheduleName]
+            || null;
+
+        }
+
+        if(!existingPeriod){
+
+            existingPeriod =
+            schedules[scheduleName].find(item => item.key === periodKey);
+
+        }
 
         if(!existingPeriod){
 
@@ -1359,9 +1579,14 @@ function buildBellScheduleData(rows){
 
         }
 
+        if(hasPeriodDetails){
+            lastPeriodBySchedule[scheduleName] =
+            existingPeriod;
+        }
+
         if(hasLunchDetails){
 
-            existingPeriod.lunches.push({
+            addLunchToPeriod(existingPeriod, {
                 group:lunchGroup || "Lunch",
                 start:lunchStart || "",
                 end:lunchEnd || "",
@@ -1373,6 +1598,118 @@ function buildBellScheduleData(rows){
     });
 
     return schedules;
+
+}
+
+function parseBellTimeToMinutes(value){
+
+    const text =
+    String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "");
+
+    const match =
+    text.match(/^(\d{1,2})(?::(\d{2}))?(am|pm)$/);
+
+    if(!match){
+        return null;
+    }
+
+    let hours =
+    Number(match[1]);
+
+    const minutes =
+    Number(match[2] || 0);
+
+    const meridiem =
+    match[3];
+
+    if(meridiem === "pm" && hours !== 12){
+        hours += 12;
+    }
+
+    if(meridiem === "am" && hours === 12){
+        hours = 0;
+    }
+
+    return (hours * 60) + minutes;
+
+}
+
+function rangesOverlap(startA, endA, startB, endB){
+
+    if(
+        startA === null
+        || endA === null
+        || startB === null
+        || endB === null
+    ){
+        return false;
+    }
+
+    return startA < endB && endA > startB;
+
+}
+
+function findLunchHostPeriod(periods, lunchStart, lunchEnd){
+
+    const lunchStartMinutes =
+    parseBellTimeToMinutes(lunchStart);
+
+    const lunchEndMinutes =
+    parseBellTimeToMinutes(lunchEnd);
+
+    if(lunchStartMinutes === null || lunchEndMinutes === null){
+        return null;
+    }
+
+    return periods.find((period) => {
+
+        if(period.lunchOnly){
+            return false;
+        }
+
+        const periodStart =
+        parseBellTimeToMinutes(period.startTime);
+
+        const periodEnd =
+        parseBellTimeToMinutes(period.endTime);
+
+        return rangesOverlap(
+            lunchStartMinutes,
+            lunchEndMinutes,
+            periodStart,
+            periodEnd
+        );
+
+    }) || null;
+
+}
+
+function addLunchToPeriod(period, lunch){
+
+    const key =
+    [
+        lunch.group || "",
+        lunch.start || "",
+        lunch.end || "",
+        lunch.rooms || ""
+    ].join("|");
+
+    const exists =
+    period.lunches.some((existingLunch) => {
+        return [
+            existingLunch.group || "",
+            existingLunch.start || "",
+            existingLunch.end || "",
+            existingLunch.rooms || ""
+        ].join("|") === key;
+    });
+
+    if(!exists){
+        period.lunches.push(lunch);
+    }
 
 }
 
@@ -3319,11 +3656,17 @@ function renderPollCard(poll, featured){
     const noPercent =
     Number(poll.noPercent) || 0;
 
-    const yesWidth =
-    poll.totalVotes > 0 ? yesPercent : 50;
+        const yesWidth =
+        poll.totalVotes > 0 ? yesPercent : 50;
 
-    const noWidth =
-    poll.totalVotes > 0 ? noPercent : 50;
+        const noWidth =
+        poll.totalVotes > 0 ? noPercent : 50;
+
+        const yesLabel =
+        poll.totalVotes > 0 ? `Yes ${yesPercent}%` : "Yes";
+
+        const noLabel =
+        poll.totalVotes > 0 ? `No ${noPercent}%` : "No";
 
     return `
 
@@ -3357,15 +3700,16 @@ function renderPollCard(poll, featured){
 
             <div class="poll-results">
 
-               <div class="poll-bar">
+               <div class="poll-bar" aria-label="${escapeHTML(`${yesLabel}, ${noLabel}`)}">
 
-                   <div class="poll-yes-fill" style="width:${yesWidth}%">
-                       ${yesPercent > 0 ? `Yes ${yesPercent}%` : ""}
+                   <div class="poll-yes-fill ${yesPercent > 0 && yesPercent < 10 ? "is-tiny" : ""}" style="width:${yesWidth}%" aria-hidden="true">
                    </div>
                
-                   <div class="poll-no-fill ${noPercent > 0 && yesPercent > 0 ? "has-divider" : ""}" style="width:${noWidth}%">
-                       ${noPercent > 0 ? `No ${noPercent}%` : ""}
+                   <div class="poll-no-fill ${noPercent > 0 && yesPercent > 0 ? "has-divider" : ""} ${noPercent > 0 && noPercent < 10 ? "is-tiny" : ""}" style="width:${noWidth}%" aria-hidden="true">
                    </div>
+
+                   <span class="poll-bar-label yes">${escapeHTML(yesLabel)}</span>
+                   <span class="poll-bar-label no">${escapeHTML(noLabel)}</span>
                
                </div>
 
@@ -3725,6 +4069,8 @@ function createTickerGroup(items){
 applySavedTheme();
 
 loadMakeoverAlertState();
+
+loadViewerCounter();
 
 setActiveNavigation(window.location.hash || "#home");
 
